@@ -75,7 +75,7 @@
 
         <si:service-activator
                 method="getFromCache">
-            <bean class="apiserver.apis.v1_0.documents.services.DocumentService"/>
+            <bean class="apiserver.services.cache.services.DocumentService"/>
         </si:service-activator>
 
         <si:service-activator
