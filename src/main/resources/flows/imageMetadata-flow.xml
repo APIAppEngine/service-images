@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Copyright (c) 2013 Mike Nimer.
+
+  This file is part of ApiServer Project.
+
+  The ApiServer Project is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  The ApiServer Project is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with the ApiServer Project.  If not, see <http://www.gnu.org/licenses/>.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<beans
+        xmlns:http="http://www.springframework.org/schema/integration/http"
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:si="http://www.springframework.org/schema/integration"
+        xmlns:util="http://www.springframework.org/schema/util"
+        xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <util:list id="messageConverters">
+        <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
+        <bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
+        <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+        <bean class="org.springframework.http.converter.BufferedImageHttpMessageConverter"/>
+    </util:list>
+
+    <si:channel id="imageMetadataChannelRequestChannel"/>
+
+    <si:channel id="imageMetadataChannelReplyChannel"/>
+
+    <!--
+          Image Embedded Metadata
+          Note: because of the router, this is not in a CHAIN
+      -->
+    <si:channel id="imageMetadataChannelInfoRouter"/>
+
+    <!-- these channels MUST match the ImageConfigMBean.getMetadataLibrary() options -->
+    <si:channel id="drewMetadataExtractor"/>
+    <si:channel id="exifTool"/>
+
+
+    <si:gateway id="imageMetadataGateway"
+                service-interface="apiserver.services.images.gateways.images.ImageMetadataGateway"
+                default-reply-channel="imageMetadataChannelReplyChannel"
+                default-request-channel="imageMetadataChannelRequestChannel"
+                default-reply-timeout="${defaultReplyTimeout}">
+    </si:gateway>
+
+
+
+    <!-- si:header-value-router
+            input-channel="imageMetadataChannelRequestChannel"
+            default-output-channel="drewMetadataExtractor"
+            header-name="library">
+        <si:mapping value="drewnoakes" channel="drewMetadataExtractor"/>
+    </si:header-value-router-->
+
+
+    <!-- Drew Nokes Metadata Library-->
+    <si:chain
+            input-channel="imageMetadataChannelRequestChannel"
+            output-channel="imageMetadataChannelReplyChannel">
+
+        <si:service-activator
+                method="getFromCache">
+            <bean class="apiserver.apis.v1_0.documents.services.DocumentService"/>
+        </si:service-activator>
+
+        <si:service-activator
+                method="imageMetadataHandler">
+            <bean class="apiserver.services.images.services.drewMetadata.ImageMetadataService"/>
+        </si:service-activator>
+
+    </si:chain>
+
+
+    <!-- TODO: add Apache Commons Library -->
+
+</beans>

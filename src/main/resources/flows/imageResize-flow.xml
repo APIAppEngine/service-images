@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Copyright (c) 2013 Mike Nimer.
+
+  This file is part of ApiServer Project.
+
+  The ApiServer Project is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  The ApiServer Project is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with the ApiServer Project.  If not, see <http://www.gnu.org/licenses/>.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:si="http://www.springframework.org/schema/integration"
+       xmlns:http="http://www.springframework.org/schema/integration/http"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+       http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd">
+
+    <!--
+        Image RESIZE
+    -->
+
+    <si:channel id="imageResizeRequestChannel"/>
+
+    <si:channel id="imageResizeReplyChannel"/>
+
+    <si:channel id="imageResizeHTTPChannel"/>
+
+
+    <si:gateway id="imageResizeGateway"
+                service-interface="apiserver.services.images.gateways.images.ImageResizeGateway"
+                default-reply-channel="imageResizeReplyChannel"
+                default-reply-timeout="${defaultReplyTimeout}">
+
+        <si:method name="resizeImage"
+                   request-channel="imageResizeRequestChannel"
+                   payload-expression="#args[0]">
+            <si:header name="REQUEST_TYPE" value="#{coldfusionProperties.REQUEST_TYPE}"/>
+        </si:method>
+    </si:gateway>
+
+
+
+    <si:header-value-router input-channel="imageResizeRequestChannel"
+                            header-name="REQUEST_TYPE">
+        <si:mapping value="http" channel="imageResizeHTTPChannel"/>
+    </si:header-value-router>
+
+
+
+    <si:chain input-channel="imageResizeHTTPChannel" >
+
+        <si:service-activator
+                method="getFromCache">
+            <bean class="apiserver.apis.v1_0.documents.services.DocumentService"/>
+        </si:service-activator>
+
+        <si:service-activator
+                method="execute">
+            <bean class="apiserver.services.images.services.coldfusion.ImageResizeCFService"/>
+        </si:service-activator>
+
+        <!--si:transformer method="transform">
+            <bean class="apiserver.core.common.transformers.JsonBase64ToBufferedImage"/>
+        </si:transformer-->
+    </si:chain>
+
+</beans>

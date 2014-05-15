@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Copyright (c) 2013 Mike Nimer.
+
+  This file is part of ApiServer Project.
+
+  The ApiServer Project is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  The ApiServer Project is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with the ApiServer Project.  If not, see <http://www.gnu.org/licenses/>.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<beans
+        xmlns:http="http://www.springframework.org/schema/integration/http"
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:si="http://www.springframework.org/schema/integration"
+        xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd">
+
+
+
+
+    <si:channel id="imageMedianFilterChannelRequestChannel"/>
+
+    <si:channel id="imageMedianFilterChannelReplyChannel"/>
+
+
+    <si:gateway id="imageMedianFilterChannelApiGateway"
+                service-interface="apiserver.services.images.gateways.filters.ApiImageFilterMedianGateway"
+                default-reply-channel="imageMedianFilterChannelReplyChannel"
+                default-reply-timeout="${defaultReplyTimeout}">
+
+        <si:method name="imageMedianFilter"
+                   request-channel="imageMedianFilterChannelRequestChannel">
+
+        </si:method>
+    </si:gateway>
+
+
+
+    <si:chain input-channel="imageMedianFilterChannelRequestChannel"
+              output-channel="imageMedianFilterChannelReplyChannel">
+
+        <si:service-activator
+                method="getFromCache">
+            <bean class="apiserver.apis.v1_0.documents.services.DocumentService"/>
+        </si:service-activator>
+
+
+        <si:service-activator
+                method="doFilter">
+            <bean class="apiserver.services.images.services.jhlabs.MedianFilterService"/>
+        </si:service-activator>
+
+    </si:chain>
+</beans>
+
