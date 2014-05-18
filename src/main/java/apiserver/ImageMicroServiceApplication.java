@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableAutoConfiguration
 @ComponentScan
 @EnableWebMvc
-@ImportResource( "image-flow-config.xml" )
+@ImportResource( {"/image-flow-config.xml","/cache-flow-config.xml"} )
 public class ImageMicroServiceApplication implements EmbeddedServletContainerCustomizer
 {
 
@@ -30,6 +30,6 @@ public class ImageMicroServiceApplication implements EmbeddedServletContainerCus
     @Override
     public void customize(ConfigurableEmbeddedServletContainer configurableEmbeddedServletContainer)
     {
-        configurableEmbeddedServletContainer.setPort(9002);
+
     }
 }

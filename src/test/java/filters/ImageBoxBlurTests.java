@@ -21,22 +21,36 @@ package filters;
 
 import apiserver.ImageMicroServiceApplication;
 import apiserver.core.common.ResponseEntityHelper;
+import apiserver.services.cache.DocumentJob;
 import apiserver.services.cache.gateway.CacheGateway;
+import apiserver.services.cache.gateway.jobs.DeleteDocumentJob;
+import apiserver.services.cache.gateway.jobs.UploadDocumentJob;
 import apiserver.services.cache.model.Document;
 import apiserver.services.images.gateways.filters.ApiImageFilterBoxBlurGateway;
 import apiserver.services.images.gateways.jobs.filters.BoxBlurJob;
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.test.IntegrationTest;
+import org.springframework.boot.test.TestRestTemplate;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.client.RestTemplate;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -51,55 +65,60 @@ import java.util.concurrent.TimeoutException;
  * User: mikenimer
  * Date: 7/7/13
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ImageMicroServiceApplication.class)
-public class ImageBoxBlurTests
+@IntegrationTest
+public class ImageBoxBlurTests extends UnitTestConfiguration
 {
-    private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
-
-    @Qualifier("imageBoxBlurFilterChannelApiGateway")
-    @Autowired
-    public ApiImageFilterBoxBlurGateway imageBoxBlurFilterGateway;
-
-
-    @Qualifier("documentAddGateway")
-    @Autowired(required = false)
-    private CacheGateway documentGateway;
-
-
-    @Qualifier("documentDeleteGateway")
-    @Autowired(required = false)
-    private CacheGateway documentDeleteGateway;
-
     File file = null;
-
-
     String documentId = null;
+    RestTemplate restTemplate;
 
     @Before
     public void setup() throws URISyntaxException, IOException, InterruptedException, ExecutionException
     {
-        file = new File(  ImageMotionBlurTests.class.getClassLoader().getResource("IMG_5932.JPG").toURI()  );
+        super.setup();
+        restTemplate = new TestRestTemplate();
+        file = new File(this.getClass().getClassLoader().getResource("IMG_5932.JPG").toURI());
 
-        //UploadDocumentJob job = new UploadDocumentJob(file);
-        //job.setDocument(new Document(file));
-        //Future<DocumentJob> doc = documentGateway.addDocument(job);
-        //documentId = ((DocumentJob)doc.get()).getDocument().getId();
+        UploadDocumentJob job = new UploadDocumentJob(file);
+        job.setDocument(new Document(file));
+        Future<DocumentJob> doc = documentGateway.addDocument(job);
+        documentId = ((DocumentJob) doc.get()).getDocument().getId();
     }
+
 
     @After
     public void tearDown() throws InterruptedException, ExecutionException
     {
-        //DeleteDocumentJob job = new DeleteDocumentJob();
-        //job.setDocumentId(documentId);
-        //documentDeleteGateway.deleteDocument(job).get();
+        super.tearDown();
+        DeleteDocumentJob job = new DeleteDocumentJob();
+        job.setDocumentId(documentId);
+        documentDeleteGateway.deleteDocument(job).get();
     }
 
+
+    @Test
+    public void testREST() throws Exception
+    {
+        Map results = restTemplate.getForObject(rootUrl +"/images/test", Map.class);
+        //ResponseEntity testEntity = template.getForEntity(root +"/images/test", Map.class);
+        Assert.assertTrue(results.get("status").equals("ok"));
+    }
+
+
+    @Test
+    public void testBoxBlurByIdREST() throws Exception
+    {
+        ResponseEntity entity = restTemplate.getForEntity(rootUrl +"/image/filter/" +documentId +"/boxblur.jpg", byte[].class );
+        Assert.assertEquals("Invalid image bytes",  25551255, ((byte[])entity.getBody()).length);
+
+        //FileUtils.writeByteArrayToFile(new File("/Users/mnimer/Desktop/boxblur.jpg"), (byte[])entity.getBody());
+    }
 
 
     @Test
     public void testBoxBlurById() throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+
         BoxBlurJob args = new BoxBlurJob();
         args.setDocumentId(documentId);
         args.setHRadius(2);

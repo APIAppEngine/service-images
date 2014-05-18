@@ -77,10 +77,11 @@ public class BoxBlurController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "A filter which performs a box blur on an image. The horizontal and vertical blurs can be specified separately and a number of iterations can be given which allows an approximation to Gaussian blur.")
-    @RequestMapping(value = "/filter/{documentId}/boxblur", method = {RequestMethod.GET})
+    @RequestMapping(value = "/filter/{documentId}/boxblur.{contentType}", method = {RequestMethod.GET})
     @ResponseBody
     public ResponseEntity<byte[]> imageBoxBlurByFile(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA") @PathVariable(value = "documentId") String documentId
+            , @ApiParam(name = "contentType", required = true, defaultValue = "jpg") @PathVariable(value = "contentType") String contentType
             , @ApiParam(name = "hRadius", required = false, defaultValue = "2", value = "the horizontal radius of blur") @RequestParam(value = "hRadius", defaultValue = "2") int hRadius
             , @ApiParam(name = "vRadius", required = false, defaultValue = "2", value = "the vertical radius of blur") @RequestParam(value = "vRadius", defaultValue = "2") int vRadius
             , @ApiParam(name = "iterations", required = false, defaultValue = "1", value = "the number of time to iterate the blur") @RequestParam(value = "iterations", defaultValue = "1") int iterations
@@ -99,8 +100,8 @@ public class BoxBlurController
         ImageDocumentJob payload = (ImageDocumentJob) imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
         BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(bufferedImage, contentType, returnAsBase64);
+        //String contentType = payload.getDocument().getContentType().name();
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(bufferedImage, MimeType.getMimeType(contentType).contentType, returnAsBase64);
         return result;
     }
 

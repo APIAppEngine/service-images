@@ -77,10 +77,11 @@ public class BlurController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter blurs an image very slightly using a 3x3 blur kernel.")
-    @RequestMapping(value = "/filter/{documentId}/blur", method = RequestMethod.GET)
+    @RequestMapping(value = "/filter/{documentId}/blur.{contentType}", method = RequestMethod.GET)
     public ResponseEntity<byte[]> imageBlurById(
             @ApiParam(name = "documentId", required = true,  defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA")
             @PathVariable(value = "documentId") String documentId
+            , @ApiParam(name = "contentType", required = true, defaultValue = "jpg") @PathVariable(value = "contentType") String contentType
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException, URISyntaxException
     {
         ImageDocumentJob job = new ImageDocumentJob();
@@ -90,8 +91,9 @@ public class BlurController
         ImageDocumentJob payload = (ImageDocumentJob) imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
         //BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processFile(payload.getDocument().getFileBytes(), contentType, false);
+        //String contentType = payload.getDocument().getContentType().name();
+        String _contentType = MimeType.getMimeType(contentType).contentType;
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processFile(payload.getDocument().getFileBytes(), _contentType, false);
         return result;
     }
 

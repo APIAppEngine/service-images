@@ -19,26 +19,21 @@ package filters;
  along with the ApiServer Project.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-import apiserver.ImageMicroServiceApplication;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.cache.DocumentJob;
-import apiserver.services.cache.gateway.CacheGateway;
 import apiserver.services.cache.gateway.jobs.DeleteDocumentJob;
 import apiserver.services.cache.gateway.jobs.UploadDocumentJob;
 import apiserver.services.cache.model.Document;
-import apiserver.services.images.gateways.filters.ApiImageFilterBlurGateway;
 import apiserver.services.images.gateways.jobs.ImageDocumentJob;
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationContextLoader;
+import org.springframework.boot.test.IntegrationTest;
+import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -55,30 +50,17 @@ import java.util.concurrent.TimeoutException;
  * Date: 7/7/13
  */
 @ActiveProfiles("test")
-@ContextConfiguration(classes = ImageMicroServiceApplication.class, loader = SpringApplicationContextLoader.class)
-public class ImageBlurTests
+@IntegrationTest
+public class ImageBlurTests extends UnitTestConfiguration
 {
-
-    private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
-
-    @Autowired
-    private ApiImageFilterBlurGateway imageBlurFilterGateway;
-
-
-    @Qualifier("documentAddGateway")
-    @Autowired(required = false)
-    private CacheGateway documentGateway;
-
-    @Qualifier("documentDeleteGateway")
-    @Autowired(required = false)
-    private CacheGateway documentDeleteGateway;
-
-
     String documentId = null;
+    TestRestTemplate restTemplate;
 
     @Before
     public void setup() throws URISyntaxException, IOException, InterruptedException, ExecutionException
     {
+        super.setup();
+        restTemplate = new TestRestTemplate();
         File file = new File(  this.getClass().getClassLoader().getResource("IMG_5932.JPG").toURI()  );
 
         UploadDocumentJob job = new UploadDocumentJob(file);
@@ -90,10 +72,23 @@ public class ImageBlurTests
     @After
     public void tearDown() throws InterruptedException, ExecutionException
     {
+        super.tearDown();
         DeleteDocumentJob job = new DeleteDocumentJob();
         job.setDocumentId(documentId);
         documentDeleteGateway.deleteDocument(job).get();
     }
+
+
+
+    @Test
+    public void testBoxBlurByIdREST() throws Exception
+    {
+        ResponseEntity entity = restTemplate.getForEntity(rootUrl +"/image/filter/" +documentId +"/blur.jpg", byte[].class );
+        Assert.assertEquals("Invalid image bytes",  1169274, ((byte[])entity.getBody()).length);
+
+        //FileUtils.writeByteArrayToFile(new File("/Users/mnimer/Desktop/blur.jpg"), (byte[]) entity.getBody());
+    }
+
 
 
     @Test
@@ -104,7 +99,7 @@ public class ImageBlurTests
         args.setDocumentId(documentId);
 
 
-        Future<Map> imageFuture = imageBlurFilterGateway.imageBlurFilter(args);
+        Future<Map> imageFuture = super.imageBlurFilterGateway.imageBlurFilter(args);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
         Assert.assertTrue("NULL Payload", payload != null );
 
