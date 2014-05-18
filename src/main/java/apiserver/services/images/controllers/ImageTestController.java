@@ -16,19 +16,12 @@ import java.util.Map;
  */
 @Controller
 @RestController
-public class TestController
+public class ImageTestController
 {
     @RequestMapping(value = "/images/test", method= RequestMethod.GET)
     public ResponseEntity<Map> test()
     {
-        Class pdfInstance = null;
-        try
-        {
-            pdfInstance = Class.forName("apiserver.services.pdf.controllers.PdfController");
-        }catch (ClassNotFoundException ce){/*swallow*/}
-
-
-        HashMap m = new HashMap<String, String>();
+        HashMap<String, Object> m = new HashMap<String, Object>();
         m.put("status", "ok");
         m.put("timestamp", new Date().getTime());
         return new ResponseEntity<Map>(m, HttpStatus.OK);

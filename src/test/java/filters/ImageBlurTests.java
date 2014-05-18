@@ -19,13 +19,13 @@ package filters;
  along with the ApiServer Project.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-import apiserver.ImageServiceApplication;
-import apiserver.apis.v1_0.documents.DocumentJob;
-import apiserver.apis.v1_0.documents.gateway.DocumentGateway;
-import apiserver.apis.v1_0.documents.gateway.jobs.DeleteDocumentJob;
-import apiserver.apis.v1_0.documents.gateway.jobs.UploadDocumentJob;
-import apiserver.apis.v1_0.documents.model.Document;
+import apiserver.ImageMicroServiceApplication;
 import apiserver.core.common.ResponseEntityHelper;
+import apiserver.services.cache.DocumentJob;
+import apiserver.services.cache.gateway.CacheGateway;
+import apiserver.services.cache.gateway.jobs.DeleteDocumentJob;
+import apiserver.services.cache.gateway.jobs.UploadDocumentJob;
+import apiserver.services.cache.model.Document;
 import apiserver.services.images.gateways.filters.ApiImageFilterBlurGateway;
 import apiserver.services.images.gateways.jobs.ImageDocumentJob;
 import org.junit.After;
@@ -55,7 +55,7 @@ import java.util.concurrent.TimeoutException;
  * Date: 7/7/13
  */
 @ActiveProfiles("test")
-@ContextConfiguration(classes = ImageServiceApplication.class, loader = SpringApplicationContextLoader.class)
+@ContextConfiguration(classes = ImageMicroServiceApplication.class, loader = SpringApplicationContextLoader.class)
 public class ImageBlurTests
 {
 
@@ -67,11 +67,11 @@ public class ImageBlurTests
 
     @Qualifier("documentAddGateway")
     @Autowired(required = false)
-    private DocumentGateway documentGateway;
+    private CacheGateway documentGateway;
 
     @Qualifier("documentDeleteGateway")
     @Autowired(required = false)
-    private DocumentGateway documentDeleteGateway;
+    private CacheGateway documentDeleteGateway;
 
 
     String documentId = null;

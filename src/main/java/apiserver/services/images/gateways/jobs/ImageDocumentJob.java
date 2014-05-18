@@ -19,7 +19,8 @@ package apiserver.services.images.gateways.jobs;
  along with the ApiServer Project.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-import apiserver.apis.v1_0.documents.gateway.jobs.GetDocumentJob;
+import apiserver.services.cache.gateway.jobs.GetDocumentJob;
+import apiserver.services.cache.model.Document;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -63,6 +64,6 @@ public class ImageDocumentJob extends GetDocumentJob
         this.bufferedImage = bufferedImage;
 
         //update file bytes
-        this.getDocument().setFile(bufferedImage);
+        ((Document)this.getDocument()).setFile(bufferedImage);
     }
 }

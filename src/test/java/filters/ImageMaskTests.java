@@ -19,11 +19,11 @@ package filters;
  along with the ApiServer Project.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-import apiserver.apis.v1_0.documents.DocumentJob;
-import apiserver.apis.v1_0.documents.gateway.DocumentGateway;
-import apiserver.apis.v1_0.documents.gateway.jobs.DeleteDocumentJob;
-import apiserver.apis.v1_0.documents.gateway.jobs.UploadDocumentJob;
-import apiserver.apis.v1_0.documents.model.Document;
+import apiserver.services.cache.DocumentJob;
+import apiserver.services.cache.gateway.CacheGateway;
+import apiserver.services.cache.gateway.jobs.DeleteDocumentJob;
+import apiserver.services.cache.gateway.jobs.UploadDocumentJob;
+import apiserver.services.cache.model.Document;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.images.gateways.filters.ApiImageFilterMaskGateway;
 import apiserver.services.images.gateways.jobs.filters.MaskJob;
@@ -70,7 +70,7 @@ public class ImageMaskTests
 
     @Qualifier("documentAddGateway")
     @Autowired(required = false)
-    private DocumentGateway documentGateway;
+    private CacheGateway documentGateway;
 
     String documentId = null;
 

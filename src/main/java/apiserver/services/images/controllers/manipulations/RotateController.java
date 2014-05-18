@@ -1,7 +1,7 @@
 package apiserver.services.images.controllers.manipulations;
 
 import apiserver.MimeType;
-import apiserver.apis.v1_0.documents.model.Document;
+import apiserver.services.cache.model.Document;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.images.gateways.images.ImageResizeGateway;
 import apiserver.services.images.gateways.images.ImageRotateGateway;

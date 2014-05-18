@@ -28,26 +28,26 @@
 
 
         <!-- status flows -->
-    <import resource="imageBorder-flow.xml"/>
-    <import resource="imageInfo-flow.xml"/>
-    <import resource="imageMetadata-flow.xml"/>
-    <import resource="imageResize-flow.xml"/>
-    <import resource="imageRotate-flow.xml"/>
-    <import resource="imageText-flow.xml"/>
-    <import resource="filters/filterBlur-flow.xml"/>
-    <import resource="filters/filterBoxBlur-flow.xml"/>
-    <import resource="filters/filterBump-flow.xml"/>
-    <import resource="filters/filterDespeckle-flow.xml"/>
-    <import resource="filters/filterGaussian-flow.xml"/>
-    <import resource="filters/filterGlow-flow.xml"/>
-    <import resource="filters/filterGrayScale-flow.xml"/>
-    <import resource="filters/filterLensBlur-flow.xml"/>
-    <import resource="filters/filterMask-flow.xml"/>
-    <import resource="filters/filterMaximum-flow.xml"/>
-    <import resource="filters/filterMedian-flow.xml"/>
-    <import resource="filters/filterMinimum-flow.xml"/>
-    <import resource="filters/filterMotionBlur-flow.xml"/>
-    <import resource="filters/filterOil-flow.xml"/>
+    <import resource="flows/imageBorder-flow.xml"/>
+    <import resource="flows/imageInfo-flow.xml"/>
+    <import resource="flows/imageMetadata-flow.xml"/>
+    <import resource="flows/imageResize-flow.xml"/>
+    <import resource="flows/imageRotate-flow.xml"/>
+    <import resource="flows/imageText-flow.xml"/>
+    <import resource="flows/filters/filterBlur-flow.xml"/>
+    <import resource="flows/filters/filterBoxBlur-flow.xml"/>
+    <import resource="flows/filters/filterBump-flow.xml"/>
+    <import resource="flows/filters/filterDespeckle-flow.xml"/>
+    <import resource="flows/filters/filterGaussian-flow.xml"/>
+    <import resource="flows/filters/filterGlow-flow.xml"/>
+    <import resource="flows/filters/filterGrayScale-flow.xml"/>
+    <import resource="flows/filters/filterLensBlur-flow.xml"/>
+    <import resource="flows/filters/filterMask-flow.xml"/>
+    <import resource="flows/filters/filterMaximum-flow.xml"/>
+    <import resource="flows/filters/filterMedian-flow.xml"/>
+    <import resource="flows/filters/filterMinimum-flow.xml"/>
+    <import resource="flows/filters/filterMotionBlur-flow.xml"/>
+    <import resource="flows/filters/filterOil-flow.xml"/>
 
 
 

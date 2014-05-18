@@ -19,7 +19,7 @@ package filters;
  along with the ApiServer Project.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-import apiserver.apis.v1_0.documents.model.Document;
+import apiserver.services.cache.model.Document;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.images.gateways.filters.ApiImageFilterMaximumGateway;
 import apiserver.services.images.gateways.jobs.ImageDocumentJob;

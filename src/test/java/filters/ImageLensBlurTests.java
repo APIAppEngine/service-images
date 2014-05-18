@@ -19,12 +19,12 @@ package filters;
  along with the ApiServer Project.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-import apiserver.apis.v1_0.documents.DocumentJob;
-import apiserver.apis.v1_0.documents.gateway.DocumentGateway;
-import apiserver.apis.v1_0.documents.gateway.jobs.DeleteDocumentJob;
-import apiserver.apis.v1_0.documents.gateway.jobs.UploadDocumentJob;
-import apiserver.apis.v1_0.documents.model.Document;
 import apiserver.core.common.ResponseEntityHelper;
+import apiserver.services.cache.DocumentJob;
+import apiserver.services.cache.gateway.CacheGateway;
+import apiserver.services.cache.gateway.jobs.DeleteDocumentJob;
+import apiserver.services.cache.gateway.jobs.UploadDocumentJob;
+import apiserver.services.cache.model.Document;
 import apiserver.services.images.gateways.filters.ApiImageFilterLensBlurGateway;
 import apiserver.services.images.gateways.jobs.filters.LensBlurJob;
 import org.junit.After;
@@ -67,11 +67,11 @@ public class ImageLensBlurTests
 
     @Qualifier("documentAddGateway")
     @Autowired(required = false)
-    private DocumentGateway documentGateway;
+    private CacheGateway documentGateway;
 
     @Qualifier("documentDeleteGateway")
     @Autowired(required = false)
-    private DocumentGateway documentDeleteGateway;
+    private CacheGateway documentDeleteGateway;
 
 
     String documentId = null;

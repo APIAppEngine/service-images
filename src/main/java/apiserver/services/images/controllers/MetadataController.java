@@ -20,7 +20,7 @@ package apiserver.services.images.controllers;
  ******************************************************************************/
 
 import apiserver.MimeType;
-import apiserver.apis.v1_0.documents.model.Document;
+import apiserver.services.cache.model.Document;
 import apiserver.services.images.gateways.images.ImageInfoGateway;
 import apiserver.services.images.gateways.images.ImageMetadataGateway;
 import apiserver.services.images.gateways.jobs.images.FileMetadataJob;
