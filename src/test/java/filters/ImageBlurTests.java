@@ -81,7 +81,7 @@ public class ImageBlurTests extends UnitTestConfiguration
 
 
     @Test
-    public void testBoxBlurByIdREST() throws Exception
+    public void testBlurByIdREST() throws Exception
     {
         ResponseEntity entity = restTemplate.getForEntity(rootUrl +"/image/filter/" +documentId +"/blur.jpg", byte[].class );
         Assert.assertEquals("Invalid image bytes",  1169274, ((byte[])entity.getBody()).length);
