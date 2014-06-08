@@ -67,7 +67,7 @@ public class ImageRotateCFService
             String method = imageConfigMBean.getImageRotateMethod();
 
             // extract properties
-            Map<String, Object> methodArgs = coldFusionBridge.extractPropertiesFromPayload(props);
+            Map<String, Object> methodArgs = props.toMap();
 
 
             // execute

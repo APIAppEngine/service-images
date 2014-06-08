@@ -64,7 +64,7 @@ public class ImageResizeCFService
             String method = imageConfigMBean.getImageResizeMethod();
             String arguments = "";
             // extract properties
-            Map<String, Object> methodArgs = coldFusionBridge.extractPropertiesFromPayload(props);
+            Map<String, Object> methodArgs = props.toMap();
 
 
             // execute

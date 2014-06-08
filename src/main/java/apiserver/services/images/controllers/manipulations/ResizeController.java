@@ -11,6 +11,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,7 +93,7 @@ public class ResizeController
      * @return
      */
     @ApiOperation(value="Resize an uploaded image")
-    @RequestMapping(value = "/modify/resize", method = {RequestMethod.POST})
+    @RequestMapping(value = "/modify/resize.{format}", method = {RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<byte[]> resizeImageByImage(
             @ApiParam(name="file", required = true) @RequestParam MultipartFile file
@@ -100,9 +101,17 @@ public class ResizeController
             , @ApiParam(name="height", required = true, defaultValue = "200") @RequestParam(required = true) Integer height
             , @ApiParam(name="interpolation", required = false, defaultValue = "bicubic") @RequestParam(required = false, defaultValue = "bicubic") String interpolation
             , @ApiParam(name="scaleToFit", required = false, defaultValue = "false") @RequestParam(required = false, defaultValue = "false") Boolean scaleToFit
-            , @ApiParam(name = "returnAsBase64", required = false, defaultValue = "true", allowableValues = "true,false") @RequestParam(value = "returnAsBase64", required = false, defaultValue = "false") Boolean returnAsBase64
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws IOException, InterruptedException, ExecutionException, TimeoutException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
+
         FileResizeJob job = new FileResizeJob();
         job.setDocumentId(null);
         job.setDocument( new Document(file) );
@@ -117,9 +126,7 @@ public class ResizeController
         FileResizeJob payload = (FileResizeJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, returnAsBase64 );
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
     }
 
@@ -136,7 +143,7 @@ public class ResizeController
      * @return
      */
     @ApiOperation(value="Resize an uploaded image")
-    @RequestMapping(value = "/modify/{documentId}/resize", method = {RequestMethod.GET})
+    @RequestMapping(value = "/modify/{documentId}/resize.{format}", method = {RequestMethod.GET})
     @ResponseBody
     public ResponseEntity<byte[]> resizeImageByImage(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA") @PathVariable(value = "documentId") String documentId
@@ -144,9 +151,17 @@ public class ResizeController
             , @ApiParam(name="height", required = true, defaultValue = "200") @RequestParam(required = true) Integer height
             , @ApiParam(name="interpolation", required = false, defaultValue = "bicubic") @RequestParam(required = false, defaultValue = "bicubic") String interpolation
             , @ApiParam(name="scaleToFit", required = false, defaultValue = "false") @RequestParam(required = false, defaultValue = "false") Boolean scaleToFit
-            , @ApiParam(name = "returnAsBase64", required = false, defaultValue = "true", allowableValues = "true,false") @RequestParam(value = "returnAsBase64", required = false, defaultValue = "false") Boolean returnAsBase64
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws IOException, InterruptedException, ExecutionException, TimeoutException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
+
         FileResizeJob job = new FileResizeJob();
         job.setDocumentId(documentId);
         job.setWidth(width);
@@ -158,9 +173,7 @@ public class ResizeController
         FileResizeJob payload = (FileResizeJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, returnAsBase64 );
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
     }
 

@@ -24,6 +24,8 @@ import apiserver.exceptions.ColdFusionException;
 import apiserver.exceptions.NotImplementedException;
 import apiserver.services.images.ImageConfigMBean;
 import apiserver.services.images.gateways.jobs.ImageDocumentJob;
+import apiserver.services.images.gateways.jobs.images.FileBorderJob;
+import apiserver.services.images.gateways.jobs.images.FileTextJob;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.support.MessageBuilder;
@@ -57,15 +59,13 @@ public class ImageDrawingCFService
 
     public Object imageBorderHandler(Message<?> message) throws ColdFusionException
     {
-        ImageDocumentJob props = (ImageDocumentJob)message.getPayload();
+        FileBorderJob props = (FileBorderJob)message.getPayload();
 
         try
         {
             cfcPath = imageConfigMBean.getImageBorderPath();
             String method = imageConfigMBean.getImageBorderMethod();
-            Map<String, Object> methodArgs = new HashMap();
-
-            //todo
+            Map<String, Object> methodArgs = props.toMap();
 
             Object cfcResult = coldFusionBridge.invoke(cfcPath, method, methodArgs);
 
@@ -74,6 +74,7 @@ public class ImageDrawingCFService
                 // convert base64 back to buffered image
                 byte[] bytes = Base64.decodeBase64( new String((byte[])cfcResult) );
                 BufferedImage bi = ImageIO.read(new ByteArrayInputStream(bytes));
+                //BufferedImage bi = ImageIO.read(new ByteArrayInputStream( (byte[])cfcResult ));
                 props.setBufferedImage( bi );
             }
             else
@@ -94,18 +95,31 @@ public class ImageDrawingCFService
 
     public Object imageDrawTextHandler(Message<?> message) throws ColdFusionException
     {
-        Map props = (Map)message.getPayload();
+        FileTextJob props = (FileTextJob)message.getPayload();
 
         try
         {
             cfcPath = imageConfigMBean.getImageTextPath();
             String method = imageConfigMBean.getImageTextMethod();
-            Map<String, Object> methodArgs = coldFusionBridge.extractPropertiesFromPayload(props);
-            Map cfcResult = (Map)coldFusionBridge.invoke(cfcPath, method, methodArgs);
+            Map<String, Object> methodArgs = props.toMap();
+
+            Object cfcResult = coldFusionBridge.invoke(cfcPath, method, methodArgs);
+
+            if( cfcResult instanceof byte[] )
+            {
+                // convert base64 back to buffered image
+                byte[] bytes = Base64.decodeBase64( new String((byte[])cfcResult) );
+                BufferedImage bi = ImageIO.read(new ByteArrayInputStream(bytes));
+                //BufferedImage bi = ImageIO.read(new ByteArrayInputStream( (byte[])cfcResult ));
+                props.setBufferedImage( bi );
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
 
 
-            Message<?> _message = MessageBuilder.withPayload(cfcResult).copyHeaders(message.getHeaders()).build();
-            return _message;
+            return props;
         }
         catch (Throwable e)
         {

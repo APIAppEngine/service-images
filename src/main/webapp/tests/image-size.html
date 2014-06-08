@@ -1,0 +1,33 @@
+<script src="jquery-2.1.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        //var form = $('#imageSizeForm');
+
+        $('#submitBtn').click(function(event) {
+
+            var form = $(this).closest("form");
+
+            var data = new FormData();
+            data.append('file', document.imageSizeForm.file.files[0]);
+
+            $.ajax({
+                type : "POST",
+                cache:false,
+                processData:false,
+                contentType:false,
+                url : 'http://localhost:9002' +form.attr('action'),
+                data : data
+            }).done( function(data) {
+                alert("size = " +data.width +"x" +data.height);
+            }).error(function(data) {
+                alert("error:" + data.responseText);
+            });
+
+        });
+    });
+</script>
+
+<form name="imageSizeForm" id="imageSizeForm" method="post" action="/image/info/size">
+    <input type="file" name="file">
+    <input type="button" name="submitBtn" id="submitBtn" value="Get Image Size"/>
+</form>

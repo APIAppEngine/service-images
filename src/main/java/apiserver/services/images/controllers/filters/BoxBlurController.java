@@ -30,6 +30,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,7 +70,7 @@ public class BoxBlurController
      * @param vRadius
      * @param iterations
      * @param preMultiplyAlpha
-     * @param returnAsBase64
+     * @param format
      * @return
      * @throws java.util.concurrent.TimeoutException
      * @throws java.util.concurrent.ExecutionException
@@ -77,18 +78,24 @@ public class BoxBlurController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "A filter which performs a box blur on an image. The horizontal and vertical blurs can be specified separately and a number of iterations can be given which allows an approximation to Gaussian blur.")
-    @RequestMapping(value = "/filter/{documentId}/boxblur.{contentType}", method = {RequestMethod.GET})
+    @RequestMapping(value = "/filter/{documentId}/boxblur.{format}", method = {RequestMethod.GET})
     @ResponseBody
     public ResponseEntity<byte[]> imageBoxBlurByFile(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA") @PathVariable(value = "documentId") String documentId
-            , @ApiParam(name = "contentType", required = true, defaultValue = "jpg") @PathVariable(value = "contentType") String contentType
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
             , @ApiParam(name = "hRadius", required = false, defaultValue = "2", value = "the horizontal radius of blur") @RequestParam(value = "hRadius", defaultValue = "2") int hRadius
             , @ApiParam(name = "vRadius", required = false, defaultValue = "2", value = "the vertical radius of blur") @RequestParam(value = "vRadius", defaultValue = "2") int vRadius
             , @ApiParam(name = "iterations", required = false, defaultValue = "1", value = "the number of time to iterate the blur") @RequestParam(value = "iterations", defaultValue = "1") int iterations
             , @ApiParam(name = "preMultiplyAlpha", required = false, defaultValue = "true", allowableValues = "true,false", value = "pre multiply the alpha channel") @RequestParam(value = "preMultiplyAlpha", defaultValue = "true") boolean preMultiplyAlpha
-            , @ApiParam(name = "returnAsBase64", required = false, defaultValue = "true", allowableValues = "true,false") @RequestParam(value = "returnAsBase64", required = false, defaultValue = "false") Boolean returnAsBase64
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         BoxBlurJob args = new BoxBlurJob();
         args.setDocumentId(documentId);
         args.setHRadius(hRadius);
@@ -99,9 +106,7 @@ public class BoxBlurController
         Future<Map> imageFuture = imageFilterBoxBlurGateway.imageBoxBlurFilter(args);
         ImageDocumentJob payload = (ImageDocumentJob) imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        //String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(bufferedImage, MimeType.getMimeType(contentType).contentType, returnAsBase64);
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
         return result;
     }
 
@@ -114,7 +119,7 @@ public class BoxBlurController
      * @param vRadius
      * @param iterations
      * @param preMultiplyAlpha
-     * @param returnAsBase64
+     * @param format
      * @return
      * @throws java.util.concurrent.TimeoutException
      * @throws java.util.concurrent.ExecutionException
@@ -122,17 +127,24 @@ public class BoxBlurController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "A filter which performs a box blur on an image. The horizontal and vertical blurs can be specified separately and a number of iterations can be given which allows an approximation to Gaussian blur.")
-    @RequestMapping(value = "/filter/boxblur", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filter/boxblur.{format}", method = {RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<byte[]> imageBoxBlurByFile(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
             , @ApiParam(name = "hRadius", required = false, defaultValue = "2", value = "the horizontal radius of blur") @RequestParam(value = "hRadius", defaultValue = "2") int hRadius
             , @ApiParam(name = "vRadius", required = false, defaultValue = "2", value = "the vertical radius of blur") @RequestParam(value = "vRadius", defaultValue = "2") int vRadius
             , @ApiParam(name = "iterations", required = false, defaultValue = "1", value = "the number of time to iterate the blur") @RequestParam(value = "iterations", defaultValue = "1") int iterations
             , @ApiParam(name = "preMultiplyAlpha", required = false, defaultValue = "true", allowableValues = "true,false", value = "pre multiply the alpha channel") @RequestParam(value = "preMultiplyAlpha", defaultValue = "true") boolean preMultiplyAlpha
-            , @ApiParam(name = "returnAsBase64", required = false, defaultValue = "true", allowableValues = "true,false") @RequestParam(value = "returnAsBase64", required = false, defaultValue = "false") Boolean returnAsBase64
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         BoxBlurJob job = new BoxBlurJob();
         job.setDocumentId(null);
         job.setDocument( new Document(file) );
@@ -147,9 +159,7 @@ public class BoxBlurController
         Future<Map> imageFuture = imageFilterBoxBlurGateway.imageBoxBlurFilter(job);
         ImageDocumentJob payload = (ImageDocumentJob) imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(bufferedImage, contentType, returnAsBase64);
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
         return result;
     }
 }

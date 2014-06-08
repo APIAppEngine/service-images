@@ -28,6 +28,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  *
@@ -66,4 +67,5 @@ public class ImageDocumentJob extends GetDocumentJob
         //update file bytes
         ((Document)this.getDocument()).setFile(bufferedImage);
     }
+
 }

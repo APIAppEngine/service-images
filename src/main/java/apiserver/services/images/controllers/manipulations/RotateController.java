@@ -11,6 +11,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,14 +93,21 @@ public class RotateController
      * @return
      */
     @ApiOperation(value="Rotate an uploaded image")
-    @RequestMapping(value = "/modify/rotate", method = {RequestMethod.POST})
+    @RequestMapping(value = "/modify/rotate.{format}", method = {RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<byte[]> rotateImageByImage(
             @ApiParam(name="file", required = true) @RequestParam MultipartFile file
             , @ApiParam(name="angle", required = true, defaultValue = "90") @RequestParam(required = true, defaultValue = "90") Integer angle
-            , @ApiParam(name = "returnAsBase64", required = false, defaultValue = "true", allowableValues = "true,false") @RequestParam(value = "returnAsBase64", required = false, defaultValue = "false") Boolean returnAsBase64
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws IOException, InterruptedException, ExecutionException, TimeoutException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         FileRotateJob job = new FileRotateJob();
         job.setDocumentId(null);
         job.setDocument( new Document(file) );
@@ -111,9 +119,7 @@ public class RotateController
         FileRotateJob payload = (FileRotateJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, returnAsBase64 );
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
         return result;
     }
 
@@ -126,14 +132,21 @@ public class RotateController
      * @return
      */
     @ApiOperation(value="Rotate an uploaded image")
-    @RequestMapping(value = "/modify/{documentId}/rotate", method = {RequestMethod.GET})
+    @RequestMapping(value = "/modify/{documentId}/rotate.{format}", method = {RequestMethod.GET})
     @ResponseBody
     public ResponseEntity<byte[]> rotateImageByImage(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA") @PathVariable(value = "documentId") String documentId
             , @ApiParam(name="angle", required = true, defaultValue = "90") @RequestParam(required = true, defaultValue = "90") Integer angle
-            , @ApiParam(name = "returnAsBase64", required = false, defaultValue = "true", allowableValues = "true,false") @RequestParam(value = "returnAsBase64", required = false, defaultValue = "false") Boolean returnAsBase64
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws IOException, InterruptedException, ExecutionException, TimeoutException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         FileRotateJob job = new FileRotateJob();
         job.setDocumentId(documentId);
         job.setAngle(angle);
@@ -142,9 +155,7 @@ public class RotateController
         FileRotateJob payload = (FileRotateJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, returnAsBase64 );
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
         return result;
     }
 

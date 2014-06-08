@@ -20,6 +20,7 @@ package apiserver.services.images.controllers;
  ******************************************************************************/
 
 import apiserver.MimeType;
+import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.cache.model.Document;
 import apiserver.services.images.gateways.images.ImageInfoGateway;
 import apiserver.services.images.gateways.images.ImageMetadataGateway;
@@ -29,11 +30,16 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.WebAsyncTask;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,6 +55,7 @@ import java.util.concurrent.TimeoutException;
  * Date: 9/15/12
  */
 @Controller
+@RestController
 @Api(value = "/image", description = "[IMAGE]")
 @RequestMapping("/image")
 public class ImageController
@@ -74,17 +81,17 @@ public class ImageController
      */
     @ApiOperation(value = "Get the height and width for the image", responseClass = "java.util.Map")
     @RequestMapping(value = "/info/{documentId}/size", method = {RequestMethod.GET})
-    public WebAsyncTask<Map> imageInfoByImageAsync(
+    public WebAsyncTask<ResponseEntity<Map>> imageInfoByImageAsync(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA")
             @PathVariable(value = "documentId") String documentId
     ) throws ExecutionException, TimeoutException, InterruptedException
     {
         final String _documentId = documentId;
 
-        Callable<Map> callable = new Callable<Map>()
+        Callable<ResponseEntity<Map>> callable = new Callable<ResponseEntity<Map>>()
         {
             @Override
-            public Map call() throws Exception
+            public ResponseEntity<Map> call() throws Exception
             {
                 FileInfoJob args = new FileInfoJob();
                 args.setDocumentId(_documentId);
@@ -92,11 +99,14 @@ public class ImageController
                 Future<Map> imageFuture = gateway.imageSize(args);
                 Map payload = imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-                return payload;
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                ResponseEntity<Map> result = new ResponseEntity<Map>(payload, headers, HttpStatus.OK);
+                return result;
             }
         };
 
-        return new WebAsyncTask<Map>(defaultTimeout, callable);
+        return new WebAsyncTask<ResponseEntity<Map>>(defaultTimeout, callable);
     }
 
 

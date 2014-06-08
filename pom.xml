@@ -25,6 +25,7 @@
             <artifactId>service-core</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>com.mikenimer.apiserver</groupId>
             <artifactId>service-cache</artifactId>
@@ -62,5 +63,20 @@
 
     <build>
         <finalName>service-pdf</finalName>
+
+        <!--
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/webapp</directory>
+            </resource>
+            <resource>
+                <directory>/static</directory>
+                <targetPath>/static</targetPath>
+            </resource>
+        </resources>
+        -->
     </build>
 </project>

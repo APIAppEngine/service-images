@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -81,14 +82,22 @@ public class LensBlurController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter simulates the blurring caused by a camera lens. You can change the aperture size and shape and also specify blooming of the image. This filter is very slow.")
-    @RequestMapping(value = "/filter/{documentId}/lensblur", method = {RequestMethod.GET})
+    @RequestMapping(value = "/filter/{documentId}/lensblur.{format}", method = {RequestMethod.GET})
     public ResponseEntity<byte[]> imageLensBlurByFile(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA") @PathVariable(value = "documentId") String documentId
             , @ApiParam(name = "radius", required = false, defaultValue = "10") @RequestParam(value = "radius", required = false, defaultValue = "10") float radius
             , @ApiParam(name = "sides", required = false, defaultValue = "5") @RequestParam(value = "sides", required = false, defaultValue = "5") int sides
             , @ApiParam(name = "bloom", required = false, defaultValue = "2") @RequestParam(value = "bloom", required = false, defaultValue = "2") float bloom
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         LensBlurJob args = new LensBlurJob();
         args.setDocumentId(documentId);
         args.setRadius(radius);
@@ -98,9 +107,8 @@ public class LensBlurController
         Future<Map> imageFuture = imageFilterLensBlurGateway.imageLensBlurFilter(args);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, false );
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
     }
 
@@ -120,14 +128,22 @@ public class LensBlurController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter simulates the blurring caused by a camera lens. You can change the aperture size and shape and also specify blooming of the image. This filter is very slow.")
-    @RequestMapping(value = "/filter/lensblur", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filter/lensblur.{format}", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> imageLensBlurByFile(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
             , @ApiParam(name = "radius", required = false, defaultValue = "10") @RequestParam(value = "radius", required = false, defaultValue = "10") float radius
             , @ApiParam(name = "sides", required = false, defaultValue = "5") @RequestParam(value = "sides", required = false, defaultValue = "5") int sides
             , @ApiParam(name = "bloom", required = false, defaultValue = "2") @RequestParam(value = "bloom", required = false, defaultValue = "2") float bloom
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         LensBlurJob job = new LensBlurJob();
         job.setDocumentId(null);
         job.setDocument( new Document(file) );
@@ -140,9 +156,8 @@ public class LensBlurController
         Future<Map> imageFuture = imageFilterLensBlurGateway.imageLensBlurFilter(job);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, false );
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
     }
 

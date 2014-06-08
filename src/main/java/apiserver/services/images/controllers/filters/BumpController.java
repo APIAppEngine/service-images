@@ -30,6 +30,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,6 +64,7 @@ public class BumpController
      * This filter does a simple convolution which emphasises edges in an uploaded image.
      *
      * @param documentId
+     * @param format
      * @param edgeAction
      * @param useAlpha
      * @param matrix
@@ -73,14 +75,23 @@ public class BumpController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter does a simple convolution which emphasises edges in an image.")
-    @RequestMapping(value = "/filter/{documentId}/bump", method = {RequestMethod.GET})
+    @RequestMapping(value = "/filter/{documentId}/bump.{format}", method = {RequestMethod.GET})
     public ResponseEntity<byte[]> imageBumpByFile(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA") @PathVariable(value = "documentId") String documentId
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
             , @ApiParam(name = "edgeAction", required = false, defaultValue = "1") @RequestParam(value = "edgeAction", required = false, defaultValue = "1") int edgeAction
             , @ApiParam(name = "useAlpha", required = false, defaultValue = "true", allowableValues = "true,false") @RequestParam(value = "useAlpha", required = false, defaultValue = "true") boolean useAlpha
             , @ApiParam(name = "matrix", required = false, defaultValue = "-1.0,-1.0,0.0,-1.0,1.0,1.0,0.0,1.0,1.0") @RequestParam(value = "matrix", required = false, defaultValue = "-1.0,-1.0,0.0,-1.0,1.0,1.0,0.0,1.0,1.0") String matrix
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         // convert string array into float array
         String[] matrixStrings = matrix.split(",");
         float[] matrixValues = new float[matrixStrings.length];
@@ -100,9 +111,7 @@ public class BumpController
         Future<Map> imageFuture = imageFilterBumpGateway.imageBumpFilter(args);
         ImageDocumentJob payload = (ImageDocumentJob) imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(bufferedImage, contentType, false);
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
         return result;
     }
 
@@ -111,6 +120,7 @@ public class BumpController
      * This filter does a simple convolution which emphasises edges in an uploaded image.
      *
      * @param file
+     * @param format
      * @param edgeAction
      * @param useAlpha
      * @param matrix
@@ -121,14 +131,23 @@ public class BumpController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter does a simple convolution which emphasises edges in an image.")
-    @RequestMapping(value = "/filter/bump", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filter/bump.{format}", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> imageBumpByFile(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
             , @ApiParam(name = "edgeAction", required = false, defaultValue = "1") @RequestParam(value = "edgeAction", required = false, defaultValue = "1") int edgeAction
             , @ApiParam(name = "useAlpha", required = false, defaultValue = "true", allowableValues = "true,false") @RequestParam(value = "useAlpha", required = false, defaultValue = "true") boolean useAlpha
             , @ApiParam(name = "matrix", required = false, defaultValue = "-1.0,-1.0,0.0,-1.0,1.0,1.0,0.0,1.0,1.0") @RequestParam(value = "matrix", required = false, defaultValue = "-1.0,-1.0,0.0,-1.0,1.0,1.0,0.0,1.0,1.0") String matrix
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         // convert string array into float array
         String[] matrixStrings = matrix.split(",");
         float[] matrixValues = new float[matrixStrings.length];
@@ -152,9 +171,7 @@ public class BumpController
         Future<Map> imageFuture = imageFilterBumpGateway.imageBumpFilter(job);
         ImageDocumentJob payload = (ImageDocumentJob) imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(bufferedImage, contentType, false);
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
         return result;
     }
 }

@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,6 +73,7 @@ public class GlowController
      *
      * @param documentId
      * @param amount
+     * @param format
      * @return
      * @throws java.util.concurrent.TimeoutException
      * @throws java.util.concurrent.ExecutionException
@@ -79,12 +81,20 @@ public class GlowController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter produces a glowing effect on an image by adding a blurred version of the image to subtracted from the original image.")
-    @RequestMapping(value = "/filter/{documentId}/glow", method = {RequestMethod.GET})
+    @RequestMapping(value = "/filter/{documentId}/glow.{format}", method = {RequestMethod.GET})
     public ResponseEntity<byte[]> imageGlowByFile(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA") @PathVariable(value = "documentId") String documentId
             , @ApiParam(name = "amount", required = true, defaultValue = "2") @RequestParam(required = false, defaultValue = "2") int amount
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         GlowJob args = new GlowJob();
         args.setDocumentId(documentId);
         args.setAmount(amount);
@@ -92,9 +102,8 @@ public class GlowController
         Future<Map> imageFuture = imageFilterGlowGateway.imageGlowFilter(args);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, false );
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
     }
 
@@ -105,6 +114,7 @@ public class GlowController
      *
      * @param file
      * @param amount
+     * @param format
      * @return
      * @throws java.util.concurrent.TimeoutException
      * @throws java.util.concurrent.ExecutionException
@@ -112,12 +122,20 @@ public class GlowController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter produces a glowing effect on an image by adding a blurred version of the image to subtracted from the original image.")
-    @RequestMapping(value = "/filter/glow", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filter/glow.{format}", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> imageGlowByFile(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
             , @ApiParam(name = "amount", required = true, defaultValue = "2") @RequestParam(required = false, defaultValue = "2") int amount
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         GlowJob job = new GlowJob();
         job.setDocumentId(null);
         job.setDocument( new Document(file) );
@@ -128,9 +146,8 @@ public class GlowController
         Future<Map> imageFuture = imageFilterGlowGateway.imageGlowFilter(job);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, false );
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
     }
 

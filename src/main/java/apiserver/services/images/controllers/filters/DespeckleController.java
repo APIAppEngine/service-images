@@ -31,6 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,6 +71,7 @@ public class DespeckleController
      * This filter reduces light noise in an image using the eight hull algorithm described in Applied Optics, Vol. 24, No. 10, 15 May 1985, "Geometric filter for Speckle Reduction", by Thomas R Crimmins. Basically, it tries to move each pixel closer in value to its neighbours. As it only has a small effect, you may need to apply it several times. This is good for removing small levels of noise from an image but does give the image some fuzziness.
      *
      * @param documentId
+     * @param format
      * @return
      * @throws java.util.concurrent.TimeoutException
      * @throws java.util.concurrent.ExecutionException
@@ -77,20 +79,27 @@ public class DespeckleController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter reduces light noise in an image using the eight hull algorithm described in Applied Optics, Vol. 24, No. 10, 15 May 1985, \"Geometric filter for Speckle Reduction\", by Thomas R Crimmins. Basically, it tries to move each pixel closer in value to its neighbours. As it only has a small effect, you may need to apply it several times. This is good for removing small levels of noise from an image but does give the image some fuzziness.")
-    @RequestMapping(value = "/filter/{documentId}/despeckle", method = {RequestMethod.GET})
+    @RequestMapping(value = "/filter/{documentId}/despeckle.{format}", method = {RequestMethod.GET})
     public ResponseEntity<byte[]> imageDespeckleByFile(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA") @PathVariable(value = "documentId") String documentId
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         ImageDocumentJob args = new ImageDocumentJob();
         args.setDocumentId(documentId);
 
         Future<Map> imageFuture = imageFilterDespeckleGateway.imageDespeckleFilter(args);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, false );
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
 
     }
@@ -100,6 +109,7 @@ public class DespeckleController
      * This filter reduces light noise in an image using the eight hull algorithm described in Applied Optics, Vol. 24, No. 10, 15 May 1985, "Geometric filter for Speckle Reduction", by Thomas R Crimmins. Basically, it tries to move each pixel closer in value to its neighbours. As it only has a small effect, you may need to apply it several times. This is good for removing small levels of noise from an image but does give the image some fuzziness.
      *
      * @param file
+     * @param format
      * @return
      * @throws java.util.concurrent.TimeoutException
      * @throws java.util.concurrent.ExecutionException
@@ -107,11 +117,19 @@ public class DespeckleController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter reduces light noise in an image using the eight hull algorithm described in Applied Optics, Vol. 24, No. 10, 15 May 1985, \"Geometric filter for Speckle Reduction\", by Thomas R Crimmins. Basically, it tries to move each pixel closer in value to its neighbours. As it only has a small effect, you may need to apply it several times. This is good for removing small levels of noise from an image but does give the image some fuzziness.")
-    @RequestMapping(value = "/filter/despeckle", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filter/despeckle.{format}", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> imageDespeckleByFile(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         ImageDocumentJob job = new ImageDocumentJob();
         job.setDocumentId(null);
         job.setDocument( new Document(file) );
@@ -121,9 +139,8 @@ public class DespeckleController
         Future<Map> imageFuture = imageFilterDespeckleGateway.imageDespeckleFilter(job);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, false );
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
 
     }

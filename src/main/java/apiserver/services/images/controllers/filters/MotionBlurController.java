@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,6 +77,7 @@ public class MotionBlurController
      * @param rotation
      * @param wrapEdges
      * @param zoom
+     * @param format
      * @return
      * @throws java.util.concurrent.TimeoutException
      * @throws java.util.concurrent.ExecutionException
@@ -83,7 +85,7 @@ public class MotionBlurController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter simulates motion blur on an image. You specify a combination of angle/distance for linear motion blur, a rotaiton angle for spin blur or a zoom factor for zoom blur. You can combine these in any proportions you want to get effects like spiral blurs.")
-    @RequestMapping(value = "/filter/{documentId}/motionblur", method = {RequestMethod.GET})
+    @RequestMapping(value = "/filter/{documentId}/motionblur.{format}", method = {RequestMethod.GET})
     @ResponseBody
     public ResponseEntity<byte[]> imageMotionBlurByFile(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA") @PathVariable(value = "documentId") String documentId
@@ -92,8 +94,16 @@ public class MotionBlurController
             , @ApiParam(name="rotation", required = true, defaultValue = "0")  @RequestParam(value="rotation", required = false,  defaultValue="0") float rotation
             , @ApiParam(name="wrapEdges", required = true, defaultValue = "false")  @RequestParam(value="wrapEdges", required = false,  defaultValue="false") boolean wrapEdges
             , @ApiParam(name="zoom", required = true, defaultValue = "0")  @RequestParam(value="zoom", required = false,  defaultValue="0") float zoom
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         MotionBlurJob args = new MotionBlurJob();
         args.setDocumentId(documentId);
         args.setAngle(angle);
@@ -106,9 +116,8 @@ public class MotionBlurController
         Future<Map> imageFuture = imageFilterMotionBlurGateway.imageMotionBlurFilter(args);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, false );
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
     }
 
@@ -122,6 +131,7 @@ public class MotionBlurController
      * @param rotation
      * @param wrapEdges
      * @param zoom
+     * @param format
      * @return
      * @throws java.util.concurrent.TimeoutException
      * @throws java.util.concurrent.ExecutionException
@@ -129,7 +139,7 @@ public class MotionBlurController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter simulates motion blur on an image. You specify a combination of angle/distance for linear motion blur, a rotaiton angle for spin blur or a zoom factor for zoom blur. You can combine these in any proportions you want to get effects like spiral blurs.")
-    @RequestMapping(value = "/filter/motionblur", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filter/motionblur.{format}", method = {RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<byte[]> imageMotionBlurByFile(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
@@ -138,8 +148,16 @@ public class MotionBlurController
             , @ApiParam(name="rotation", required = true, defaultValue = "0")  @RequestParam(value="rotation", required = false,  defaultValue="0") float rotation
             , @ApiParam(name="wrapEdges", required = true, defaultValue = "false")  @RequestParam(value="wrapEdges", required = false,  defaultValue="false") boolean wrapEdges
             , @ApiParam(name="zoom", required = true, defaultValue = "0")  @RequestParam(value="zoom", required = false,  defaultValue="0") float zoom
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         MotionBlurJob job = new MotionBlurJob();
         job.setDocumentId(null);
         job.setDocument( new Document(file) );
@@ -155,12 +173,9 @@ public class MotionBlurController
         Future<Map> imageFuture = imageFilterMotionBlurGateway.imageMotionBlurFilter(job);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, false );
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
     }
-
-
 
 }

@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,6 +73,7 @@ public class GaussianController
      *
      * @param documentId
      * @param radius
+     * @param format
      * @return
      * @throws java.util.concurrent.TimeoutException
      * @throws java.util.concurrent.ExecutionException
@@ -79,12 +81,20 @@ public class GaussianController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter performs a Gaussian blur on an image.")
-    @RequestMapping(value = "/filter/{documentId}/gaussian", method = {RequestMethod.GET})
+    @RequestMapping(value = "/filter/{documentId}/gaussian.{format}", method = {RequestMethod.GET})
     public ResponseEntity<byte[]> imageDespeckleByFile(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA") @PathVariable(value = "documentId") String documentId
             , @ApiParam(name = "radius", required = true, defaultValue = "2") @RequestParam(required = false, defaultValue = "2") int radius
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         GaussianJob args = new GaussianJob();
         args.setDocumentId(documentId);
         args.setRadius(radius);
@@ -92,9 +102,8 @@ public class GaussianController
         Future<Map> imageFuture = imageFilterGaussianGateway.imageGaussianFilter(args);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, false );
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
     }
 
@@ -105,6 +114,7 @@ public class GaussianController
      *
      * @param file
      * @param radius
+     * @param format
      * @return
      * @throws java.util.concurrent.TimeoutException
      * @throws java.util.concurrent.ExecutionException
@@ -112,12 +122,20 @@ public class GaussianController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter performs a Gaussian blur on an image.")
-    @RequestMapping(value = "/filter/gaussian", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filter/gaussian.{format}", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> imageDespeckleByFile(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
             , @ApiParam(name = "radius", required = true, defaultValue = "2") @RequestParam(required = false, defaultValue = "2") int radius
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         GaussianJob job = new GaussianJob();
         job.setDocumentId(null);
         job.setDocument( new Document(file) );
@@ -128,9 +146,8 @@ public class GaussianController
         Future<Map> imageFuture = imageFilterGaussianGateway.imageGaussianFilter(job);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, false );
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
     }
 

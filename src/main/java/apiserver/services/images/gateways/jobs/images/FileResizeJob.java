@@ -19,7 +19,12 @@ package apiserver.services.images.gateways.jobs.images;
  along with the ApiServer Project.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
+import apiserver.ApiServerConstants;
 import apiserver.services.images.gateways.jobs.ImageDocumentJob;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: mikenimer
@@ -82,14 +87,23 @@ public class FileResizeJob extends ImageDocumentJob
     }
 
 
-    public Boolean getReturnAsBase64()
-    {
-        return returnAsBase64;
-    }
 
 
-    public void setReturnAsBase64(Boolean returnAsBase64)
+    public Map toMap()
     {
-        this.returnAsBase64 = returnAsBase64;
+        Map props = new HashMap();
+        try {
+            //ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            //ImageIO.write(getBufferedImage(), "png", baos);
+            //props.put(IMAGE, baos.toByteArray());
+            props.put(ApiServerConstants.IMAGE, getBufferedImage() );
+            props.put(ApiServerConstants.CONTENT_TYPE, getDocument().getContentType() );
+            props.put(ApiServerConstants.FILE_NAME, getDocument().getFileName() );
+        }catch(IOException e){}
+        props.put( ApiServerConstants.SCALE_TO_FIT, getScaleToFit() );
+        props.put(ApiServerConstants.INTERPOLATION, getInterpolation());
+        props.put(ApiServerConstants.HEIGHT, getHeight());
+        props.put(ApiServerConstants.WIDTH, getWidth());
+        return props;
     }
 }

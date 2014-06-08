@@ -31,6 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,6 +72,7 @@ public class MaximumController
      * This filter blurs an uploaded image very slightly using a 3x3 blur kernel.
      *
      * @param documentId
+     * @param format
      * @return
      * @throws java.util.concurrent.TimeoutException
      * @throws java.util.concurrent.ExecutionException
@@ -78,21 +80,28 @@ public class MaximumController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter replaces each pixel by the maximum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.")
-    @RequestMapping(value = "/filter/{documentId}/maximum", method = {RequestMethod.GET})
+    @RequestMapping(value = "/filter/{documentId}/maximum.{format}", method = {RequestMethod.GET})
     @ResponseBody
     public ResponseEntity<byte[]> imageMaximumByFile(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA") @PathVariable(value = "documentId") String documentId
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         ImageDocumentJob args = new ImageDocumentJob();
         args.setDocumentId(documentId);
 
         Future<Map> imageFuture = imageFilterMaximumGateway.imageMaximumFilter(args);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, false );
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
     }
 
@@ -101,6 +110,7 @@ public class MaximumController
      * This filter blurs an uploaded image very slightly using a 3x3 blur kernel.
      *
      * @param file
+     * @param format
      * @return
      * @throws java.util.concurrent.TimeoutException
      * @throws java.util.concurrent.ExecutionException
@@ -108,12 +118,20 @@ public class MaximumController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter replaces each pixel by the maximum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.")
-    @RequestMapping(value = "/filter/maximum", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filter/maximum.{format}", method = {RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<byte[]> imageMaximumByFile(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
         ImageDocumentJob job = new ImageDocumentJob();
         job.setDocumentId(null);
         job.setDocument( new Document(file) );
@@ -123,9 +141,8 @@ public class MaximumController
         Future<Map> imageFuture = imageFilterMaximumGateway.imageMaximumFilter(job);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( bufferedImage, contentType, false );
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
         return result;
     }
 

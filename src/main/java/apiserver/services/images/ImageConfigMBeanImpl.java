@@ -74,16 +74,16 @@ public class ImageConfigMBeanImpl implements ImageConfigMBean
 
     //Image Border Info
     private String imageBorderPath = "api-image.cfc?method=addBorder";
-    private String imageBorderMethod = "GET";
+    private String imageBorderMethod = "POST";
     //Image Text Info
     private String imageTextPath = "api-image.cfc?method=addText";
-    private String imageTextMethod = "GET";
+    private String imageTextMethod = "POST";
     //Image Resize Info
     private String imageResizePath = "api-image.cfc?method=resizeImage";
-    private String imageResizeMethod = "GET";
+    private String imageResizeMethod = "POST";
     //Image Resize Info
     private String imageRotatePath = "api-image.cfc?method=rotateImage";
-    private String imageRotateMethod = "GET";
+    private String imageRotateMethod = "POST";
 
 
 

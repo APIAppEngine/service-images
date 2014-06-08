@@ -28,6 +28,7 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -82,7 +83,7 @@ public class TextController
      * @throws java.util.concurrent.TimeoutException
      * @throws java.io.IOException
      */
-    @RequestMapping(value = "/modify/text", method = {RequestMethod.POST})
+    @RequestMapping(value = "/modify/text.{format}", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> drawTextByImage(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
             , @ApiParam(name="text", required = true) @RequestParam(required = true) String text
@@ -92,8 +93,17 @@ public class TextController
             , @ApiParam(name="angle", required = true) @RequestParam(required = true) Integer angle
             , @ApiParam(name="x", required = true) @RequestParam(required = true) Integer x
             , @ApiParam(name="y", required = true) @RequestParam(required = true) Integer y
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws InterruptedException, ExecutionException, TimeoutException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
+
         FileTextJob job = new FileTextJob();
         job.setDocumentId(null);
         job.setDocument(new Document(file));
@@ -111,9 +121,8 @@ public class TextController
         Future<Map> imageFuture = imageDrawTextGateway.imageDrawTextFilter(job);
         FileTextJob payload = (FileTextJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(bufferedImage, contentType, false);
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
         return result;
 
     }
@@ -136,7 +145,7 @@ public class TextController
      * @throws java.util.concurrent.TimeoutException
      * @throws java.io.IOException
      */
-    @RequestMapping(value = "/modify/{documentId}/text", method = {RequestMethod.GET})
+    @RequestMapping(value = "/modify/{documentId}/text.{format}", method = {RequestMethod.GET})
     public ResponseEntity<byte[]> drawTextByImage(
             @ApiParam(name = "documentId", required = true) @PathVariable(value = "documentId") String documentId
             , @ApiParam(name="text", required = true) @RequestParam(required = true) String text
@@ -146,8 +155,17 @@ public class TextController
             , @ApiParam(name="angle", required = true) @RequestParam(required = true) Integer angle
             , @ApiParam(name="x", required = true) @RequestParam(required = true) Integer x
             , @ApiParam(name="y", required = true) @RequestParam(required = true) Integer y
+            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+
     ) throws InterruptedException, ExecutionException, TimeoutException, IOException
     {
+        String _contentType = MimeType.getMimeType(format).contentType;
+        if( !MimeType.getMimeType(format).isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
+
         FileTextJob args = new FileTextJob();
         args.setDocumentId(documentId);
         args.setText(text);
@@ -161,9 +179,8 @@ public class TextController
         Future<Map> imageFuture = imageDrawTextGateway.imageDrawTextFilter(args);
         FileTextJob payload = (FileTextJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        BufferedImage bufferedImage = payload.getBufferedImage();
-        String contentType = payload.getDocument().getContentType().name();
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(bufferedImage, contentType, false);
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
         return result;
 
     }

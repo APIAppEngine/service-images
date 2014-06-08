@@ -58,7 +58,7 @@
     <util:map id="applicationProperties"
               key-type="java.lang.String"
               value-type="java.lang.String">
-        <entry key="defaultReplyTimeout" value="60000" />
+        <entry key="defaultReplyTimeout" value="120000" />
     </util:map>
 
     <util:map id="coldfusionProperties"
