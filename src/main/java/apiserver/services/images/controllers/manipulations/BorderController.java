@@ -102,12 +102,13 @@ public class BorderController
         job.getDocument().setFileName(file.getOriginalFilename());
         job.setColor(color);
         job.setThickness(thickness);
+        job.setFormat(format);
 
         Future<Map> imageFuture = imageDrawBorderGateway.imageDrawBorderFilter(job);
         FileBorderJob payload = (FileBorderJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processFile(payload.getImageBytes(), _contentType, false);
         return result;
     }
 
@@ -145,6 +146,7 @@ public class BorderController
         args.setDocumentId(documentId);
         args.setColor(color);
         args.setThickness(thickness);
+        args.setFormat(format);
 
         Future<Map> imageFuture = imageDrawBorderGateway.imageDrawBorderFilter(args);
         FileBorderJob payload = (FileBorderJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);

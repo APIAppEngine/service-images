@@ -40,7 +40,7 @@ public abstract class FilterTestBase
     @Autowired
     public WebApplicationContext wac;
     public String documentId = null;
-    public TestRestTemplate restTemplate;
+    //public TestRestTemplate restTemplate;
 
 
     //@Value("${server.port}")
@@ -109,7 +109,7 @@ public abstract class FilterTestBase
     public void cacheDocument() throws URISyntaxException, IOException, InterruptedException, ExecutionException
     {
         setup();
-        restTemplate = new TestRestTemplate();
+        //restTemplate = new TestRestTemplate();
         File file = new File(  this.getClass().getClassLoader().getResource("IMG_5932.JPG").toURI()  );
 
         UploadDocumentJob job = new UploadDocumentJob(file);

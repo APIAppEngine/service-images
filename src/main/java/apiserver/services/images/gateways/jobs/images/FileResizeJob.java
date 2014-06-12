@@ -37,6 +37,9 @@ public class FileResizeJob extends ImageDocumentJob
     private String interpolation = "bicubic";
     private Boolean scaleToFit = false;
     private Boolean returnAsBase64 = false;
+    private String format;
+
+    private byte[] imageBytes;
 
 
     public Integer getWidth()
@@ -87,6 +90,24 @@ public class FileResizeJob extends ImageDocumentJob
     }
 
 
+    public String getFormat() {
+        return format;
+    }
+
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+
+    public byte[] getImageBytes() {
+        return imageBytes;
+    }
+
+
+    public void setImageBytes(byte[] imageBytes) {
+        this.imageBytes = imageBytes;
+    }
 
 
     public Map toMap()

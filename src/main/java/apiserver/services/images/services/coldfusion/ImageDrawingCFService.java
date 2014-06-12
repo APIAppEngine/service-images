@@ -23,39 +23,37 @@ import apiserver.core.connectors.coldfusion.IColdFusionBridge;
 import apiserver.exceptions.ColdFusionException;
 import apiserver.exceptions.NotImplementedException;
 import apiserver.services.images.ImageConfigMBean;
-import apiserver.services.images.gateways.jobs.ImageDocumentJob;
 import apiserver.services.images.gateways.jobs.images.FileBorderJob;
 import apiserver.services.images.gateways.jobs.images.FileTextJob;
+import apiserver.workers.coldfusion.services.images.ImageBorderCallable;
+import apiserver.services.images.services.grid.GridService;
+import apiserver.workers.coldfusion.services.images.ImageTextCallable;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.gridgain.grid.Grid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.integration.support.MessageBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.util.HashMap;
+import java.io.Serializable;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * User: mnimer
  * Date: 9/18/12
  */
-public class ImageDrawingCFService
+public class ImageDrawingCFService  extends GridService  implements Serializable
 {
+    private final Log log = LogFactory.getLog(this.getClass());
 
-    private static String cfcPath;
-
-    @Autowired
-    private ImageConfigMBean imageConfigMBean;
-
-    @Autowired
-    public IColdFusionBridge coldFusionBridge;
-
-    public void setColdFusionBridge(IColdFusionBridge coldFusionBridge)
-    {
-        this.coldFusionBridge = coldFusionBridge;
-    }
+    private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
 
     public Object imageBorderHandler(Message<?> message) throws ColdFusionException
     {
@@ -63,32 +61,23 @@ public class ImageDrawingCFService
 
         try
         {
-            cfcPath = imageConfigMBean.getImageBorderPath();
-            String method = imageConfigMBean.getImageBorderMethod();
-            Map<String, Object> methodArgs = props.toMap();
+            Grid grid = verifyGridConnection();
 
-            Object cfcResult = coldFusionBridge.invoke(cfcPath, method, methodArgs);
+            // Get grid-enabled executor service for nodes where attribute 'worker' is defined.
+            ExecutorService exec = getColdFusionExecutor();
 
-            if( cfcResult instanceof byte[] )
-            {
-                // convert base64 back to buffered image
-                byte[] bytes = Base64.decodeBase64( new String((byte[])cfcResult) );
-                BufferedImage bi = ImageIO.read(new ByteArrayInputStream(bytes));
-                //BufferedImage bi = ImageIO.read(new ByteArrayInputStream( (byte[])cfcResult ));
-                props.setBufferedImage( bi );
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            byte[] imageBytes = props.getDocument().getFileBytes();
 
+            Future<byte[]> future = exec.submit(
+                    new ImageBorderCallable(imageBytes, props.getFormat(), props.getColor(), props.getThickness())
+            );
 
+            byte[] _result = future.get(defaultTimeout, TimeUnit.SECONDS);
+            props.setImageBytes(_result);
             return props;
         }
-        catch (Throwable e)
-        {
-            e.printStackTrace(); //todo use logging library
-            throw new RuntimeException(e);
+        catch(Exception ge){
+            throw new RuntimeException(ge);
         }
     }
 
@@ -97,34 +86,28 @@ public class ImageDrawingCFService
     {
         FileTextJob props = (FileTextJob)message.getPayload();
 
+
         try
         {
-            cfcPath = imageConfigMBean.getImageTextPath();
-            String method = imageConfigMBean.getImageTextMethod();
-            Map<String, Object> methodArgs = props.toMap();
+            Grid grid = verifyGridConnection();
 
-            Object cfcResult = coldFusionBridge.invoke(cfcPath, method, methodArgs);
+            // Get grid-enabled executor service for nodes where attribute 'worker' is defined.
+            ExecutorService exec = getColdFusionExecutor();
 
-            if( cfcResult instanceof byte[] )
-            {
-                // convert base64 back to buffered image
-                byte[] bytes = Base64.decodeBase64( new String((byte[])cfcResult) );
-                BufferedImage bi = ImageIO.read(new ByteArrayInputStream(bytes));
-                //BufferedImage bi = ImageIO.read(new ByteArrayInputStream( (byte[])cfcResult ));
-                props.setBufferedImage( bi );
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            byte[] imageBytes = props.getDocument().getFileBytes();
 
+            Future<byte[]> future = exec.submit(
+                    new ImageTextCallable(imageBytes, props.getFormat(), props.getText(), props.getColor(), props.getFontSize(), props.getFontStyle(), props.getAngle(), props.getX(), props.getY())
+            );
 
+            byte[] _result = future.get(defaultTimeout, TimeUnit.SECONDS);
+            props.setImageBytes(_result);
             return props;
         }
-        catch (Throwable e)
-        {
-            e.printStackTrace(); //todo use logging library
-            throw new RuntimeException(e);
+        catch(Exception ge){
+            throw new RuntimeException(ge);
         }
+
+
     }
 }

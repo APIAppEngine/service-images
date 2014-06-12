@@ -33,19 +33,39 @@ import java.util.Map;
 public class FileRotateJob extends ImageDocumentJob
 {
     private Integer angle = 0;
+    private String format;
 
+    private byte[] imageBytes;
 
     public Integer getAngle()
     {
         return angle;
     }
 
-
     public void setAngle(Integer angle)
     {
         this.angle = angle;
     }
 
+
+    public String getFormat() {
+        return format;
+    }
+
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+
+    public byte[] getImageBytes() {
+        return imageBytes;
+    }
+
+
+    public void setImageBytes(byte[] imageBytes) {
+        this.imageBytes = imageBytes;
+    }
 
 
     public Map toMap()

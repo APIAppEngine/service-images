@@ -11,6 +11,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -20,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by mnimer on 6/5/14.
  */
-public class ImageBorderTests extends FilterTestBase
+public class ImageBorderTests extends FilterTestBase implements Serializable
 {
 
     @Test
@@ -34,7 +35,7 @@ public class ImageBorderTests extends FilterTestBase
                 .andExpect(content().contentType("image/jpeg"))
                 .andReturn();
 
-        Assert.assertEquals(1494759, result.getResponse().getContentLength());
+        Assert.assertEquals(1507837, result.getResponse().getContentLength());
         FileUtils.writeByteArrayToFile(new File("/Users/mnimer/Desktop/border-get.jpg"), result.getResponse().getContentAsByteArray());
         saveFileToLocalDisk("border-get.jpg", result.getResponse().getContentAsByteArray());
     }
@@ -56,7 +57,7 @@ public class ImageBorderTests extends FilterTestBase
                 .andExpect(content().contentType("image/jpeg"))
                 .andReturn();
 
-        Assert.assertEquals(1489294, result.getResponse().getContentLength());
+        Assert.assertEquals(1487047, result.getResponse().getContentLength());
         saveFileToLocalDisk("border-post.jpg", result.getResponse().getContentAsByteArray());
     }
 }

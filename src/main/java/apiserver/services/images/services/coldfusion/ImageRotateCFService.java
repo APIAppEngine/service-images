@@ -24,38 +24,37 @@ import apiserver.exceptions.ColdFusionException;
 import apiserver.exceptions.NotImplementedException;
 import apiserver.services.images.ImageConfigMBean;
 import apiserver.services.images.gateways.jobs.images.FileRotateJob;
+import apiserver.services.images.services.grid.GridService;
+import apiserver.workers.coldfusion.services.images.ImageResizeCallable;
+import apiserver.workers.coldfusion.services.images.ImageRotateCallable;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gridgain.grid.Grid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.Serializable;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * User: mikenimer
  * Date: 8/26/13
  */
-public class ImageRotateCFService
+public class ImageRotateCFService extends GridService implements Serializable
 {
     private final Log log = LogFactory.getLog(this.getClass());
 
+    private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
 
-    private static String cfcPath;
 
-    @Autowired
-    private ImageConfigMBean imageConfigMBean;
-
-    @Autowired
-    public IColdFusionBridge coldFusionBridge;
-
-    public void setColdFusionBridge(IColdFusionBridge coldFusionBridge)
-    {
-        this.coldFusionBridge = coldFusionBridge;
-    }
 
     public Object execute(Message<?> message) throws ColdFusionException
     {
@@ -63,44 +62,23 @@ public class ImageRotateCFService
 
         try
         {
-            cfcPath = imageConfigMBean.getImageRotatePath();
-            String method = imageConfigMBean.getImageRotateMethod();
+            Grid grid = verifyGridConnection();
+            ExecutorService exec = getColdFusionExecutor();
 
-            // extract properties
-            Map<String, Object> methodArgs = props.toMap();
+            byte[] imageBytes = props.getDocument().getFileBytes();
 
+            Future<byte[]> future = exec.submit(
+                    new ImageRotateCallable(imageBytes, props.getFormat(), props.getAngle() )
+            );
 
-            // execute
-            Object cfcResult = coldFusionBridge.invoke(cfcPath, method, methodArgs);
-
-            // strip out the base64 string from the json packet
-            //ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
-            //mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            //String img = mapper.readValue((String)cfcResult, String.class);
-
-            if( cfcResult instanceof byte[] )
-            {
-                // convert base64 back to buffered image
-                byte[] bytes = Base64.decodeBase64( new String((byte[])cfcResult) );
-                BufferedImage bi = ImageIO.read(new ByteArrayInputStream(bytes));
-                props.setBufferedImage( bi );
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
-
+            byte[] _result = future.get(defaultTimeout, TimeUnit.SECONDS);
+            props.setImageBytes(_result);
             return props;
         }
-        catch (Throwable e)
-        {
-            e.printStackTrace(); //todo use logging library
-            throw new RuntimeException(e);
+        catch(Exception ge){
+            throw new RuntimeException(ge);
         }
-        finally
-        {
 
-        }
     }
 
 }

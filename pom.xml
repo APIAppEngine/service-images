@@ -33,6 +33,47 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>com.mikenimer.apiserver</groupId>
+            <artifactId>worker-coldfusion</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Grid Gain -->
+        <dependency>
+            <groupId>org.gridgain</groupId>
+            <artifactId>gridgain-platform</artifactId>
+            <version>6.1.5</version>
+            <exclusions>
+
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-continuation</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-http</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-io</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-server</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-util</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-xml</artifactId>
+                </exclusion>
+
+            </exclusions>
+        </dependency>
+
 
 
 
@@ -61,9 +102,20 @@
 
     </dependencies>
 
+
+
     <build>
         <finalName>service-pdf</finalName>
 
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
         <!--
         <resources>
             <resource>

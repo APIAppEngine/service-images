@@ -40,6 +40,9 @@ public class FileTextJob extends ImageDocumentJob
     private Integer angle;
     private Integer x;
     private Integer y;
+    private String format;
+
+    private byte[] imageBytes;
 
 
     public String getText()
@@ -126,6 +129,24 @@ public class FileTextJob extends ImageDocumentJob
     }
 
 
+    public String getFormat() {
+        return format;
+    }
+
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+
+    public byte[] getImageBytes() {
+        return imageBytes;
+    }
+
+
+    public void setImageBytes(byte[] imageBytes) {
+        this.imageBytes = imageBytes;
+    }
 
 
     public Map toMap()

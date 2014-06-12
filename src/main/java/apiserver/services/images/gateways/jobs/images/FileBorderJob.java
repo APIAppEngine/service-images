@@ -35,6 +35,9 @@ public class FileBorderJob extends ImageDocumentJob
 
     private String color;
     private Integer thickness;
+    private String format;
+
+    private byte[] imageBytes;
 
 
     public String getColor()
@@ -58,6 +61,26 @@ public class FileBorderJob extends ImageDocumentJob
     public void setThickness(Integer thickness)
     {
         this.thickness = thickness;
+    }
+
+
+    public String getFormat() {
+        return format;
+    }
+
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+
+    public byte[] getImageBytes() {
+        return imageBytes;
+    }
+
+
+    public void setImageBytes(byte[] imageBytes) {
+        this.imageBytes = imageBytes;
     }
 
 

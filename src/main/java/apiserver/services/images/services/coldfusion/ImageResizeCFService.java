@@ -21,37 +21,31 @@ package apiserver.services.images.services.coldfusion;
 
 import apiserver.core.connectors.coldfusion.IColdFusionBridge;
 import apiserver.exceptions.ColdFusionException;
-import apiserver.exceptions.NotImplementedException;
 import apiserver.services.images.ImageConfigMBean;
 import apiserver.services.images.gateways.jobs.images.FileResizeJob;
-import org.apache.commons.codec.binary.Base64;
+import apiserver.services.images.services.grid.GridService;
+import apiserver.workers.coldfusion.services.images.ImageResizeCallable;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.gridgain.grid.Grid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * User: mnimer
  * Date: 9/18/12
  */
-public class ImageResizeCFService
+public class ImageResizeCFService extends GridService implements Serializable
 {
+    private final Log log = LogFactory.getLog(this.getClass());
 
-    private static String cfcPath;
-
-    @Autowired
-    private ImageConfigMBean imageConfigMBean;
-
-    @Autowired
-    public IColdFusionBridge coldFusionBridge;
-
-    public void setColdFusionBridge(IColdFusionBridge coldFusionBridge)
-    {
-        this.coldFusionBridge = coldFusionBridge;
-    }
+    private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
 
 
     public Object execute(Message<?> message) throws ColdFusionException
@@ -60,40 +54,24 @@ public class ImageResizeCFService
 
         try
         {
-            cfcPath = imageConfigMBean.getImageResizePath();
-            String method = imageConfigMBean.getImageResizeMethod();
-            String arguments = "";
-            // extract properties
-            Map<String, Object> methodArgs = props.toMap();
+            Grid grid = verifyGridConnection();
 
+            // Get grid-enabled executor service for nodes where attribute 'worker' is defined.
+            ExecutorService exec = getColdFusionExecutor();
 
-            // execute
-            Object cfcResult = coldFusionBridge.invoke(cfcPath, method, methodArgs);
+            byte[] imageBytes = props.getDocument().getFileBytes();
 
-            if( cfcResult instanceof byte[] )
-            {
-                // convert base64 back to buffered image
-                byte[] bytes = Base64.decodeBase64( new String((byte[])cfcResult) );
-                BufferedImage bi = ImageIO.read(new ByteArrayInputStream(bytes));
-                props.setBufferedImage( bi );
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            Future<byte[]> future = exec.submit(
+                    new ImageResizeCallable(imageBytes, props.getFormat(), props.getWidth(), props.getHeight(), props.getInterpolation(), props.getScaleToFit() )
+            );
 
-
+            byte[] _result = future.get(defaultTimeout, TimeUnit.SECONDS);
+            props.setImageBytes(_result);
             return props;
+        }
+        catch(Exception ge){
+            throw new RuntimeException(ge);
+        }
 
-        }
-        catch (Throwable e)
-        {
-            e.printStackTrace(); //todo use logging library
-            throw new RuntimeException(e);
-        }
-        finally
-        {
-
-        }
     }
 }
