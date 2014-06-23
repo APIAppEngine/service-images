@@ -28,7 +28,7 @@ import java.io.File;
 @EnableAutoConfiguration
 @ComponentScan
 @EnableWebMvc
-@ImportResource( {"/image-flow-config.xml","/cache-flow-config.xml"} )
+@ImportResource( {"image-flow-config.xml","cache-flow-config.xml"} )
 public class ImageMicroServiceApplication extends DelegatingWebMvcConfiguration
 {
 
