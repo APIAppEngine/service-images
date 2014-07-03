@@ -65,7 +65,7 @@ public class MetadataController
      * @param documentId
      * @return   height,width
      */
-    @ApiOperation(value = "Get the embedded metadata", responseClass = "java.util.Map")
+    @ApiOperation(value = "Get the embedded metadata", response = Map.class)
     @RequestMapping(value = "/info/{documentId}/metadata", method = {RequestMethod.GET})
     public WebAsyncTask<Map> imageMetadataByImage(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA") @PathVariable(value = "documentId") String documentId
@@ -98,7 +98,7 @@ public class MetadataController
      * @param file uploaded image
      * @return   height,width
      */
-    @ApiOperation(value = "Get the embedded metadata", responseClass = "java.util.Map")
+    @ApiOperation(value = "Get the embedded metadata", response = Map.class)
     @RequestMapping(value = "/info/metadata", method = {RequestMethod.POST})
     public WebAsyncTask<Map> imageMetadataByImage(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file

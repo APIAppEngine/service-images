@@ -79,7 +79,7 @@ public class ImageController
     , @RequestParam MultipartFile file
 
      */
-    @ApiOperation(value = "Get the height and width for the image", responseClass = "java.util.Map")
+    @ApiOperation(value = "Get the height and width for the image", response = Map.class)
     @RequestMapping(value = "/info/{documentId}/size", method = {RequestMethod.GET})
     public WebAsyncTask<ResponseEntity<Map>> imageInfoByImageAsync(
             @ApiParam(name = "documentId", required = true, defaultValue = "8D981024-A297-4169-8603-E503CC38EEDA")
@@ -120,7 +120,7 @@ public class ImageController
      * @throws java.util.concurrent.TimeoutException
      * @throws InterruptedException
      */
-    @ApiOperation(value = "Get the height and width for the image", responseClass = "java.util.Map")
+    @ApiOperation(value = "Get the height and width for the image", response = Map.class)
     @RequestMapping(value = "/info/size", method = {RequestMethod.POST})
     public WebAsyncTask<Map> imageInfoByImageAsync(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
