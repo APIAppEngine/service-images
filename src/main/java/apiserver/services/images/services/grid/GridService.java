@@ -65,7 +65,7 @@ public class GridService implements Serializable
 
         GridConfiguration gc = new GridConfiguration();
         gc.setGridName( ApiServerConstants.GRID_NAME );
-        gc.setPeerClassLoadingEnabled(false);
+        gc.setPeerClassLoadingEnabled(true);
         gc.setRestEnabled(false);
         gc.setUserAttributes(userAttr);
         gc.setMarshaller(gom);
