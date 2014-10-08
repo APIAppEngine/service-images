@@ -2,15 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>com.mikenimer.apiserver</groupId>
-        <artifactId>apiserver</artifactId>
+        <groupId>com.mikenimer.apiappengine</groupId>
+        <artifactId>APIAppEngine</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../APIAppEngine/pom.xml</relativePath>
     </parent>
 
+
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mikenimer.apiserver</groupId>
+    <groupId>com.mikenimer.apiappengine</groupId>
     <artifactId>service-images</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -22,30 +23,36 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.mikenimer.apiserver</groupId>
+            <groupId>com.mikenimer.apiappengine</groupId>
             <artifactId>service-core</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>com.mikenimer.apiserver</groupId>
+            <groupId>com.mikenimer.apiappengine</groupId>
             <artifactId>service-cache</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
+
         <dependency>
-            <groupId>com.mikenimer.apiserver</groupId>
-            <artifactId>worker-coldfusion</artifactId>
+            <groupId>com.mikenimer.apiappengine.connectors</groupId>
+            <artifactId>connector-coldfusion</artifactId>
             <version>1.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.gridgain</groupId>
+                    <artifactId>gridgain-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Grid Gain -->
         <dependency>
             <groupId>org.gridgain</groupId>
-            <artifactId>gridgain-platform</artifactId>
-            <version>6.1.5</version>
+            <artifactId>gridgain-core</artifactId>
+            <version>6.5.0</version>
             <exclusions>
-
                 <exclusion>
                     <groupId>org.eclipse.jetty</groupId>
                     <artifactId>jetty-continuation</artifactId>
@@ -121,5 +128,84 @@
             </resource>
         </resources>
         -->
+
+        <plugins>
+            <plugin>
+                <groupId>com.mikenimer.apiappengine.util</groupId>
+                <artifactId>swagger-plugin</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>swagger-springmvc-generator</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputDirectoryAndFile>${project.build.outputDirectory}/api-docs/docs/index.json</outputDirectoryAndFile>
+
+                    <apiListing>
+                        <apiVersion>1.0</apiVersion>
+                        <swaggerVersion>1.2</swaggerVersion>
+
+                        <info>
+                            <title>Image Services</title>
+                            <description>A collection of different REST services to work with images.</description>
+                            <termsOfServiceUrl></termsOfServiceUrl>
+                            <contact></contact>
+                            <license></license>
+                            <licenseUrl></licenseUrl>
+                        </info>
+
+                        <services>
+                            <service>
+                                <name>Ping</name>
+                                <description>Simple health check for this set of micro service.</description>
+                                <basePath>/</basePath>
+                                <basePackage>
+                                    <basePackage>apiserver.services.images.controllers.ImageTestController</basePackage>
+                                </basePackage>
+                            </service>
+                            <service>
+                                <name>Information Services</name>
+                                <description>Information about an image.</description>
+                                <basePath>/</basePath>
+                                <basePackage>
+                                    <basePackage>apiserver.services.images.controllers.ImageController</basePackage>
+                                </basePackage>
+                            </service>
+                            <service>
+                                <name>Image Filter Services</name>
+                                <description>Various image filters.</description>
+                                <basePath>/</basePath>
+                                <basePackage>
+                                    <basePackage>apiserver.services.images.controllers.filters</basePackage>
+                                </basePackage>
+                            </service>
+                            <service>
+                                <name>Image Manipulation Services</name>
+                                <description>Various image filters.</description>
+                                <basePath>/</basePath>
+                                <basePackage>
+                                    <basePackage>apiserver.services.images.controllers.manipulations</basePackage>
+                                </basePackage>
+                            </service>
+                            <service>
+                                <name>Image Metadata Services</name>
+                                <description>Various image filters.</description>
+                                <basePath>/</basePath>
+                                <basePackage>
+                                    <basePackage>apiserver.services.images.controllers.MetadataController</basePackage>
+                                </basePackage>
+                            </service>
+                        </services>
+
+                    </apiListing>
+
+                </configuration>
+
+            </plugin>
+        </plugins>
     </build>
 </project>
