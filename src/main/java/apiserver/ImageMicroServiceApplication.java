@@ -67,7 +67,7 @@ public class ImageMicroServiceApplication extends DelegatingWebMvcConfiguration
     MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
         factory.setMaxFileSize("100MB");
-        factory.setMaxRequestSize("100MB");
+        factory.setMaxRequestSize("110MB");
         return factory.createMultipartConfig();
     }
 

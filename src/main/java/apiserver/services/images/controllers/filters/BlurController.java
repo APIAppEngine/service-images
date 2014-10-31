@@ -41,6 +41,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -55,8 +57,8 @@ import java.util.concurrent.TimeoutException;
  */
 @Controller
 @RestController
-@Api(value = "/image", description = "[IMAGE]")
-@RequestMapping("/image")
+@Api(value = "/api/image", description = "[IMAGE]")
+@RequestMapping("/api/image")
 public class BlurController
 {
     public final Log log = LogFactory.getLog(this.getClass());
@@ -106,7 +108,7 @@ public class BlurController
 
 
     /**
-     *  Default blur controller that will return the image in a new format (content type) based on the request
+     * This filter blurs an uploaded image very slightly using a 3x3 blur kernel.
      * @param file
      * @param format
      * @return
@@ -117,15 +119,22 @@ public class BlurController
      * @throws URISyntaxException
      */
     @ApiOperation(value = "This filter blurs an image very slightly using a 3x3 blur kernel.")
-    @RequestMapping(value = "/filter/blur.{format}", method = RequestMethod.POST)
+    @RequestMapping(value = "/filter/blur", method = RequestMethod.POST)
     public ResponseEntity<byte[]> imageBlurByFile(
+            HttpServletRequest request, HttpServletResponse response,
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
-            , @ApiParam(name = "format", required = false) @PathVariable(value = "format") String format
+            , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
 
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException, URISyntaxException
     {
-        String _contentType = MimeType.getMimeType(format).contentType;
-        if( !MimeType.getMimeType(format).isSupportedImage() )
+        String _format = format;
+        if( format == null ) {
+            _format = MimeType.getMimeType(file.getContentType()).contentType;
+        }
+
+        MimeType mimeType = MimeType.getMimeType(_format);
+        String _contentType = mimeType.contentType;
+        if( !mimeType.isSupportedImage() )
         {
             return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }

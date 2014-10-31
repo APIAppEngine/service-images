@@ -13,12 +13,18 @@
 
     <groupId>com.mikenimer.apiappengine</groupId>
     <artifactId>service-images</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1 q-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>service-images</name>
     <url>http://maven.apache.org</url>
 
-
+    <developers>
+        <developer>
+            <id>mike</id>
+            <name>Mike Nimer</name>
+            <email>mnimer@gmail.com</email>
+        </developer>
+    </developers>
 
     <dependencies>
 

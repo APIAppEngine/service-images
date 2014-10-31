@@ -56,8 +56,8 @@ import java.util.concurrent.TimeoutException;
  */
 @Controller
 @RestController
-@Api(value = "/image", description = "[IMAGE]")
-@RequestMapping("/image")
+@Api(value = "/api/image", description = "[IMAGE]")
+@RequestMapping("/api/image")
 public class GaussianController
 {
     public final Log log = LogFactory.getLog(this.getClass());

@@ -21,7 +21,8 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
-    <logger name="org.springframework.integration.file" level="DEBUG" />
+    <logger name="org.springframework.*" level="INFO" />
+    <logger name="org.gridgain.*" level="INFO" />
     <root level="warn">
         <appender-ref ref="CONSOLE" />
         <!--appender-ref ref="FILE" /-->

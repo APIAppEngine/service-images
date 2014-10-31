@@ -47,8 +47,8 @@ import java.util.concurrent.TimeUnit;
  * Date: 9/15/12
  */
 @Controller
-@Api(value = "/image", description = "[IMAGE]")
-@RequestMapping("/image")
+@Api(value = "/api/image", description = "[IMAGE]")
+@RequestMapping("/api/image")
 public class MetadataController
 {
     @Autowired
