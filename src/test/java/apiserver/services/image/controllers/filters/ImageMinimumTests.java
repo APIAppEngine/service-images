@@ -70,7 +70,7 @@ public class ImageMinimumTests extends FilterTestBase
     @Test
     public void testLensBlurByIdRESTGet() throws Exception {
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(get(rootUrl + "/image/filter/" + documentId + "/minimum.jpg"))
+                .perform(get(rootUrl + "/api/image/filter/" + documentId + "/minimum.jpg"))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/jpeg"))
                 .andReturn();
@@ -87,7 +87,7 @@ public class ImageMinimumTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/minimum")
+                .perform(fileUpload(rootUrl + "/api/image/filter/minimum")
                                 .file(file)
                                 .param("format", "jpg")
                 )

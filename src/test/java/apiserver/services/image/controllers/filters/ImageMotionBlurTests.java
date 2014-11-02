@@ -74,7 +74,7 @@ public class ImageMotionBlurTests extends FilterTestBase
     @Test
     public void testLensBlurByIdRESTGet() throws Exception {
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(get(rootUrl + "/image/filter/" + documentId + "/motionblur.jpg")
+                .perform(get(rootUrl + "/api/image/filter/" + documentId + "/motionblur.jpg")
                                 .param("angle", "0")
                                 .param("distance", "1")
                                 .param("rotation", "0")
@@ -97,7 +97,7 @@ public class ImageMotionBlurTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/motionblur")
+                .perform(fileUpload(rootUrl + "/api/image/filter/motionblur")
                                 .file(file)
                                 .param("format", "jpg")
                                 .param("angle", "0")

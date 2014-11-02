@@ -72,7 +72,7 @@ public class ImageDespeckleTests extends FilterTestBase
     public void testDespeckleByIdRESTGet() throws Exception
     {
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(get(rootUrl + "/image/filter/" + documentId + "/despeckle.jpg")
+                .perform(get(rootUrl + "/api/image/filter/" + documentId + "/despeckle.jpg")
                 )
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/jpeg"))
@@ -91,7 +91,7 @@ public class ImageDespeckleTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/despeckle")
+                .perform(fileUpload(rootUrl + "/api/image/filter/despeckle")
                                 .file(file)
                                 .param("format", "jpg")
                 )

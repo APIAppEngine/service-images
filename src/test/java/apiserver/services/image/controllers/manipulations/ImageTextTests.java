@@ -30,7 +30,7 @@ public class ImageTextTests extends FilterTestBase
     @Test
     public void testTextByIdRESTGet() throws Exception {
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(get(rootUrl + "/image/modify/" + documentId + "/text.jpg")
+                .perform(get(rootUrl + "/api/image/modify/" + documentId + "/text.jpg")
                                 .param("text", "Hello World!")
                                 .param("color", "#ffffff")
                                 .param("fontSize", "24px")
@@ -55,7 +55,7 @@ public class ImageTextTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/modify/text")
+                .perform(fileUpload(rootUrl + "/api/image/modify/text")
                                 .file(file)
                                 .param("format", "jpg")
                                 .param("text", "Hello World!")

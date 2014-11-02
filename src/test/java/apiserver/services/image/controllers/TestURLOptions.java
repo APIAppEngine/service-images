@@ -49,7 +49,7 @@ public class TestURLOptions extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/blur").file(file).param("format", "jpb"))
+                .perform(fileUpload(rootUrl + "/api/image/filter/blur").file(file).param("format", "jpg"))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/jpeg"))
                 .andReturn();
@@ -69,7 +69,7 @@ public class TestURLOptions extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/blur").file(file).param("format", "png"))
+                .perform(fileUpload(rootUrl + "/api/image/filter/blur").file(file).param("format", "png"))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/png"))
                 .andReturn();
@@ -90,7 +90,7 @@ public class TestURLOptions extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/blur").file(file).param("format", "tiff"))
+                .perform(fileUpload(rootUrl + "/api/image/filter/blur").file(file).param("format", "tiff"))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/tiff"))
                 .andReturn();
@@ -112,7 +112,7 @@ public class TestURLOptions extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "minecraft-screenshot.tif", "image/tiff", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/blur").file(file).param("format", "tiff"))
+                .perform(fileUpload(rootUrl + "/api/image/filter/blur").file(file).param("format", "tiff"))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/tiff"))
                 .andReturn();
@@ -132,7 +132,7 @@ public class TestURLOptions extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/blur").file(file).param("format", "gif"))
+                .perform(fileUpload(rootUrl + "/api/image/filter/blur").file(file).param("format", "gif"))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/gif"))
                 .andReturn();
@@ -152,7 +152,7 @@ public class TestURLOptions extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/blur").file(file).param("format", "mp3"))
+                .perform(fileUpload(rootUrl + "/api/image/filter/blur").file(file).param("format", "mp3"))
                 .andExpect(status().is(415))
                 .andReturn();
 

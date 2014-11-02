@@ -62,7 +62,7 @@ public class ImageSizeTests extends FilterTestBase
     public void testSizeByIdRESTGet() throws Exception
     {
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(get(rootUrl + "/image/info/" + documentId + "/size"))
+                .perform(get(rootUrl + "/api/image/info/" + documentId + "/size"))
                 .andExpect(status().is(200))
                 .andExpect(request().asyncStarted())
                 .andReturn();
@@ -81,7 +81,7 @@ public class ImageSizeTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/info/size").file(file))
+                .perform(fileUpload(rootUrl + "/api/image/info/size").file(file))
                 .andExpect(status().is(200))
                 .andExpect(request().asyncStarted())
                 .andReturn();

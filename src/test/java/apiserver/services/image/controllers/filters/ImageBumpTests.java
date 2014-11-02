@@ -72,7 +72,7 @@ public class ImageBumpTests extends FilterTestBase
     public void testBumpByIdRESTGet() throws Exception
     {
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(get(rootUrl + "/image/filter/" +documentId +"/bump.jpg")
+                .perform(get(rootUrl + "/api/image/filter/" +documentId +"/bump.jpg")
                                 .param("edgeAction", "1")
                                 .param("useAlpha", "true")
                                 .param("matrix", "-1.0,-1.0,0.0,-1.0,1.0,1.0,0.0,1.0,1.0")
@@ -94,7 +94,7 @@ public class ImageBumpTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/bump")
+                .perform(fileUpload(rootUrl + "/api/image/filter/bump")
                                 .file(file)
                                 .param("format", "jpg")
                                 .param("edgeAction", "1")

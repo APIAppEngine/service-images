@@ -72,7 +72,7 @@ public class ImageGrayScaleTests extends FilterTestBase
     @Test
     public void testGrayscaleByIdRESTGet() throws Exception {
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(get(rootUrl + "/image/filter/" + documentId + "/grayscale.jpg").param("amount", "2"))
+                .perform(get(rootUrl + "/api/image/filter/" + documentId + "/grayscale.jpg").param("amount", "2"))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/jpeg"))
                 .andReturn();
@@ -89,7 +89,7 @@ public class ImageGrayScaleTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/grayscale")
+                .perform(fileUpload(rootUrl + "/api/image/filter/grayscale")
                                 .file(file)
                                 .param("format", "jpg")
                                 .param("amount", "2")

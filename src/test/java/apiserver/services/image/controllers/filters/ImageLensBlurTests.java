@@ -74,7 +74,7 @@ public class ImageLensBlurTests extends FilterTestBase
     @Test
     public void testLensBlurByIdRESTGet() throws Exception {
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(get(rootUrl + "/image/filter/" + documentId + "/lensblur.jpg")
+                .perform(get(rootUrl + "/api/image/filter/" + documentId + "/lensblur.jpg")
                         .param("radius", "10")
                         .param("sides", "5")
                         .param("bloom", "2")
@@ -95,7 +95,7 @@ public class ImageLensBlurTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/lensblur")
+                .perform(fileUpload(rootUrl + "/api/image/filter/lensblur")
                                 .file(file)
                                 .param("format", "jpg")
                                 .param("radius", "10")

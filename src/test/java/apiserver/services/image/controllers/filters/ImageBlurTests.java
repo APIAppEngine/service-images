@@ -30,6 +30,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
@@ -61,12 +62,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class ImageBlurTests extends FilterTestBase
 {
-
     @Test
     public void testBlurByIdRESTGet() throws Exception
     {
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(get(rootUrl + "/image/filter/" +documentId +"/blur.jpg"))
+                .perform(get(rootUrl + "/api/image/filter/" +documentId +"/blur.jpg"))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/jpeg"))
                 .andReturn();
@@ -84,7 +84,7 @@ public class ImageBlurTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/blur").file(file).param("format", "jpg"))
+                .perform(fileUpload(rootUrl + "/api/image/filter/blur").file(file).param("format", "jpg"))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/jpeg"))
                 .andReturn();

@@ -26,7 +26,7 @@ public class ImageResizeTests extends FilterTestBase
     @Test
     public void testResizeByIdRESTGet() throws Exception {
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(get(rootUrl + "/image/modify/" + documentId + "/resize.jpg")
+                .perform(get(rootUrl + "/api/image/modify/" + documentId + "/resize.jpg")
                                 .param("width", "500")
                                 .param("height", "300")
                                 .param("interpolation", "bicubic")
@@ -48,7 +48,7 @@ public class ImageResizeTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/modify/resize")
+                .perform(fileUpload(rootUrl + "/api/image/modify/resize")
                                 .file(file)
                                 .param("width", "500")
                                 .param("height", "300")

@@ -71,7 +71,7 @@ public class ImageMedianTests extends FilterTestBase
     @Test
     public void testMedianByIdRESTGet() throws Exception {
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(get(rootUrl + "/image/filter/" + documentId + "/median.jpg"))
+                .perform(get(rootUrl + "/api/image/filter/" + documentId + "/median.jpg"))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/jpeg"))
                 .andReturn();
@@ -88,7 +88,7 @@ public class ImageMedianTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/median")
+                .perform(fileUpload(rootUrl + "/api/image/filter/median")
                                 .file(file)
                                 .param("format", "jpg")
                 )

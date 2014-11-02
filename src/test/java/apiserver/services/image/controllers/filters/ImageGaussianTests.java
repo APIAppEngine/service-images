@@ -72,7 +72,7 @@ public class ImageGaussianTests extends FilterTestBase
     public void testGaussianByIdRESTGet() throws Exception
     {
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(get(rootUrl + "/image/filter/" + documentId + "/gaussian.jpg")
+                .perform(get(rootUrl + "/api/image/filter/" + documentId + "/gaussian.jpg")
                         .param("radius", "2")
                 )
                 .andExpect(status().is(200))
@@ -92,7 +92,7 @@ public class ImageGaussianTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/gaussian")
+                .perform(fileUpload(rootUrl + "/api/image/filter/gaussian")
                                 .file(file)
                                 .param("format", "jpg")
                                 .param("radius", "2")

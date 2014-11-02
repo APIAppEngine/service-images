@@ -68,7 +68,7 @@ public class ImageBoxBlurTests extends FilterTestBase
     public void testBoxBlurByIdRESTGet() throws Exception
     {
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(get(rootUrl + "/image/filter/" + documentId + "/boxblur.jpg")
+                .perform(get(rootUrl + "/api/image/filter/" + documentId + "/boxblur.jpg")
                                 .param("hRadius", "2")
                                 .param("vRadius", "2")
                                 .param("iterations", "1")
@@ -91,7 +91,7 @@ public class ImageBoxBlurTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/boxblur")
+                .perform(fileUpload(rootUrl + "/api/image/filter/boxblur")
                                 .file(file)
                                 .param("format", "jpg")
                                 .param("hRadius", "2")
