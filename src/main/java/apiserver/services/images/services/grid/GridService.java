@@ -28,11 +28,7 @@ public class GridService implements Serializable
     {
         if( grid == null )
         {
-            try {
-                grid = GridGain.start(getGridConfiguration());
-            }catch(GridException ge){
-                throw new RuntimeException(ge);
-            }
+          throw new RuntimeException("Grid Not Enabled");
         }
 
         return grid;
@@ -53,35 +49,4 @@ public class GridService implements Serializable
         return projection.forRandom().compute().executorService();
     }
 
-
-
-    private GridConfiguration getGridConfiguration() {
-        Map<String, String> userAttr = new HashMap<String, String>();
-        userAttr.put("ROLE", "image-service");
-
-
-        GridOptimizedMarshaller gom = new GridOptimizedMarshaller();
-        gom.setRequireSerializable(false);
-
-        GridConfiguration gc = new GridConfiguration();
-        gc.setGridName( ApiServerConstants.GRID_NAME );
-        gc.setPeerClassLoadingEnabled(true);
-        gc.setRestEnabled(false);
-        gc.setUserAttributes(userAttr);
-        gc.setMarshaller(gom);
-
-
-        //GridCacheConfiguration gcc = new GridCacheConfiguration();
-        //gcc.setCacheMode(GridCacheMode.PARTITIONED);
-        //gcc.setName("documentcache");
-        //gcc.setSwapEnabled(true);
-        //gcc.setAtomicityMode(GridCacheAtomicityMode.ATOMIC);
-        //gcc.setQueryIndexEnabled(true);
-        //gcc.setBackups(0);
-        //gcc.setStartSize(200000);
-
-        //gc.setCacheConfiguration(gcc);
-
-        return gc;
-    }
 }

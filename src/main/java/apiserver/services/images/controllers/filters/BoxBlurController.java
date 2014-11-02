@@ -127,11 +127,11 @@ public class BoxBlurController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "A filter which performs a box blur on an image. The horizontal and vertical blurs can be specified separately and a number of iterations can be given which allows an approximation to Gaussian blur.")
-    @RequestMapping(value = "/filter/boxblur.{format}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filter/boxblur", method = {RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<byte[]> imageBoxBlurByFile(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
-            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+            , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
             , @ApiParam(name = "hRadius", required = false, defaultValue = "2", value = "the horizontal radius of blur") @RequestParam(value = "hRadius", defaultValue = "2") int hRadius
             , @ApiParam(name = "vRadius", required = false, defaultValue = "2", value = "the vertical radius of blur") @RequestParam(value = "vRadius", defaultValue = "2") int vRadius
             , @ApiParam(name = "iterations", required = false, defaultValue = "1", value = "the number of time to iterate the blur") @RequestParam(value = "iterations", defaultValue = "1") int iterations
@@ -139,8 +139,14 @@ public class BoxBlurController
 
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
-        String _contentType = MimeType.getMimeType(format).contentType;
-        if( !MimeType.getMimeType(format).isSupportedImage() )
+        String _format = format;
+        if( format == null ) {
+            _format = MimeType.getMimeType(file.getContentType()).contentType;
+        }
+
+        MimeType mimeType = MimeType.getMimeType(_format);
+        String _contentType = mimeType.contentType;
+        if( !mimeType.isSupportedImage() )
         {
             return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }

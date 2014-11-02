@@ -139,7 +139,7 @@ public class MotionBlurController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter simulates motion blur on an image. You specify a combination of angle/distance for linear motion blur, a rotaiton angle for spin blur or a zoom factor for zoom blur. You can combine these in any proportions you want to get effects like spiral blurs.")
-    @RequestMapping(value = "/filter/motionblur.{format}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filter/motionblur", method = {RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<byte[]> imageMotionBlurByFile(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
@@ -148,15 +148,22 @@ public class MotionBlurController
             , @ApiParam(name="rotation", required = true, defaultValue = "0")  @RequestParam(value="rotation", required = false,  defaultValue="0") float rotation
             , @ApiParam(name="wrapEdges", required = true, defaultValue = "false")  @RequestParam(value="wrapEdges", required = false,  defaultValue="false") boolean wrapEdges
             , @ApiParam(name="zoom", required = true, defaultValue = "0")  @RequestParam(value="zoom", required = false,  defaultValue="0") float zoom
-            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+            , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
 
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
-        String _contentType = MimeType.getMimeType(format).contentType;
-        if( !MimeType.getMimeType(format).isSupportedImage() )
+        String _format = format;
+        if( format == null ) {
+            _format = MimeType.getMimeType(file.getContentType()).contentType;
+        }
+
+        MimeType mimeType = MimeType.getMimeType(_format);
+        String _contentType = mimeType.contentType;
+        if( !mimeType.isSupportedImage() )
         {
             return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
+
 
         MotionBlurJob job = new MotionBlurJob();
         job.setDocumentId(null);

@@ -84,46 +84,6 @@ public class RotateController
 
 
 
-
-    /**
-     * rotate an image
-     *
-     * @param file
-     * @param angle
-     * @return
-     */
-    @ApiOperation(value="Rotate an uploaded image")
-    @RequestMapping(value = "/modify/rotate.{format}", method = {RequestMethod.POST})
-    @ResponseBody
-    public ResponseEntity<byte[]> rotateImageByImage(
-            @ApiParam(name="file", required = true) @RequestParam MultipartFile file
-            , @ApiParam(name="angle", required = true, defaultValue = "90") @RequestParam(required = true, defaultValue = "90") Integer angle
-            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
-
-    ) throws IOException, InterruptedException, ExecutionException, TimeoutException
-    {
-        String _contentType = MimeType.getMimeType(format).contentType;
-        if( !MimeType.getMimeType(format).isSupportedImage() )
-        {
-            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-        }
-
-        FileRotateJob job = new FileRotateJob();
-        job.setDocumentId(null);
-        job.setDocument( new Document(file) );
-        job.getDocument().setContentType( MimeType.getMimeType(file.getContentType()) );
-        job.getDocument().setFileName(file.getOriginalFilename());
-        job.setAngle(angle);
-
-        Future<Map> imageFuture = imageRotateGateway.rotateImage(job);
-        FileRotateJob payload = (FileRotateJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
-
-
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
-        return result;
-    }
-
-
     /**
      * rotate an image
      *
@@ -159,5 +119,52 @@ public class RotateController
         return result;
     }
 
+
+
+
+    /**
+     * rotate an image
+     *
+     * @param file
+     * @param angle
+     * @return
+     */
+    @ApiOperation(value="Rotate an uploaded image")
+    @RequestMapping(value = "/modify/rotate", method = {RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<byte[]> rotateImageByImage(
+            @ApiParam(name="file", required = true) @RequestParam MultipartFile file
+            , @ApiParam(name="angle", required = true, defaultValue = "90") @RequestParam(required = true, defaultValue = "90") Integer angle
+            , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
+
+    ) throws IOException, InterruptedException, ExecutionException, TimeoutException
+    {
+        String _format = format;
+        if( format == null ) {
+            _format = MimeType.getMimeType(file.getContentType()).contentType;
+        }
+
+        MimeType mimeType = MimeType.getMimeType(_format);
+        String _contentType = mimeType.contentType;
+        if( !mimeType.isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
+
+        FileRotateJob job = new FileRotateJob();
+        job.setDocumentId(null);
+        job.setDocument( new Document(file) );
+        job.getDocument().setContentType( MimeType.getMimeType(file.getContentType()) );
+        job.getDocument().setFileName(file.getOriginalFilename());
+        job.setAngle(angle);
+
+        Future<Map> imageFuture = imageRotateGateway.rotateImage(job);
+        FileRotateJob payload = (FileRotateJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
+
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
+        return result;
+    }
 
 }

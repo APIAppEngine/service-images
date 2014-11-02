@@ -122,16 +122,22 @@ public class GaussianController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter performs a Gaussian blur on an image.")
-    @RequestMapping(value = "/filter/gaussian.{format}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filter/gaussian", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> imageDespeckleByFile(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
             , @ApiParam(name = "radius", required = true, defaultValue = "2") @RequestParam(required = false, defaultValue = "2") int radius
-            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+            , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
 
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
-        String _contentType = MimeType.getMimeType(format).contentType;
-        if( !MimeType.getMimeType(format).isSupportedImage() )
+        String _format = format;
+        if( format == null ) {
+            _format = MimeType.getMimeType(file.getContentType()).contentType;
+        }
+
+        MimeType mimeType = MimeType.getMimeType(_format);
+        String _contentType = mimeType.contentType;
+        if( !mimeType.isSupportedImage() )
         {
             return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }

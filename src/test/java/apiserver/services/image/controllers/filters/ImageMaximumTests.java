@@ -82,8 +82,9 @@ public class ImageMaximumTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/maximum.jpg")
+                .perform(fileUpload(rootUrl + "/image/filter/maximum")
                                 .file(file)
+                                .param("format", "jpg")
                 )
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/jpeg"))

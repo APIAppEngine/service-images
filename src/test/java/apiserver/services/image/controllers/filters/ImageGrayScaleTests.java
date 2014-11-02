@@ -89,8 +89,9 @@ public class ImageGrayScaleTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/grayscale.jpg")
+                .perform(fileUpload(rootUrl + "/image/filter/grayscale")
                                 .file(file)
+                                .param("format", "jpg")
                                 .param("amount", "2")
                 )
                 .andExpect(status().is(200))

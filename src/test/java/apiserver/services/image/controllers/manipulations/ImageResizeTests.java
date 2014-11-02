@@ -48,10 +48,11 @@ public class ImageResizeTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/modify/resize.jpg")
+                .perform(fileUpload(rootUrl + "/image/modify/resize")
                                 .file(file)
                                 .param("width", "500")
                                 .param("height", "300")
+                                .param("format", "jpg")
                                 .param("interpolation", "bicubic")
                                 .param("scaleToFit", "false")
                 )

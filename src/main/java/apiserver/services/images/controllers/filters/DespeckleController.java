@@ -117,15 +117,21 @@ public class DespeckleController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter reduces light noise in an image using the eight hull algorithm described in Applied Optics, Vol. 24, No. 10, 15 May 1985, \"Geometric filter for Speckle Reduction\", by Thomas R Crimmins. Basically, it tries to move each pixel closer in value to its neighbours. As it only has a small effect, you may need to apply it several times. This is good for removing small levels of noise from an image but does give the image some fuzziness.")
-    @RequestMapping(value = "/filter/despeckle.{format}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filter/despeckle", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> imageDespeckleByFile(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
-            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+            , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
 
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
-        String _contentType = MimeType.getMimeType(format).contentType;
-        if( !MimeType.getMimeType(format).isSupportedImage() )
+        String _format = format;
+        if( format == null ) {
+            _format = MimeType.getMimeType(file.getContentType()).contentType;
+        }
+
+        MimeType mimeType = MimeType.getMimeType(_format);
+        String _contentType = mimeType.contentType;
+        if( !mimeType.isSupportedImage() )
         {
             return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }

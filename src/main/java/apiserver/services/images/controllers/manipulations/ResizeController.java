@@ -83,53 +83,6 @@ public class ResizeController
 
 
 
-    /**
-     * Resize an image
-     *
-     * @param file
-     * @param interpolation - highestQuality,highQuality,mediumQuality,highestPerformance,highPerformance,mediumPerformance,nearest,bilinear,bicubic,bessel,blackman,hamming,hanning,hermite,lanczos,mitchell,quadratic
-     * @param width
-     * @param height
-     * @return
-     */
-    @ApiOperation(value="Resize an uploaded image")
-    @RequestMapping(value = "/modify/resize.{format}", method = {RequestMethod.POST})
-    @ResponseBody
-    public ResponseEntity<byte[]> resizeImageByImage(
-            @ApiParam(name="file", required = true) @RequestParam MultipartFile file
-            , @ApiParam(name="width", required = true, defaultValue = "200") @RequestParam(required = true) Integer width
-            , @ApiParam(name="height", required = true, defaultValue = "200") @RequestParam(required = true) Integer height
-            , @ApiParam(name="interpolation", required = false, defaultValue = "bicubic") @RequestParam(required = false, defaultValue = "bicubic") String interpolation
-            , @ApiParam(name="scaleToFit", required = false, defaultValue = "false") @RequestParam(required = false, defaultValue = "false") Boolean scaleToFit
-            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
-
-    ) throws IOException, InterruptedException, ExecutionException, TimeoutException
-    {
-        String _contentType = MimeType.getMimeType(format).contentType;
-        if( !MimeType.getMimeType(format).isSupportedImage() )
-        {
-            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-        }
-
-
-        FileResizeJob job = new FileResizeJob();
-        job.setDocumentId(null);
-        job.setDocument( new Document(file) );
-        job.getDocument().setContentType(MimeType.getMimeType(file.getContentType()) );
-        job.getDocument().setFileName(file.getOriginalFilename());
-        job.setWidth(width);
-        job.setHeight(height);
-        job.setInterpolation(interpolation.toUpperCase());
-        job.setScaleToFit(scaleToFit);
-
-        Future<Map> imageFuture = imageResizeGateway.resizeImage(job);
-        FileResizeJob payload = (FileResizeJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
-
-
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
-        return result;
-    }
-
 
 
 
@@ -177,6 +130,59 @@ public class ResizeController
         return result;
     }
 
+
+    /**
+     * Resize an image
+     *
+     * @param file
+     * @param interpolation - highestQuality,highQuality,mediumQuality,highestPerformance,highPerformance,mediumPerformance,nearest,bilinear,bicubic,bessel,blackman,hamming,hanning,hermite,lanczos,mitchell,quadratic
+     * @param width
+     * @param height
+     * @return
+     */
+    @ApiOperation(value="Resize an uploaded image")
+    @RequestMapping(value = "/modify/resize", method = {RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<byte[]> resizeImageByImage(
+            @ApiParam(name="file", required = true) @RequestParam MultipartFile file
+            , @ApiParam(name="width", required = true, defaultValue = "200") @RequestParam(required = true) Integer width
+            , @ApiParam(name="height", required = true, defaultValue = "200") @RequestParam(required = true) Integer height
+            , @ApiParam(name="interpolation", required = false, defaultValue = "bicubic") @RequestParam(required = false, defaultValue = "bicubic") String interpolation
+            , @ApiParam(name="scaleToFit", required = false, defaultValue = "false") @RequestParam(required = false, defaultValue = "false") Boolean scaleToFit
+            , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
+
+    ) throws IOException, InterruptedException, ExecutionException, TimeoutException
+    {
+        String _format = format;
+        if( format == null ) {
+            _format = MimeType.getMimeType(file.getContentType()).contentType;
+        }
+
+        MimeType mimeType = MimeType.getMimeType(_format);
+        String _contentType = mimeType.contentType;
+        if( !mimeType.isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
+
+        FileResizeJob job = new FileResizeJob();
+        job.setDocumentId(null);
+        job.setDocument( new Document(file) );
+        job.getDocument().setContentType(MimeType.getMimeType(file.getContentType()) );
+        job.getDocument().setFileName(file.getOriginalFilename());
+        job.setWidth(width);
+        job.setHeight(height);
+        job.setInterpolation(interpolation.toUpperCase());
+        job.setScaleToFit(scaleToFit);
+
+        Future<Map> imageFuture = imageResizeGateway.resizeImage(job);
+        FileResizeJob payload = (FileResizeJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
+
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
+        return result;
+    }
 
 
 }

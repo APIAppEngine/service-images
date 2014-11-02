@@ -119,16 +119,22 @@ public class MedianController
      * @throws java.io.IOException
      */
     @ApiOperation(value = "This filter replaces each pixel by the median of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.")
-    @RequestMapping(value = "/filter/median.{format}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/filter/median", method = {RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<byte[]> imageMedianByFile(
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
-            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
+            , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
 
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
-        String _contentType = MimeType.getMimeType(format).contentType;
-        if( !MimeType.getMimeType(format).isSupportedImage() )
+        String _format = format;
+        if( format == null ) {
+            _format = MimeType.getMimeType(file.getContentType()).contentType;
+        }
+
+        MimeType mimeType = MimeType.getMimeType(_format);
+        String _contentType = mimeType.contentType;
+        if( !mimeType.isSupportedImage() )
         {
             return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }

@@ -48,9 +48,10 @@ public class ImageBorderTests extends FilterTestBase implements Serializable
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/modify/border.jpg")
+                .perform(fileUpload(rootUrl + "/image/modify/border")
                                 .file(file)
                                 .param("color", "red")
+                                .param("format", "jpg")
                                 .param("thickness", "50")
                 )
                 .andExpect(status().is(200))

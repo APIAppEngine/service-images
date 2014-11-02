@@ -92,8 +92,9 @@ public class ImageGaussianTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/gaussian.jpg")
+                .perform(fileUpload(rootUrl + "/image/filter/gaussian")
                                 .file(file)
+                                .param("format", "jpg")
                                 .param("radius", "2")
                 )
                 .andExpect(status().is(200))

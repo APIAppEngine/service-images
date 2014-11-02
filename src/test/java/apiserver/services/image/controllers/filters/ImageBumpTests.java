@@ -94,8 +94,9 @@ public class ImageBumpTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/bump.jpg")
+                .perform(fileUpload(rootUrl + "/image/filter/bump")
                                 .file(file)
+                                .param("format", "jpg")
                                 .param("edgeAction", "1")
                                 .param("useAlpha", "true")
                                 .param("matrix", "-1.0,-1.0,0.0,-1.0,1.0,1.0,0.0,1.0,1.0")

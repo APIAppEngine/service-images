@@ -45,8 +45,9 @@ public class ImageRotateTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/modify/rotate.jpg")
+                .perform(fileUpload(rootUrl + "/image/modify/rotate")
                                 .file(file)
+                                .param("format", "jpg")
                                 .param("angle", "45")
                 )
                 .andExpect(status().is(200))

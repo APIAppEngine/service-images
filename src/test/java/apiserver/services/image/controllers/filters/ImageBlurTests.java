@@ -84,7 +84,7 @@ public class ImageBlurTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/blur.jpg").file(file))
+                .perform(fileUpload(rootUrl + "/image/filter/blur").file(file).param("format", "jpg"))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/jpeg"))
                 .andReturn();

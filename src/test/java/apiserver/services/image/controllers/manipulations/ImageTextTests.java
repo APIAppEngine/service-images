@@ -55,8 +55,9 @@ public class ImageTextTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/modify/text.jpg")
+                .perform(fileUpload(rootUrl + "/image/modify/text")
                                 .file(file)
+                                .param("format", "jpg")
                                 .param("text", "Hello World!")
                                 .param("color", "#ffffff")
                                 .param("fontSize", "64px")
@@ -82,8 +83,9 @@ public class ImageTextTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/modify/text.jpg")
+                .perform(fileUpload(rootUrl + "/image/modify/text")
                                 .file(file)
+                                .param("format", "jpg")
                                 .param("text", "Hello World!")
                                 .param("color", "#ffffff")
                                 .param("fontSize", "64px")

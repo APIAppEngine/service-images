@@ -87,8 +87,9 @@ public class ImageMinimumTests extends FilterTestBase
         MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
 
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
-                .perform(fileUpload(rootUrl + "/image/filter/minimum.jpg")
+                .perform(fileUpload(rootUrl + "/image/filter/minimum")
                                 .file(file)
+                                .param("format", "jpg")
                 )
                 .andExpect(status().is(200))
                 .andExpect(content().contentType("image/jpeg"))

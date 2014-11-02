@@ -66,67 +66,6 @@ public class TextController
 
 
 
-    /**
-     * Overlay text onto an image
-     *
-     * @param file
-     * @param text
-     * @param color
-     * @param fontSize
-     * @param fontStyle
-     * @param angle
-     * @param x
-     * @param y
-     * @return
-     * @throws InterruptedException
-     * @throws java.util.concurrent.ExecutionException
-     * @throws java.util.concurrent.TimeoutException
-     * @throws java.io.IOException
-     */
-    @RequestMapping(value = "/modify/text.{format}", method = {RequestMethod.POST})
-    public ResponseEntity<byte[]> drawTextByImage(
-            @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
-            , @ApiParam(name="text", required = true) @RequestParam(required = true) String text
-            , @ApiParam(name="color", required = true) @RequestParam(required = true) String color
-            , @ApiParam(name="fontSize", required = true) @RequestParam(required = true) String fontSize
-            , @ApiParam(name="fontStyle", required = true) @RequestParam(required = true) String fontStyle
-            , @ApiParam(name="angle", required = true) @RequestParam(required = true) Integer angle
-            , @ApiParam(name="x", required = true) @RequestParam(required = true) Integer x
-            , @ApiParam(name="y", required = true) @RequestParam(required = true) Integer y
-            , @ApiParam(name = "format", required = true, defaultValue = "jpg") @PathVariable(value = "format") String format
-
-    ) throws InterruptedException, ExecutionException, TimeoutException, IOException
-    {
-        String _contentType = MimeType.getMimeType(format).contentType;
-        if( !MimeType.getMimeType(format).isSupportedImage() )
-        {
-            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-        }
-
-
-        FileTextJob job = new FileTextJob();
-        job.setDocumentId(null);
-        job.setDocument(new Document(file));
-        job.getDocument().setContentType(MimeType.getMimeType(file.getContentType()));
-        job.getDocument().setFileName(file.getOriginalFilename());
-        job.setText(text);
-        job.setColor(color);
-        job.setFontSize(fontSize);
-        job.setFontStyle(fontStyle);
-        job.setAngle(angle);
-        job.setX(x);
-        job.setY(y);
-
-
-        Future<Map> imageFuture = imageDrawTextGateway.imageDrawTextFilter(job);
-        FileTextJob payload = (FileTextJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
-
-
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
-        return result;
-
-    }
-
 
     /**
      * Overlay text onto an image
@@ -188,4 +127,71 @@ public class TextController
 
 
 
+
+    /**
+     * Overlay text onto an image
+     *
+     * @param file
+     * @param text
+     * @param color
+     * @param fontSize
+     * @param fontStyle
+     * @param angle
+     * @param x
+     * @param y
+     * @return
+     * @throws InterruptedException
+     * @throws java.util.concurrent.ExecutionException
+     * @throws java.util.concurrent.TimeoutException
+     * @throws java.io.IOException
+     */
+    @RequestMapping(value = "/modify/text", method = {RequestMethod.POST})
+    public ResponseEntity<byte[]> drawTextByImage(
+            @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
+            , @ApiParam(name="text", required = true) @RequestParam(required = true) String text
+            , @ApiParam(name="color", required = true) @RequestParam(required = true) String color
+            , @ApiParam(name="fontSize", required = true) @RequestParam(required = true) String fontSize
+            , @ApiParam(name="fontStyle", required = true) @RequestParam(required = true) String fontStyle
+            , @ApiParam(name="angle", required = true) @RequestParam(required = true) Integer angle
+            , @ApiParam(name="x", required = true) @RequestParam(required = true) Integer x
+            , @ApiParam(name="y", required = true) @RequestParam(required = true) Integer y
+            , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
+
+    ) throws InterruptedException, ExecutionException, TimeoutException, IOException
+    {
+        String _format = format;
+        if( format == null ) {
+            _format = MimeType.getMimeType(file.getContentType()).contentType;
+        }
+
+        MimeType mimeType = MimeType.getMimeType(_format);
+        String _contentType = mimeType.contentType;
+        if( !mimeType.isSupportedImage() )
+        {
+            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
+
+        FileTextJob job = new FileTextJob();
+        job.setDocumentId(null);
+        job.setDocument(new Document(file));
+        job.getDocument().setContentType(MimeType.getMimeType(file.getContentType()));
+        job.getDocument().setFileName(file.getOriginalFilename());
+        job.setText(text);
+        job.setColor(color);
+        job.setFontSize(fontSize);
+        job.setFontStyle(fontStyle);
+        job.setAngle(angle);
+        job.setX(x);
+        job.setY(y);
+
+
+        Future<Map> imageFuture = imageDrawTextGateway.imageDrawTextFilter(job);
+        FileTextJob payload = (FileTextJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
+
+
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
+        return result;
+
+    }
 }
