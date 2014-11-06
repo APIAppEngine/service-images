@@ -67,9 +67,6 @@ public class ImageMetadataService
         }
         catch (Throwable e)
         {
-            //URL location = coldfusion.runtime.NeoPageContext.class.getProtectionDomain().getCodeSource().getLocation();
-            //System.out.print(location);
-
             e.printStackTrace(); //todo use logging library
             throw new RuntimeException(e);
         }

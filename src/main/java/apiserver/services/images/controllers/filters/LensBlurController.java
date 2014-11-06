@@ -20,6 +20,7 @@ package apiserver.services.images.controllers.filters;
  ******************************************************************************/
 
 import apiserver.MimeType;
+import apiserver.core.FileUploadHelper;
 import apiserver.services.cache.model.Document;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.images.gateways.filters.ApiImageFilterLensBlurGateway;
@@ -42,6 +43,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
@@ -61,6 +64,9 @@ import java.util.concurrent.TimeoutException;
 public class LensBlurController
 {
     public final Log log = LogFactory.getLog(this.getClass());
+
+    @Autowired
+    private FileUploadHelper fileUploadHelper;
 
     @Autowired
     private ApiImageFilterLensBlurGateway imageFilterLensBlurGateway;
@@ -130,7 +136,8 @@ public class LensBlurController
     @ApiOperation(value = "This filter simulates the blurring caused by a camera lens. You can change the aperture size and shape and also specify blooming of the image. This filter is very slow.")
     @RequestMapping(value = "/filter/lensblur", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> imageLensBlurByFile(
-            @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
+            HttpServletRequest request, HttpServletResponse response,
+            @ApiParam(name = "file", required = false) @RequestParam(value = "file", required = false) MultipartFile file
             , @ApiParam(name = "radius", required = false, defaultValue = "10") @RequestParam(value = "radius", required = false, defaultValue = "10") float radius
             , @ApiParam(name = "sides", required = false, defaultValue = "5") @RequestParam(value = "sides", required = false, defaultValue = "5") int sides
             , @ApiParam(name = "bloom", required = false, defaultValue = "2") @RequestParam(value = "bloom", required = false, defaultValue = "2") float bloom
@@ -138,24 +145,23 @@ public class LensBlurController
 
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
-        String _format = format;
-        if( format == null ) {
-            _format = MimeType.getMimeType(file.getContentType()).contentType;
-        }
+        Document _file = null;
+        MimeType _outputMimeType = null;
+        String _outputContentType = null;
 
-        MimeType mimeType = MimeType.getMimeType(_format);
-        String _contentType = mimeType.contentType;
-        if( !mimeType.isSupportedImage() )
+
+        MultipartFile _mFile = fileUploadHelper.getFileFromRequest(file, request);
+        _file = new Document(_mFile);
+        _outputMimeType = fileUploadHelper.getOutputFileFormat(format, _file.getContentType() );
+        _outputContentType = _outputMimeType.contentType;
+        if( !_file.getContentType().isSupportedImage() ||  !_outputMimeType.isSupportedImage() )
         {
-            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
-
 
         LensBlurJob job = new LensBlurJob();
         job.setDocumentId(null);
-        job.setDocument( new Document(file) );
-        job.getDocument().setContentType(MimeType.getMimeType(file.getContentType()) );
-        job.getDocument().setFileName(file.getOriginalFilename());
+        job.setDocument(new Document(file));
         job.setRadius(radius);
         job.setSides(sides);
         job.setBloom(bloom);
@@ -164,7 +170,7 @@ public class LensBlurController
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _outputContentType, false );
         return result;
     }
 

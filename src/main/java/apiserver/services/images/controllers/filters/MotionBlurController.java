@@ -20,6 +20,7 @@ package apiserver.services.images.controllers.filters;
  ******************************************************************************/
 
 import apiserver.MimeType;
+import apiserver.core.FileUploadHelper;
 import apiserver.services.cache.model.Document;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.images.gateways.filters.ApiImageFilterMotionBlurGateway;
@@ -43,6 +44,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
@@ -62,6 +65,9 @@ import java.util.concurrent.TimeoutException;
 public class MotionBlurController
 {
     public final Log log = LogFactory.getLog(this.getClass());
+
+    @Autowired
+    private FileUploadHelper fileUploadHelper;
 
     @Autowired
     private ApiImageFilterMotionBlurGateway imageFilterMotionBlurGateway;
@@ -142,34 +148,34 @@ public class MotionBlurController
     @RequestMapping(value = "/filter/motionblur", method = {RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<byte[]> imageMotionBlurByFile(
-            @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
-            , @ApiParam(name="angle", required = true, defaultValue = "0")  @RequestParam(value="angle", required = false, defaultValue="0") float angle
-            , @ApiParam(name="distance", required = true, defaultValue = "1")  @RequestParam(value="distance", required = false,  defaultValue="0") float distance
-            , @ApiParam(name="rotation", required = true, defaultValue = "0")  @RequestParam(value="rotation", required = false,  defaultValue="0") float rotation
-            , @ApiParam(name="wrapEdges", required = true, defaultValue = "false")  @RequestParam(value="wrapEdges", required = false,  defaultValue="false") boolean wrapEdges
-            , @ApiParam(name="zoom", required = true, defaultValue = "0")  @RequestParam(value="zoom", required = false,  defaultValue="0") float zoom
+            HttpServletRequest request, HttpServletResponse response,
+            @ApiParam(name = "file", required = false) @RequestParam(value = "file", required = false) MultipartFile file
+            , @ApiParam(name="angle", required = false, defaultValue = "0")  @RequestParam(value="angle", required = false, defaultValue="0") float angle
+            , @ApiParam(name="distance", required = false, defaultValue = "1")  @RequestParam(value="distance", required = false,  defaultValue="0") float distance
+            , @ApiParam(name="rotation", required = false, defaultValue = "0")  @RequestParam(value="rotation", required = false,  defaultValue="0") float rotation
+            , @ApiParam(name="wrapEdges", required = false, defaultValue = "false")  @RequestParam(value="wrapEdges", required = false,  defaultValue="false") boolean wrapEdges
+            , @ApiParam(name="zoom", required = false, defaultValue = "0")  @RequestParam(value="zoom", required = false,  defaultValue="0") float zoom
             , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
 
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
-        String _format = format;
-        if( format == null ) {
-            _format = MimeType.getMimeType(file.getContentType()).contentType;
-        }
+        Document _file = null;
+        MimeType _outputMimeType = null;
+        String _outputContentType = null;
 
-        MimeType mimeType = MimeType.getMimeType(_format);
-        String _contentType = mimeType.contentType;
-        if( !mimeType.isSupportedImage() )
+
+        MultipartFile _mFile = fileUploadHelper.getFileFromRequest(file, request);
+        _file = new Document(_mFile);
+        _outputMimeType = fileUploadHelper.getOutputFileFormat(format, _file.getContentType() );
+        _outputContentType = _outputMimeType.contentType;
+        if( !_file.getContentType().isSupportedImage() ||  !_outputMimeType.isSupportedImage() )
         {
-            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
-
 
         MotionBlurJob job = new MotionBlurJob();
         job.setDocumentId(null);
-        job.setDocument( new Document(file) );
-        job.getDocument().setContentType(MimeType.getMimeType(file.getContentType()) );
-        job.getDocument().setFileName(file.getOriginalFilename());
+        job.setDocument(new Document(file));
         job.setAngle(angle);
         job.setDistance(distance);
         job.setRotation(rotation);
@@ -181,7 +187,7 @@ public class MotionBlurController
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _outputContentType, false );
         return result;
     }
 

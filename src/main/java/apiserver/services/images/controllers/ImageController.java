@@ -20,6 +20,7 @@ package apiserver.services.images.controllers;
  ******************************************************************************/
 
 import apiserver.MimeType;
+import apiserver.core.FileUploadHelper;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.cache.model.Document;
 import apiserver.services.images.gateways.images.ImageInfoGateway;
@@ -43,6 +44,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.WebAsyncTask;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -66,18 +70,22 @@ public class ImageController
     @Autowired
     public ImageMetadataGateway imageMetadataGateway;
 
-    private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
+    @Autowired
+    private FileUploadHelper fileUploadHelper;
 
+    private
+    @Value("${defaultReplyTimeout}")
+    Integer defaultTimeout;
 
 
     /**
      * get basic info about image.
-     * @param documentId cache id
-     * @return   height,width, pixel size, transparency
-     * , @RequestPart("meta-data") Object metadata
      *
-    , @RequestParam MultipartFile file
-
+     * @param documentId cache id
+     * @return height, width, pixel size, transparency
+     * , @RequestPart("meta-data") Object metadata
+     * <p/>
+     * , @RequestParam MultipartFile file
      */
     @ApiOperation(value = "Get the height and width for the image", response = Map.class)
     @RequestMapping(value = "/info/{documentId}/size", method = {RequestMethod.GET})
@@ -110,44 +118,43 @@ public class ImageController
     }
 
 
-
-
     /**
      * get basic info about image.
+     *
      * @param file
      * @return
      * @throws java.util.concurrent.ExecutionException
      * @throws java.util.concurrent.TimeoutException
      * @throws InterruptedException
      */
-    @ApiOperation(value = "Get the height and width for the image", response = Map.class)
+    @ApiOperation(value = "Get the height and width for the image")
     @RequestMapping(value = "/info/size", method = {RequestMethod.POST})
-    public WebAsyncTask<Map> imageInfoByImageAsync(
-            @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
-    ) throws ExecutionException, TimeoutException, InterruptedException
+    public ResponseEntity<Map> imageInfoByImageAsync(
+            HttpServletRequest request, HttpServletResponse response,
+            @ApiParam(name = "file", required = false) @RequestParam(value = "file", required = false) MultipartFile file
+    ) throws ExecutionException, TimeoutException, InterruptedException, IOException
     {
-        final MultipartFile _file = file;
-
-        Callable<Map> callable = new Callable<Map>()
-        {
-            @Override
-            public Map call() throws Exception
-            {
-                FileInfoJob job = new FileInfoJob();
-                job.setDocumentId(null);
-                job.setDocument( new Document(_file) );
-                job.getDocument().setContentType(MimeType.getMimeType(_file.getContentType()) );
-                job.getDocument().setFileName(_file.getOriginalFilename());
+        Document _file = null;
+        MimeType _fileMimeType = null;
 
 
-                Future<Map> imageFuture = gateway.imageSize(job);
-                Map payload = imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
+        MultipartFile _mFile = fileUploadHelper.getFileFromRequest(file, request);
+        _file = new Document(_mFile);
+        _fileMimeType = _file.getContentType();
+        if (!_fileMimeType.isSupportedImage()) {
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
 
-                return payload;
-            }
-        };
 
-        return new WebAsyncTask<Map>(defaultTimeout, callable);
+        FileInfoJob job = new FileInfoJob();
+        job.setDocumentId(null);
+        job.setDocument(_file);
+
+        Future<Map> imageFuture = gateway.imageSize(job);
+        Map payload = imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
+
+        ResponseEntity<Map> result = new ResponseEntity(payload, HttpStatus.OK);
+        return result;
     }
 
 

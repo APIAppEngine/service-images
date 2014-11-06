@@ -93,4 +93,22 @@ public class ImageBlurTests extends FilterTestBase
         saveFileToLocalDisk("blur-post.jpg", result.getResponse().getContentAsByteArray());
     }
 
+
+    @Test
+    public void testOutputBlurByPost() throws Exception
+    {
+        InputStream fileStream = this.getClass().getClassLoader().getResourceAsStream("IMG_5932.JPG");
+
+        MockMultipartFile file = new MockMultipartFile("file", "IMG_5932.JPG", "image/jpeg", fileStream);
+
+        MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
+                .perform(fileUpload(rootUrl + "/api/image/filter/blur").file(file).param("format", "png"))
+                .andExpect(status().is(200))
+                .andExpect(content().contentType("image/png"))
+                .andReturn();
+
+        Assert.assertEquals(28059051, result.getResponse().getContentLength());
+        saveFileToLocalDisk("blur-post.jpg", result.getResponse().getContentAsByteArray());
+    }
+
 }

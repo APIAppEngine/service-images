@@ -20,6 +20,7 @@ package apiserver.services.images.controllers.filters;
  ******************************************************************************/
 
 import apiserver.MimeType;
+import apiserver.core.FileUploadHelper;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.cache.model.Document;
 import apiserver.services.images.gateways.filters.ApiImageFilterGrayScaleGateway;
@@ -41,6 +42,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
@@ -63,6 +66,9 @@ public class GrayscaleController
 
     @Autowired
     private ApiImageFilterGrayScaleGateway imageFilterGrayScaleGateway;
+
+    @Autowired
+    private FileUploadHelper fileUploadHelper;
 
     private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
 
@@ -118,36 +124,36 @@ public class GrayscaleController
     @ApiOperation(value = "This filter converts an image to a grayscale image. To do this it finds the brightness of each pixel and sets the red, green and blue of the output to the brightness value. But what is the brightness? The simplest answer might be that it is the average of the RGB components, but that neglects the way in which the human eye works. The eye is much more sensitive to green and red than it is to blue, and so we need to take less acount of the blue and more account of the green. The weighting used by GrayscaleFilter is: luma = 77R + 151G + 28B")
     @RequestMapping(value = "/filter/grayscale", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> imageGrayscaleByFile(
-            @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
+            HttpServletRequest request, HttpServletResponse response,
+            @ApiParam(name = "file", required = false) @RequestParam(value = "file", required = false) MultipartFile file
             , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
 
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
-        String _format = format;
-        if( format == null ) {
-            _format = MimeType.getMimeType(file.getContentType()).contentType;
-        }
+        Document _file = null;
+        MimeType _outputMimeType = null;
+        String _outputContentType = null;
 
-        MimeType mimeType = MimeType.getMimeType(_format);
-        String _contentType = mimeType.contentType;
-        if( !mimeType.isSupportedImage() )
+
+        MultipartFile _mFile = fileUploadHelper.getFileFromRequest(file, request);
+        _file = new Document(_mFile);
+        _outputMimeType = fileUploadHelper.getOutputFileFormat(format, _file.getContentType() );
+        _outputContentType = _outputMimeType.contentType;
+        if( !_file.getContentType().isSupportedImage() ||  !_outputMimeType.isSupportedImage() )
         {
-            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
-
 
         ImageDocumentJob job = new ImageDocumentJob();
         job.setDocumentId(null);
-        job.setDocument( new Document(file) );
-        job.getDocument().setContentType( MimeType.getMimeType(file.getContentType()) );
-        job.getDocument().setFileName( file.getOriginalFilename() );
+        job.setDocument(new Document(file));
 
 
         Future<Map> imageFuture = imageFilterGrayScaleGateway.imageGrayScaleFilter(job);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _outputContentType, false );
         return result;
     }
 

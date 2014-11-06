@@ -20,6 +20,7 @@ package apiserver.services.images.controllers;
  ******************************************************************************/
 
 import apiserver.MimeType;
+import apiserver.core.FileUploadHelper;
 import apiserver.services.cache.model.Document;
 import apiserver.services.images.gateways.images.ImageInfoGateway;
 import apiserver.services.images.gateways.images.ImageMetadataGateway;
@@ -29,6 +30,8 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,10 +40,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.async.WebAsyncTask;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * User: mnimer
@@ -57,13 +65,20 @@ public class MetadataController
     @Autowired
     public ImageMetadataGateway imageMetadataGateway;
 
-    private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
+    @Autowired
+    private FileUploadHelper fileUploadHelper;
+
+
+    private
+    @Value("${defaultReplyTimeout}")
+    Integer defaultTimeout;
 
 
     /**
      * get embedded metadata
+     *
      * @param documentId
-     * @return   height,width
+     * @return height, width
      */
     @ApiOperation(value = "Get the embedded metadata", response = Map.class)
     @RequestMapping(value = "/info/{documentId}/metadata", method = {RequestMethod.GET})
@@ -82,7 +97,7 @@ public class MetadataController
                 args.setDocumentId(_documentId);
 
                 Future<Map> imageFuture = imageMetadataGateway.getMetadata(args);
-                FileMetadataJob payload = (FileMetadataJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
+                FileMetadataJob payload = (FileMetadataJob) imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
                 return payload.getMetadata();
             }
@@ -90,42 +105,38 @@ public class MetadataController
 
         return new WebAsyncTask<Map>(defaultTimeout, callable);
     }
-
 
 
     /**
      * get embedded metadata
+     *
      * @param file uploaded image
-     * @return   height,width
+     * @return height, width
      */
     @ApiOperation(value = "Get the embedded metadata", response = Map.class)
     @RequestMapping(value = "/info/metadata", method = {RequestMethod.POST})
-    public WebAsyncTask<Map> imageMetadataByImage(
+    public ResponseEntity<Map> imageMetadataByImage(
+            HttpServletRequest request, HttpServletResponse response,
             @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
-    )
+    ) throws ExecutionException, InterruptedException, TimeoutException, IOException
     {
-        final MultipartFile _file = file;
+        Document _file = null;
 
-        Callable<Map> callable = new Callable<Map>()
-        {
-            @Override
-            public Map call() throws Exception
-            {
-                FileMetadataJob job = new FileMetadataJob();
-                job.setDocumentId(null);
-                job.setDocument( new Document(_file) );
-                job.getDocument().setContentType(MimeType.getMimeType(_file.getContentType()) );
-                job.getDocument().setFileName(_file.getOriginalFilename());
+        MultipartFile _mFile = fileUploadHelper.getFileFromRequest(file, request);
+        _file = new Document(_mFile);
+        if (!_file.getContentType().isSupportedImage()) {
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
 
-                Future<Map> imageFuture = imageMetadataGateway.getMetadata(job);
-                FileMetadataJob payload = (FileMetadataJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-                return payload.getMetadata();
-            }
-        };
+        FileMetadataJob job = new FileMetadataJob();
+        job.setDocumentId(null);
+        job.setDocument(_file);
 
-        return new WebAsyncTask<Map>(defaultTimeout, callable);
+        Future<Map> imageFuture = imageMetadataGateway.getMetadata(job);
+        FileMetadataJob payload = (FileMetadataJob) imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
+
+        return new ResponseEntity<>(payload.getMetadata(), HttpStatus.OK);
+
     }
-
-
 }

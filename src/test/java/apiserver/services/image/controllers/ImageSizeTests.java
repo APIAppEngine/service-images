@@ -39,6 +39,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -83,13 +84,14 @@ public class ImageSizeTests extends FilterTestBase
         MvcResult result = MockMvcBuilders.webAppContextSetup((WebApplicationContext) context).build()
                 .perform(fileUpload(rootUrl + "/api/image/info/size").file(file))
                 .andExpect(status().is(200))
-                .andExpect(request().asyncStarted())
+                .andExpect(jsonPath("$.width").value(4000))
+                .andExpect(jsonPath("$.height").value(3000))
                 .andReturn();
 
-        Map asyncResult = (Map)result.getAsyncResult();
-        Assert.assertTrue(asyncResult instanceof Map);
-        Assert.assertEquals(3000, asyncResult.get("height") );
-        Assert.assertEquals(4000, asyncResult.get("width") );
+        //Map asyncResult = (Map)result.getAsyncResult();
+        //Assert.assertTrue(asyncResult instanceof Map);
+        //Assert.assertEquals(3000, asyncResult.get("height") );
+        //Assert.assertEquals(4000, asyncResult.get("width") );
     }
 
 }

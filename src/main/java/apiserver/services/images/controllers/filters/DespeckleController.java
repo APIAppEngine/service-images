@@ -20,6 +20,7 @@ package apiserver.services.images.controllers.filters;
  ******************************************************************************/
 
 import apiserver.MimeType;
+import apiserver.core.FileUploadHelper;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.cache.model.Document;
 import apiserver.services.images.gateways.filters.ApiImageFilterDespeckleGateway;
@@ -41,7 +42,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.image.BufferedImage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -66,6 +68,8 @@ public class DespeckleController
 
     private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
 
+    @Autowired
+    private FileUploadHelper fileUploadHelper;
 
     /**
      * This filter reduces light noise in an image using the eight hull algorithm described in Applied Optics, Vol. 24, No. 10, 15 May 1985, "Geometric filter for Speckle Reduction", by Thomas R Crimmins. Basically, it tries to move each pixel closer in value to its neighbours. As it only has a small effect, you may need to apply it several times. This is good for removing small levels of noise from an image but does give the image some fuzziness.
@@ -119,36 +123,40 @@ public class DespeckleController
     @ApiOperation(value = "This filter reduces light noise in an image using the eight hull algorithm described in Applied Optics, Vol. 24, No. 10, 15 May 1985, \"Geometric filter for Speckle Reduction\", by Thomas R Crimmins. Basically, it tries to move each pixel closer in value to its neighbours. As it only has a small effect, you may need to apply it several times. This is good for removing small levels of noise from an image but does give the image some fuzziness.")
     @RequestMapping(value = "/filter/despeckle", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> imageDespeckleByFile(
-            @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
+            HttpServletRequest request, HttpServletResponse response,
+            @ApiParam(name = "file", required = false) @RequestParam(value = "file", required = false) MultipartFile file
             , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
 
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
-        String _format = format;
-        if( format == null ) {
-            _format = MimeType.getMimeType(file.getContentType()).contentType;
+        Document _file = null;
+        MimeType _outputMimeType = null;
+        String _outputContentType = null;
+
+
+        MultipartFile _mFile = fileUploadHelper.getFileFromRequest(file, request);
+        _file = new Document(_mFile);
+        _outputMimeType = fileUploadHelper.getOutputFileFormat(format, _file.getContentType());
+        _outputContentType = _outputMimeType.contentType;
+        if( !_file.getContentType().isSupportedImage() ||  !_outputMimeType.isSupportedImage() )
+        {
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
 
-        MimeType mimeType = MimeType.getMimeType(_format);
-        String _contentType = mimeType.contentType;
-        if( !mimeType.isSupportedImage() )
-        {
-            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-        }
 
         ImageDocumentJob job = new ImageDocumentJob();
         job.setDocumentId(null);
-        job.setDocument( new Document(file) );
-        job.getDocument().setContentType( MimeType.getMimeType(file.getContentType()) );
-        job.getDocument().setFileName( file.getOriginalFilename() );
+        job.setDocument(_file);
 
         Future<Map> imageFuture = imageFilterDespeckleGateway.imageDespeckleFilter(job);
         ImageDocumentJob payload = (ImageDocumentJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _outputContentType, false );
         return result;
 
     }
+
+
 
 }

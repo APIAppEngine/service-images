@@ -18,7 +18,7 @@ import java.util.Map;
 @RestController
 public class ImageTestController
 {
-    @RequestMapping(value = "/api/images/test", method= RequestMethod.GET)
+    @RequestMapping(value = "/api/image/test", method= RequestMethod.GET)
     public ResponseEntity<Map> test()
     {
         HashMap<String, Object> m = new HashMap<String, Object>();

@@ -1,6 +1,7 @@
 package apiserver.services.images.controllers.manipulations;
 
 import apiserver.MimeType;
+import apiserver.core.FileUploadHelper;
 import apiserver.services.cache.model.Document;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.images.gateways.images.ImageResizeGateway;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
@@ -78,6 +80,9 @@ public class ResizeController
 
     @Autowired
     private ImageRotateGateway imageRotateGateway;
+
+    @Autowired
+    private FileUploadHelper fileUploadHelper;
 
     private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
 
@@ -144,7 +149,8 @@ public class ResizeController
     @RequestMapping(value = "/modify/resize", method = {RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<byte[]> resizeImageByImage(
-            @ApiParam(name="file", required = true) @RequestParam MultipartFile file
+            HttpServletRequest request, HttpServletResponse response,
+            @ApiParam(name="file", required = false) @RequestParam(value = "file", required = false) MultipartFile file
             , @ApiParam(name="width", required = true, defaultValue = "200") @RequestParam(required = true) Integer width
             , @ApiParam(name="height", required = true, defaultValue = "200") @RequestParam(required = true) Integer height
             , @ApiParam(name="interpolation", required = false, defaultValue = "bicubic") @RequestParam(required = false, defaultValue = "bicubic") String interpolation
@@ -153,16 +159,18 @@ public class ResizeController
 
     ) throws IOException, InterruptedException, ExecutionException, TimeoutException
     {
-        String _format = format;
-        if( format == null ) {
-            _format = MimeType.getMimeType(file.getContentType()).contentType;
-        }
+        Document _file = null;
+        MimeType _outputMimeType = null;
+        String _outputContentType = null;
 
-        MimeType mimeType = MimeType.getMimeType(_format);
-        String _contentType = mimeType.contentType;
-        if( !mimeType.isSupportedImage() )
+
+        MultipartFile _mFile = fileUploadHelper.getFileFromRequest(file, request);
+        _file = new Document(_mFile);
+        _outputMimeType = fileUploadHelper.getOutputFileFormat(format, _file.getContentType() );
+        _outputContentType = _outputMimeType.contentType;
+        if( !_file.getContentType().isSupportedImage() ||  !_outputMimeType.isSupportedImage() )
         {
-            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
 
 
@@ -180,7 +188,7 @@ public class ResizeController
         FileResizeJob payload = (FileResizeJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _contentType, false );
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _outputContentType, false );
         return result;
     }
 

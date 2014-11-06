@@ -20,6 +20,7 @@ package apiserver.services.images.controllers.filters;
  ******************************************************************************/
 
 import apiserver.MimeType;
+import apiserver.core.FileUploadHelper;
 import apiserver.services.cache.model.Document;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.images.gateways.filters.ApiImageFilterBoxBlurGateway;
@@ -41,7 +42,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.image.BufferedImage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -61,6 +63,8 @@ public class BoxBlurController
 
     private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
 
+    @Autowired
+    private FileUploadHelper fileUploadHelper;
 
     /**
      * A filter which performs a box blur on an uploaded image. The horizontal and vertical blurs can be specified separately and a number of iterations can be given which allows an approximation to Gaussian blur.
@@ -130,32 +134,33 @@ public class BoxBlurController
     @RequestMapping(value = "/filter/boxblur", method = {RequestMethod.POST})
     @ResponseBody
     public ResponseEntity<byte[]> imageBoxBlurByFile(
-            @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
+            HttpServletRequest request, HttpServletResponse response,
+            @ApiParam(name = "file", required = false) @RequestParam(value = "file", required = false) MultipartFile file
             , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
-            , @ApiParam(name = "hRadius", required = false, defaultValue = "2", value = "the horizontal radius of blur") @RequestParam(value = "hRadius", defaultValue = "2") int hRadius
-            , @ApiParam(name = "vRadius", required = false, defaultValue = "2", value = "the vertical radius of blur") @RequestParam(value = "vRadius", defaultValue = "2") int vRadius
+            , @ApiParam(name = "hRadius", required = false, defaultValue = "2", value = "the horizontal radius of blur") @RequestParam(value = "hRadius", required = false, defaultValue = "2") int hRadius
+            , @ApiParam(name = "vRadius", required = false, defaultValue = "2", value = "the vertical radius of blur") @RequestParam(value = "vRadius", required = false, defaultValue = "2") int vRadius
             , @ApiParam(name = "iterations", required = false, defaultValue = "1", value = "the number of time to iterate the blur") @RequestParam(value = "iterations", defaultValue = "1") int iterations
-            , @ApiParam(name = "preMultiplyAlpha", required = false, defaultValue = "true", allowableValues = "true,false", value = "pre multiply the alpha channel") @RequestParam(value = "preMultiplyAlpha", defaultValue = "true") boolean preMultiplyAlpha
+            , @ApiParam(name = "preMultiplyAlpha", required = false, defaultValue = "true", allowableValues = "true,false", value = "pre multiply the alpha channel") @RequestParam(value = "preMultiplyAlpha", required = false, defaultValue = "true") boolean preMultiplyAlpha
 
     ) throws TimeoutException, ExecutionException, InterruptedException, IOException
     {
-        String _format = format;
-        if( format == null ) {
-            _format = MimeType.getMimeType(file.getContentType()).contentType;
-        }
+        Document _file = null;
+        MimeType _outputMimeType = null;
+        String _outputContentType = null;
 
-        MimeType mimeType = MimeType.getMimeType(_format);
-        String _contentType = mimeType.contentType;
-        if( !mimeType.isSupportedImage() )
+
+        MultipartFile _mFile = fileUploadHelper.getFileFromRequest(file, request);
+        _file = new Document(_mFile);
+        _outputMimeType = fileUploadHelper.getOutputFileFormat(format, _file.getContentType());
+        _outputContentType = _outputMimeType.contentType;
+        if( !_file.getContentType().isSupportedImage() ||  !_outputMimeType.isSupportedImage() )
         {
-            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
 
         BoxBlurJob job = new BoxBlurJob();
         job.setDocumentId(null);
-        job.setDocument( new Document(file) );
-        job.getDocument().setContentType( MimeType.getMimeType(file.getContentType()) );
-        job.getDocument().setFileName( file.getOriginalFilename() );
+        job.setDocument(_file);
 
         job.setHRadius(hRadius);
         job.setVRadius(vRadius);
@@ -165,7 +170,7 @@ public class BoxBlurController
         Future<Map> imageFuture = imageFilterBoxBlurGateway.imageBoxBlurFilter(job);
         ImageDocumentJob payload = (ImageDocumentJob) imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _outputContentType, false);
         return result;
     }
 }

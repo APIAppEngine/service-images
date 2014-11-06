@@ -20,6 +20,7 @@ package apiserver.services.images.controllers.manipulations;
  ******************************************************************************/
 
 import apiserver.MimeType;
+import apiserver.core.FileUploadHelper;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.cache.model.Document;
 import apiserver.services.images.gateways.images.ImageDrawTextGateway;
@@ -38,6 +39,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
@@ -59,6 +62,9 @@ public class TextController
 
     @Autowired
     private ImageDrawTextGateway imageDrawTextGateway;
+
+    @Autowired
+    private FileUploadHelper fileUploadHelper;
 
     private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
 
@@ -147,7 +153,8 @@ public class TextController
      */
     @RequestMapping(value = "/modify/text", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> drawTextByImage(
-            @ApiParam(name = "file", required = true) @RequestParam(value = "file", required = true) MultipartFile file
+            HttpServletRequest request, HttpServletResponse response,
+            @ApiParam(name = "file", required = false) @RequestParam(value = "file", required = false) MultipartFile file
             , @ApiParam(name="text", required = true) @RequestParam(required = true) String text
             , @ApiParam(name="color", required = true) @RequestParam(required = true) String color
             , @ApiParam(name="fontSize", required = true) @RequestParam(required = true) String fontSize
@@ -155,20 +162,22 @@ public class TextController
             , @ApiParam(name="angle", required = true) @RequestParam(required = true) Integer angle
             , @ApiParam(name="x", required = true) @RequestParam(required = true) Integer x
             , @ApiParam(name="y", required = true) @RequestParam(required = true) Integer y
-            , @ApiParam(name = "format", required = false) @RequestParam(value = "format", required = false) String format
+            , @ApiParam(name="format", required = false) @RequestParam(value = "format", required = false) String format
 
     ) throws InterruptedException, ExecutionException, TimeoutException, IOException
     {
-        String _format = format;
-        if( format == null ) {
-            _format = MimeType.getMimeType(file.getContentType()).contentType;
-        }
+        Document _file = null;
+        MimeType _outputMimeType = null;
+        String _outputContentType = null;
 
-        MimeType mimeType = MimeType.getMimeType(_format);
-        String _contentType = mimeType.contentType;
-        if( !mimeType.isSupportedImage() )
+
+        MultipartFile _mFile = fileUploadHelper.getFileFromRequest(file, request);
+        _file = new Document(_mFile);
+        _outputMimeType = fileUploadHelper.getOutputFileFormat(format, _file.getContentType() );
+        _outputContentType = _outputMimeType.contentType;
+        if( !_file.getContentType().isSupportedImage() ||  !_outputMimeType.isSupportedImage() )
         {
-            return new ResponseEntity<byte[]>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+            return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
 
 
@@ -190,7 +199,7 @@ public class TextController
         FileTextJob payload = (FileTextJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _outputContentType, false);
         return result;
 
     }
