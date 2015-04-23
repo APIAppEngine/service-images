@@ -1,17 +1,14 @@
 package apiserver.services.images.services.grid;
 
-import apiserver.ApiServerConstants;
-import apiserver.exceptions.ColdFusionException;
-import org.gridgain.grid.Grid;
-import org.gridgain.grid.GridConfiguration;
-import org.gridgain.grid.GridException;
-import org.gridgain.grid.GridGain;
-import org.gridgain.grid.GridProjection;
-import org.gridgain.grid.marshaller.optimized.GridOptimizedMarshaller;
+import org.apache.ignite.Ignite;
+import org.apache.ignite.IgniteException;
+import org.apache.ignite.cluster.ClusterGroup;
+import org.apache.ignite.internal.cluster.ClusterGroupAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -19,34 +16,24 @@ import java.util.concurrent.ExecutorService;
  *
  * Created by mnimer on 6/10/14.
  */
+@Service
 public class GridService implements Serializable
 {
-    private static Grid grid = null;
+    @Autowired
+    private Ignite grid = null;
 
 
-    protected Grid verifyGridConnection()
+
+    public ExecutorService getColdFusionExecutor() throws IgniteException
     {
-        if( grid == null )
-        {
-          throw new RuntimeException("Grid Not Enabled");
-        }
-
-        return grid;
-    }
-
-
-
-
-    public ExecutorService getColdFusionExecutor() throws GridException {
-
         // Get grid-enabled executor service for nodes where attribute 'worker' is defined.
-        GridProjection projection = grid.forAttribute("ROLE", "coldfusion-worker");
+        ClusterGroup projection = grid.cluster().forNodeId(UUID.fromString("5d59104a-674b-4cec-88a8-86264d02641b"));//forAttribute("ROLE", "worker-coldfusion");
 
         if( projection.nodes().size() == 0 ) {  //todo, test that it returns null if CF is not running
-            throw new GridException("ColdFusion-Worker Grid Node is not running or accessible");
+            throw new IgniteException("connector-coldfusion Grid Node is not running or accessible");
         }
 
-        return projection.forRandom().compute().executorService();
+        return ((ClusterGroupAdapter) projection).executorService();
     }
 
 }

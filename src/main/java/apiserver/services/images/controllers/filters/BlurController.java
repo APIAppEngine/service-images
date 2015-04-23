@@ -150,7 +150,7 @@ public class BlurController
 
         ImageDocumentJob job = new ImageDocumentJob();
         job.setDocumentId(null);
-        job.setDocument(_file);
+            job.setDocument(_file);
 
         Future<Map> imageFuture = imageFilterBlurGateway.imageBlurFilter(job);
         ImageDocumentJob payload = (ImageDocumentJob) imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);

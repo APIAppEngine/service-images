@@ -1,18 +1,15 @@
 package apiserver.services.image.grid;
 
-import apiserver.workers.coldfusion.services.TestService;
-import org.gridgain.grid.Grid;
-import org.gridgain.grid.GridConfiguration;
-import org.gridgain.grid.GridException;
-import org.gridgain.grid.GridGain;
-import org.gridgain.grid.lang.GridCallable;
+import org.apache.ignite.Ignite;
+import org.apache.ignite.IgniteException;
+import org.apache.ignite.Ignition;
+import org.apache.ignite.configuration.IgniteConfiguration;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -25,11 +22,12 @@ import java.util.concurrent.TimeUnit;
 @Ignore
 public class EchoTestService2 implements Serializable
 {
-    private Grid grid = null;
+    private Ignite grid = null;
 
     @Before
-    public void startup() throws GridException {
-        grid = GridGain.start(getGridConfiguration());
+    public void startup() throws IgniteException
+    {
+        grid = Ignition.start(getGridConfiguration());
     }
 
 
@@ -45,10 +43,10 @@ public class EchoTestService2 implements Serializable
         final String msg2 = msg;
         try
         {
-            Assert.assertTrue("Requires an external CF Node to be running", grid.nodes().size() > 1);
+            Assert.assertTrue("Requires an external CF Node to be running", grid.cluster().nodes().size() > 1);
 
             // Get grid-enabled executor service for nodes where attribute 'worker' is defined.
-            ExecutorService exec = grid.forAttribute("ROLE", "coldfusion-worker").compute().executorService();
+            ExecutorService exec = grid.cluster().forAttribute("ROLE", "coldfusion-worker").ignite().executorService();
 
 
             Future<String> future = exec.submit(new EchoCallable(msg));
@@ -83,14 +81,14 @@ public class EchoTestService2 implements Serializable
 
 
 
-    private GridConfiguration getGridConfiguration() {
+    private IgniteConfiguration getGridConfiguration() {
         Map<String, String> userAttr = new HashMap<String, String>();
         userAttr.put("ROLE", "image-service");
 
-        GridConfiguration gc = new GridConfiguration();
+        IgniteConfiguration gc = new IgniteConfiguration();
         gc.setGridName("ApiServer");
         gc.setPeerClassLoadingEnabled(true);
-        gc.setRestEnabled(false);
+        //gc.setRestEnabled(false);
         gc.setUserAttributes(userAttr);
 
 

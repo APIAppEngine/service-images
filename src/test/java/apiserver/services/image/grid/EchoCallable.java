@@ -1,14 +1,12 @@
 package apiserver.services.image.grid;
 
 import apiserver.workers.coldfusion.services.TestService;
-import org.gridgain.grid.lang.GridCallable;
-
-import java.io.Serializable;
+import org.apache.ignite.lang.IgniteCallable;
 
 /**
  * Created by mnimer on 6/10/14.
  */
-public class EchoCallable implements GridCallable
+public class EchoCallable implements IgniteCallable
 {
     String msg;
 

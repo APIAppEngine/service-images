@@ -19,15 +19,12 @@ package apiserver.services.images.services.coldfusion;
  along with the ApiServer Project.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-import apiserver.core.connectors.coldfusion.IColdFusionBridge;
 import apiserver.exceptions.ColdFusionException;
-import apiserver.services.images.ImageConfigMBean;
 import apiserver.services.images.gateways.jobs.images.FileResizeJob;
 import apiserver.services.images.services.grid.GridService;
 import apiserver.workers.coldfusion.services.images.ImageResizeCallable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gridgain.grid.Grid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
@@ -41,10 +38,11 @@ import java.util.concurrent.TimeUnit;
  * User: mnimer
  * Date: 9/18/12
  */
-public class ImageResizeCFService extends GridService implements Serializable
+public class ImageResizeCFService implements Serializable
 {
     private final Log log = LogFactory.getLog(this.getClass());
 
+    @Autowired private GridService gridService;
     private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
 
 
@@ -54,10 +52,8 @@ public class ImageResizeCFService extends GridService implements Serializable
 
         try
         {
-            Grid grid = verifyGridConnection();
-
             // Get grid-enabled executor service for nodes where attribute 'worker' is defined.
-            ExecutorService exec = getColdFusionExecutor();
+            ExecutorService exec = gridService.getColdFusionExecutor();
 
             byte[] imageBytes = props.getDocument().getFileBytes();
 
