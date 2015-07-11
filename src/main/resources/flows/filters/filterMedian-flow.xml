@@ -48,7 +48,7 @@
 
 
 
-    <si:chain input-channel="imageMedianFilterChannelRequestChannel"
+    <si:chain id="filterMedian-flow" input-channel="imageMedianFilterChannelRequestChannel"
               output-channel="imageMedianFilterChannelReplyChannel">
 
         <si:service-activator

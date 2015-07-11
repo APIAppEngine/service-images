@@ -48,7 +48,7 @@
 
 
 
-    <si:chain input-channel="imageDespeckleFilterChannelRequestChannel"
+    <si:chain id="filterDespeckle-flow" input-channel="imageDespeckleFilterChannelRequestChannel"
               output-channel="imageDespeckleFilterChannelReplyChannel">
 
 

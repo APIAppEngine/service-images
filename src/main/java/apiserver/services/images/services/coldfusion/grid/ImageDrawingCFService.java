@@ -1,4 +1,4 @@
-package apiserver.services.images.services.coldfusion;
+package apiserver.services.images.services.coldfusion.grid;
 
 /*******************************************************************************
  Copyright (c) 2013 Mike Nimer.

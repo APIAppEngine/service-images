@@ -47,7 +47,7 @@
 
 
 
-    <si:chain input-channel="imageMaximumFilterChannelRequestChannel"
+    <si:chain id="filterMaximum-flow" input-channel="imageMaximumFilterChannelRequestChannel"
               output-channel="imageMaximumFilterChannelReplyChannel">
 
 

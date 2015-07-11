@@ -46,7 +46,7 @@
 
 
 
-    <si:chain input-channel="imageMaskFilterChannelRequestChannel"
+    <si:chain id="filterMask-flow" input-channel="imageMaskFilterChannelRequestChannel"
               output-channel="imageMaskFilterChannelReplyChannel">
 
 

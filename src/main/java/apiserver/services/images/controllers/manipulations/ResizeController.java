@@ -79,9 +79,6 @@ public class ResizeController
     private ImageResizeGateway imageResizeGateway;
 
     @Autowired
-    private ImageRotateGateway imageRotateGateway;
-
-    @Autowired
     private FileUploadHelper fileUploadHelper;
 
     private @Value("${defaultReplyTimeout}") Integer defaultTimeout;
@@ -176,9 +173,9 @@ public class ResizeController
 
         FileResizeJob job = new FileResizeJob();
         job.setDocumentId(null);
-        job.setDocument( new Document(file) );
-        job.getDocument().setContentType(MimeType.getMimeType(file.getContentType()) );
-        job.getDocument().setFileName(file.getOriginalFilename());
+        job.setDocument( _file );
+        //job.getDocument().setContentType(MimeType.getMimeType(file.getContentType()) );
+        //job.getDocument().setFileName(file.getOriginalFilename());
         job.setWidth(width);
         job.setHeight(height);
         job.setInterpolation(interpolation.toUpperCase());
@@ -188,7 +185,7 @@ public class ResizeController
         FileResizeJob payload = (FileResizeJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage( payload.getBufferedImage(), _outputContentType, false );
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processFile(payload.getResult(), _outputContentType, false);
         return result;
     }
 

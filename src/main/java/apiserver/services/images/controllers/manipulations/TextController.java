@@ -41,7 +41,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -113,6 +112,7 @@ public class TextController
 
         FileTextJob args = new FileTextJob();
         args.setDocumentId(documentId);
+        args.setFormat(format);
         args.setText(text);
         args.setColor(color);
         args.setFontSize(fontSize);
@@ -154,12 +154,11 @@ public class TextController
     @RequestMapping(value = "/modify/text", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> drawTextByImage(
             HttpServletRequest request, HttpServletResponse response,
-            @ApiParam(name = "file", required = false) @RequestParam(value = "file", required = false) MultipartFile file
+            @ApiParam(name = "image", required = false) @RequestParam(value = "image", required = false) MultipartFile file
             , @ApiParam(name="text", required = true) @RequestParam(required = true) String text
             , @ApiParam(name="color", required = true) @RequestParam(required = true) String color
             , @ApiParam(name="fontSize", required = true) @RequestParam(required = true) String fontSize
             , @ApiParam(name="fontStyle", required = true) @RequestParam(required = true) String fontStyle
-            , @ApiParam(name="angle", required = true) @RequestParam(required = true) Integer angle
             , @ApiParam(name="x", required = true) @RequestParam(required = true) Integer x
             , @ApiParam(name="y", required = true) @RequestParam(required = true) Integer y
             , @ApiParam(name="format", required = false) @RequestParam(value = "format", required = false) String format
@@ -183,23 +182,23 @@ public class TextController
 
         FileTextJob job = new FileTextJob();
         job.setDocumentId(null);
-        job.setDocument(new Document(file));
-        job.getDocument().setContentType(MimeType.getMimeType(file.getContentType()));
-        job.getDocument().setFileName(file.getOriginalFilename());
+        job.setDocument( _file );
+        //job.getDocument().setContentType(MimeType.getMimeType(file.getContentType()));
+        //job.getDocument().setFileName(file.getOriginalFilename());
         job.setText(text);
         job.setColor(color);
         job.setFontSize(fontSize);
         job.setFontStyle(fontStyle);
-        job.setAngle(angle);
         job.setX(x);
         job.setY(y);
+        job.setFormat(format);
 
 
         Future<Map> imageFuture = imageDrawTextGateway.imageDrawTextFilter(job);
         FileTextJob payload = (FileTextJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _outputContentType, false);
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processFile(payload.getResult(), _outputContentType, false);
         return result;
 
     }

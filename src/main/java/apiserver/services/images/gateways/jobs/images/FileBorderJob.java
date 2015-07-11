@@ -20,9 +20,9 @@ package apiserver.services.images.gateways.jobs.images;
  ******************************************************************************/
 
 import apiserver.ApiServerConstants;
+import apiserver.core.connectors.coldfusion.services.BinaryResult;
 import apiserver.services.images.gateways.jobs.ImageDocumentJob;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +30,7 @@ import java.util.Map;
  * User: mikenimer
  * Date: 9/16/13
  */
-public class FileBorderJob extends ImageDocumentJob
+public class FileBorderJob extends ImageDocumentJob implements BinaryResult
 {
 
     private String color;
@@ -75,7 +75,13 @@ public class FileBorderJob extends ImageDocumentJob
 
 
     public byte[] getImageBytes() {
-        return imageBytes;
+        if( imageBytes != null ){
+            return  imageBytes;
+        }else if( this.getDocument() != null ){
+            return this.getDocument().getFileBytes();
+        }
+
+        return null;
     }
 
 
@@ -84,19 +90,31 @@ public class FileBorderJob extends ImageDocumentJob
     }
 
 
+    @Override public byte[] getResult()
+    {
+        return getImageBytes();
+    }
+
+
+    @Override public void setResult(byte[] bytes)
+    {
+        setImageBytes(bytes);
+    }
+
+
     public Map toMap()
     {
         Map props = new HashMap();
-        try {
-            //ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            //ImageIO.write(getBufferedImage(), "png", baos);
-            //props.put(IMAGE, baos.toByteArray());
-            props.put(ApiServerConstants.IMAGE, getBufferedImage() );
-            props.put(ApiServerConstants.CONTENT_TYPE, getDocument().getContentType() );
-            props.put(ApiServerConstants.FILE_NAME, getDocument().getFileName() );
-        }catch(IOException e){}
-        props.put(ApiServerConstants.COLOR, getColor());
-        props.put(ApiServerConstants.THICKNESS, getThickness());
+
+        //ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        //ImageIO.write(getBufferedImage(), "png", baos);
+        //props.put(IMAGE, baos.toByteArray());
+        props.put(ApiServerConstants.IMAGE, getDocument() );
+        props.put(ApiServerConstants.CONTENT_TYPE, getDocument().getContentType() );
+        props.put(ApiServerConstants.FILE_NAME, getDocument().getFileName() );
+        props.put(ApiServerConstants.FORMAT, this.getFormat());
+        props.put(ApiServerConstants.COLOR, this.getColor());
+        props.put(ApiServerConstants.THICKNESS, this.getThickness());
         return props;
     }
 }

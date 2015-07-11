@@ -47,7 +47,7 @@
 
 
 
-    <si:chain input-channel="imageMinimumFilterChannelRequestChannel"
+    <si:chain id="filterMinimum-flow" input-channel="imageMinimumFilterChannelRequestChannel"
               output-channel="imageMinimumFilterChannelReplyChannel">
 
 

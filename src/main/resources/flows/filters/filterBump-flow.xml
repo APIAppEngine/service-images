@@ -47,7 +47,7 @@
 
 
 
-    <si:chain input-channel="imageBumpFilterChannelRequestChannel"
+    <si:chain id="filterBump-flow" input-channel="imageBumpFilterChannelRequestChannel"
               output-channel="imageBumpFilterChannelReplyChannel">
 
         <si:service-activator

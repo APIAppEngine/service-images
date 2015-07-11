@@ -76,9 +76,6 @@ public class RotateController
     private HttpServletRequest request;
 
     @Autowired
-    private ImageResizeGateway imageResizeGateway;
-
-    @Autowired
     private ImageRotateGateway imageRotateGateway;
 
     @Autowired
@@ -162,16 +159,17 @@ public class RotateController
 
         FileRotateJob job = new FileRotateJob();
         job.setDocumentId(null);
-        job.setDocument( new Document(file) );
-        job.getDocument().setContentType( MimeType.getMimeType(file.getContentType()) );
-        job.getDocument().setFileName(file.getOriginalFilename());
+        job.setDocument( _file );
+        //job.getDocument().setContentType( MimeType.getMimeType(file.getContentType()) );
+        //job.getDocument().setFileName(file.getOriginalFilename());
         job.setAngle(angle);
+        job.setFormat(format);
 
         Future<Map> imageFuture = imageRotateGateway.rotateImage(job);
         FileRotateJob payload = (FileRotateJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _outputContentType, false);
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processFile(payload.getResult(), _outputContentType, false);
         return result;
     }
 

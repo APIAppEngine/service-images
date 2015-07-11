@@ -44,7 +44,7 @@
 
 
 
-    <si:chain input-channel="imageBoxBlurFilterChannelRequestChannel"
+    <si:chain id="filterBoxBlur-flow" input-channel="imageBoxBlurFilterChannelRequestChannel"
               output-channel="imageBoxBlurFilterChannelReplyChannel">
 
 

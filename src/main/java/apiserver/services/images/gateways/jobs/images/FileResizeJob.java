@@ -20,9 +20,9 @@ package apiserver.services.images.gateways.jobs.images;
  ******************************************************************************/
 
 import apiserver.ApiServerConstants;
+import apiserver.core.connectors.coldfusion.services.BinaryResult;
 import apiserver.services.images.gateways.jobs.ImageDocumentJob;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +30,7 @@ import java.util.Map;
  * User: mikenimer
  * Date: 7/21/13
  */
-public class FileResizeJob extends ImageDocumentJob
+public class FileResizeJob extends ImageDocumentJob implements BinaryResult
 {
     private Integer width;
     private Integer height;
@@ -110,21 +110,36 @@ public class FileResizeJob extends ImageDocumentJob
     }
 
 
+    @Override public byte[] getResult()
+    {
+        return getImageBytes();
+    }
+
+
+    @Override public void setResult(byte[] bytes)
+    {
+        setImageBytes(bytes);
+    }
+
+
+
     public Map toMap()
     {
         Map props = new HashMap();
-        try {
-            //ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            //ImageIO.write(getBufferedImage(), "png", baos);
-            //props.put(IMAGE, baos.toByteArray());
-            props.put(ApiServerConstants.IMAGE, getBufferedImage() );
-            props.put(ApiServerConstants.CONTENT_TYPE, getDocument().getContentType() );
-            props.put(ApiServerConstants.FILE_NAME, getDocument().getFileName() );
-        }catch(IOException e){}
+
+        //ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        //ImageIO.write(getBufferedImage(), "png", baos);
+        //props.put(IMAGE, baos.toByteArray());
+        props.put(ApiServerConstants.IMAGE, getDocument() );
+        props.put(ApiServerConstants.CONTENT_TYPE, getDocument().getContentType() );
+        props.put(ApiServerConstants.FILE_NAME, getDocument().getFileName() );
+        props.put(ApiServerConstants.FORMAT, this.getFormat());
         props.put( ApiServerConstants.SCALE_TO_FIT, getScaleToFit() );
         props.put(ApiServerConstants.INTERPOLATION, getInterpolation());
         props.put(ApiServerConstants.HEIGHT, getHeight());
         props.put(ApiServerConstants.WIDTH, getWidth());
         return props;
     }
+
+
 }

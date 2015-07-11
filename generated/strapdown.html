@@ -1,0 +1,2640 @@
+#
+
+BasePath: http://localhost
+
+Api Version: v1
+
+## APIs
+### /api/image
+
+#### **** `/`
+##### imageBoxBlurByFile 
+
+A filter which performs a box blur on an image. The horizontal and vertical blurs can be specified separately and a number of iterations can be given which allows an approximation to Gaussian blur.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td>the horizontal radius of blur</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td>the vertical radius of blur</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td>the number of time to iterate the blur</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td>pre multiply the alpha channel</td>
+        <td>boolean</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageBoxBlurByFile 
+
+A filter which performs a box blur on an image. The horizontal and vertical blurs can be specified separately and a number of iterations can be given which allows an approximation to Gaussian blur.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td>the horizontal radius of blur</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td>the vertical radius of blur</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td>the number of time to iterate the blur</td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td>pre multiply the alpha channel</td>
+        <td>boolean</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### rotateImageByImage 
+
+Rotate an uploaded image
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### rotateImageByImage 
+
+Rotate an uploaded image
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageBumpByFile 
+
+This filter does a simple convolution which emphasises edges in an image.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>boolean</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageBumpByFile 
+
+This filter does a simple convolution which emphasises edges in an image.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>boolean</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageMetadataByImage 
+
+Get the embedded metadata
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[Map](#Map)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageMetadataByImage 
+
+Get the embedded metadata
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+</table>
+
+###### Response
+[Map](#Map)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageDespeckleByFile 
+
+This filter reduces light noise in an image using the eight hull algorithm described in Applied Optics, Vol. 24, No. 10, 15 May 1985, &quot;Geometric filter for Speckle Reduction&quot;, by Thomas R Crimmins. Basically, it tries to move each pixel closer in value to its neighbours. As it only has a small effect, you may need to apply it several times. This is good for removing small levels of noise from an image but does give the image some fuzziness.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageDespeckleByFile 
+
+This filter reduces light noise in an image using the eight hull algorithm described in Applied Optics, Vol. 24, No. 10, 15 May 1985, &quot;Geometric filter for Speckle Reduction&quot;, by Thomas R Crimmins. Basically, it tries to move each pixel closer in value to its neighbours. As it only has a small effect, you may need to apply it several times. This is good for removing small levels of noise from an image but does give the image some fuzziness.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageGlowByFile 
+
+This filter produces a glowing effect on an image by adding a blurred version of the image to subtracted from the original image.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageGlowByFile 
+
+This filter produces a glowing effect on an image by adding a blurred version of the image to subtracted from the original image.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageInfoByImageAsync 
+
+Get the height and width for the image
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[Map](#Map)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageInfoByImageAsync 
+
+Get the height and width for the image
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageBlurById 
+
+This filter blurs an image very slightly using a 3x3 blur kernel.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageBlurByFile 
+
+This filter blurs an image very slightly using a 3x3 blur kernel.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageDespeckleByFile 
+
+This filter performs a Gaussian blur on an image.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageDespeckleByFile 
+
+This filter performs a Gaussian blur on an image.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### resizeImageByImage 
+
+Resize an uploaded image
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>boolean</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### resizeImageByImage 
+
+Resize an uploaded image
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>boolean</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageMedianByFile 
+
+This filter replaces each pixel by the median of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageMedianByFile 
+
+This filter replaces each pixel by the median of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageOilBlurByFile 
+
+This filter produces an oil painting effect as described in the book &quot;Beyond Photography - The Digital Darkroom&quot;. You can specify the smearing radius. It&#39;s quite a slow filter especially with a large radius.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageOilBlurByFile 
+
+This filter produces an oil painting effect as described in the book &quot;Beyond Photography - The Digital Darkroom&quot;. You can specify the smearing radius. It&#39;s quite a slow filter especially with a large radius.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageGrayscaleByFile 
+
+This filter converts an image to a grayscale image. To do this it finds the brightness of each pixel and sets the red, green and blue of the output to the brightness value. But what is the brightness? The simplest answer might be that it is the average of the RGB components, but that neglects the way in which the human eye works. The eye is much more sensitive to green and red than it is to blue, and so we need to take less acount of the blue and more account of the green. The weighting used by GrayscaleFilter is: luma = 77R + 151G + 28B
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageGrayscaleByFile 
+
+This filter converts an image to a grayscale image. To do this it finds the brightness of each pixel and sets the red, green and blue of the output to the brightness value. But what is the brightness? The simplest answer might be that it is the average of the RGB components, but that neglects the way in which the human eye works. The eye is much more sensitive to green and red than it is to blue, and so we need to take less acount of the blue and more account of the green. The weighting used by GrayscaleFilter is: luma = 77R + 151G + 28B
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageMaximumByFile 
+
+This filter replaces each pixel by the maximum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageMaximumByFile 
+
+This filter replaces each pixel by the maximum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageLensBlurByFile 
+
+This filter simulates the blurring caused by a camera lens. You can change the aperture size and shape and also specify blooming of the image. This filter is very slow.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageLensBlurByFile 
+
+This filter simulates the blurring caused by a camera lens. You can change the aperture size and shape and also specify blooming of the image. This filter is very slow.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageMinimumByFile 
+
+This filter replaces each pixel by the minimum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageMinimumByFile 
+
+This filter replaces each pixel by the minimum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageMotionBlurByFile 
+
+This filter simulates motion blur on an image. You specify a combination of angle/distance for linear motion blur, a rotaiton angle for spin blur or a zoom factor for zoom blur. You can combine these in any proportions you want to get effects like spiral blurs.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>boolean</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageMotionBlurByFile 
+
+This filter simulates motion blur on an image. You specify a combination of angle/distance for linear motion blur, a rotaiton angle for spin blur or a zoom factor for zoom blur. You can combine these in any proportions you want to get effects like spiral blurs.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>boolean</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+
+## Data Types
+
+
+## <a name="Cookie">Cookie</a>
+
+<table border="1">
+    <tr>
+        <th>type</th>
+        <th>required</th>
+        <th>access</th>
+        <th>description</th>
+        <th>notes</th>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>int</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>int</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+</table>
+
+
+
+## <a name="HttpServletRequest">HttpServletRequest</a>
+
+<table border="1">
+    <tr>
+        <th>type</th>
+        <th>required</th>
+        <th>access</th>
+        <th>description</th>
+        <th>notes</th>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#StringBuffer">StringBuffer</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#HttpSession">HttpSession</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#java.util.Enumeration&lt;java.lang.String&gt;">java.util.Enumeration&lt;java.lang.String&gt;</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#java.util.Collection&lt;javax.servlet.http.Part&gt;">java.util.Collection&lt;javax.servlet.http.Part&gt;</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#Cookie">Array[Cookie]</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#Principal">Principal</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+</table>
+
+
+
+## <a name="HttpServletResponse">HttpServletResponse</a>
+
+<table border="1">
+    <tr>
+        <th>type</th>
+        <th>required</th>
+        <th>access</th>
+        <th>description</th>
+        <th>notes</th>
+    </tr>
+    <tr>
+        <td><a href="#java.util.Collection&lt;java.lang.String&gt;">java.util.Collection&lt;java.lang.String&gt;</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>int</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+</table>
+
+
+
+## <a name="HttpSession">HttpSession</a>
+
+<table border="1">
+    <tr>
+        <th>type</th>
+        <th>required</th>
+        <th>access</th>
+        <th>description</th>
+        <th>notes</th>
+    </tr>
+    <tr>
+        <td>int</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#java.util.Enumeration&lt;java.lang.String&gt;">java.util.Enumeration&lt;java.lang.String&gt;</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>long</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#ServletContext">ServletContext</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>Array[string]</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#HttpSessionContext">HttpSessionContext</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>long</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+</table>
+
+
+
+## <a name="HttpSessionContext">HttpSessionContext</a>
+
+<table border="1">
+    <tr>
+        <th>type</th>
+        <th>required</th>
+        <th>access</th>
+        <th>description</th>
+        <th>notes</th>
+    </tr>
+    <tr>
+        <td><a href="#java.util.Enumeration&lt;java.lang.String&gt;">java.util.Enumeration&lt;java.lang.String&gt;</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+</table>
+
+
+
+## <a name="JspConfigDescriptor">JspConfigDescriptor</a>
+
+<table border="1">
+    <tr>
+        <th>type</th>
+        <th>required</th>
+        <th>access</th>
+        <th>description</th>
+        <th>notes</th>
+    </tr>
+    <tr>
+        <td><a href="#java.util.Collection&lt;javax.servlet.descriptor.JspPropertyGroupDescriptor&gt;">java.util.Collection&lt;javax.servlet.descriptor.JspPropertyGroupDescriptor&gt;</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#java.util.Collection&lt;javax.servlet.descriptor.TaglibDescriptor&gt;">java.util.Collection&lt;javax.servlet.descriptor.TaglibDescriptor&gt;</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+</table>
+
+
+
+## <a name="Map">Map</a>
+
+<table border="1">
+    <tr>
+        <th>type</th>
+        <th>required</th>
+        <th>access</th>
+        <th>description</th>
+        <th>notes</th>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+</table>
+
+
+
+## <a name="MultipartFile">MultipartFile</a>
+
+<table border="1">
+    <tr>
+        <th>type</th>
+        <th>required</th>
+        <th>access</th>
+        <th>description</th>
+        <th>notes</th>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>long</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#byte">Array[byte]</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#InputStream">InputStream</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+</table>
+
+
+
+## <a name="Principal">Principal</a>
+
+<table border="1">
+    <tr>
+        <th>type</th>
+        <th>required</th>
+        <th>access</th>
+        <th>description</th>
+        <th>notes</th>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+</table>
+
+
+
+## <a name="ServletContext">ServletContext</a>
+
+<table border="1">
+    <tr>
+        <th>type</th>
+        <th>required</th>
+        <th>access</th>
+        <th>description</th>
+        <th>notes</th>
+    </tr>
+    <tr>
+        <td>int</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#Set">Set</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#java.util.Enumeration&lt;java.lang.String&gt;">java.util.Enumeration&lt;java.lang.String&gt;</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#Map[string,? extends javax.servlet.FilterRegistration]">Map[string,? extends javax.servlet.FilterRegistration]</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#JspConfigDescriptor">JspConfigDescriptor</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#Map[string,? extends javax.servlet.ServletRegistration]">Map[string,? extends javax.servlet.ServletRegistration]</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#java.util.Enumeration&lt;java.lang.String&gt;">java.util.Enumeration&lt;java.lang.String&gt;</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#Set">Set</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>int</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#SessionCookieConfig">SessionCookieConfig</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#ClassLoader">ClassLoader</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#java.util.Enumeration&lt;javax.servlet.Servlet&gt;">java.util.Enumeration&lt;javax.servlet.Servlet&gt;</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>int</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>int</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td><a href="#java.util.Enumeration&lt;java.lang.String&gt;">java.util.Enumeration&lt;java.lang.String&gt;</a></td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+</table>
+
+
+
+## <a name="SessionCookieConfig">SessionCookieConfig</a>
+
+<table border="1">
+    <tr>
+        <th>type</th>
+        <th>required</th>
+        <th>access</th>
+        <th>description</th>
+        <th>notes</th>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>int</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>boolean</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td>string</td>
+        <td>optional</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+    </tr>
+</table>
+
+

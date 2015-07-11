@@ -55,7 +55,7 @@
             Image ADD Border
         -->
     <si:channel id="imageDrawBorderHTTPChannel"/>
-    <si:chain input-channel="imageDrawBorderHTTPChannel" >
+    <si:chain id="imageBoarder-flow" input-channel="imageDrawBorderHTTPChannel" >
 
 
         <si:service-activator
@@ -63,9 +63,19 @@
             <bean class="apiserver.services.cache.services.DocumentService"/>
         </si:service-activator>
 
+        <!--
         <si:service-activator
                 method="imageBorderHandler">
-            <bean class="apiserver.services.images.services.coldfusion.ImageDrawingCFService"/>
+            <bean class="apiserver.services.images.services.coldfusion.http.ImageDrawingCFService"/>
+        </si:service-activator>
+        -->
+
+        <si:service-activator
+                method="execute">
+            <bean class="apiserver.core.connectors.coldfusion.services.BinaryCFCService">
+                <property name="cfcPath" value="/api-image.cfc?method=addBorder"/>
+                <property name="cfcMethod" value="POST"/>
+            </bean>
         </si:service-activator>
 
     </si:chain>

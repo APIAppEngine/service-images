@@ -47,7 +47,7 @@
 
 
 
-    <si:chain input-channel="imageGrayScaleFilterChannelRequestChannel"
+    <si:chain id="filterGrayScale-flow" input-channel="imageGrayScaleFilterChannelRequestChannel"
               output-channel="imageGrayScaleFilterChannelReplyChannel">
 
 

@@ -47,7 +47,7 @@
 
 
 
-    <si:chain input-channel="imageGlowFilterChannelRequestChannel"
+    <si:chain id="filterGlow-flow" input-channel="imageGlowFilterChannelRequestChannel"
               output-channel="imageGlowFilterChannelReplyChannel">
 
 

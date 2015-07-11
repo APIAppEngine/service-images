@@ -4,7 +4,6 @@ import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.cluster.ClusterGroup;
 import org.apache.ignite.internal.cluster.ClusterGroupAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -19,7 +18,7 @@ import java.util.concurrent.ExecutorService;
 @Service
 public class GridService implements Serializable
 {
-    @Autowired
+    //@Autowired
     private Ignite grid = null;
 
 

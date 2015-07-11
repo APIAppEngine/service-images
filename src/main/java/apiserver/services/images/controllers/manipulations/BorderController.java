@@ -159,9 +159,7 @@ public class BorderController
 
         FileBorderJob job = new FileBorderJob();
         job.setDocumentId(null);
-        job.setDocument(new Document(file));
-        job.getDocument().setContentType(MimeType.getMimeType(file.getContentType()));
-        job.getDocument().setFileName(file.getOriginalFilename());
+        job.setDocument(_file);
         job.setColor(color);
         job.setThickness(thickness);
         job.setFormat(format);
@@ -170,7 +168,7 @@ public class BorderController
         FileBorderJob payload = (FileBorderJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processFile(payload.getImageBytes(), _outputContentType, false);
+        ResponseEntity<byte[]> result = ResponseEntityHelper.processFile(payload.getResult(), _outputContentType, false);
         return result;
     }
 }

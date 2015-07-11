@@ -47,7 +47,7 @@
 
 
 
-    <si:chain input-channel="imageGaussianFilterChannelRequestChannel"
+    <si:chain id="filterGaussian-flow" input-channel="imageGaussianFilterChannelRequestChannel"
               output-channel="imageGaussianFilterChannelReplyChannel">
 
 

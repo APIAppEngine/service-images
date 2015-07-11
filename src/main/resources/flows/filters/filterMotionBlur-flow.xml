@@ -47,7 +47,7 @@
 
 
 
-    <si:chain input-channel="imageMotionBlurFilterChannelRequestChannel"
+    <si:chain id="filterMotionBlur-flow" input-channel="imageMotionBlurFilterChannelRequestChannel"
               output-channel="imageMotionBlurFilterChannelReplyChannel">
 
         <si:service-activator
