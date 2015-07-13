@@ -8,6 +8,178 @@ Api Version: v1
 ### /api/image
 
 #### **** `/`
+##### imageInfoByImageAsync 
+
+Get the height and width for the image
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[Map](#Map)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageInfoByImageAsync 
+
+Get the height and width for the image
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageMetadataByImage 
+
+Get the embedded metadata
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[Map](#Map)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageMetadataByImage 
+
+Get the embedded metadata
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+</table>
+
+###### Response
+[Map](#Map)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
 ##### imageBoxBlurByFile 
 
 A filter which performs a box blur on an image. The horizontal and vertical blurs can be specified separately and a number of iterations can be given which allows an approximation to Gaussian blur.
@@ -264,226 +436,6 @@ http://localhost/
 ### /api/image
 
 #### **** `/`
-##### imageBumpByFile 
-
-This filter does a simple convolution which emphasises edges in an image.
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>int</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>boolean</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[](#)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-#### **** `/`
-##### imageBumpByFile 
-
-This filter does a simple convolution which emphasises edges in an image.
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#MultipartFile">MultipartFile</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>int</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>boolean</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[](#)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-### /api/image
-
-#### **** `/`
-##### imageMetadataByImage 
-
-Get the embedded metadata
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[Map](#Map)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-#### **** `/`
-##### imageMetadataByImage 
-
-Get the embedded metadata
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td><a href="#MultipartFile">MultipartFile</a></td>
-    </tr>
-</table>
-
-###### Response
-[Map](#Map)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-### /api/image
-
-#### **** `/`
 ##### imageDespeckleByFile 
 
 This filter reduces light noise in an image using the eight hull algorithm described in Applied Optics, Vol. 24, No. 10, 15 May 1985, &quot;Geometric filter for Speckle Reduction&quot;, by Thomas R Crimmins. Basically, it tries to move each pixel closer in value to its neighbours. As it only has a small effect, you may need to apply it several times. This is good for removing small levels of noise from an image but does give the image some fuzziness.
@@ -560,6 +512,702 @@ http://localhost/
         <td>false</td>
         <td></td>
         <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageMinimumByFile 
+
+This filter replaces each pixel by the minimum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageMinimumByFile 
+
+This filter replaces each pixel by the minimum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageMaximumByFile 
+
+This filter replaces each pixel by the maximum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageMaximumByFile 
+
+This filter replaces each pixel by the maximum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageLensBlurByFile 
+
+This filter simulates the blurring caused by a camera lens. You can change the aperture size and shape and also specify blooming of the image. This filter is very slow.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageLensBlurByFile 
+
+This filter simulates the blurring caused by a camera lens. You can change the aperture size and shape and also specify blooming of the image. This filter is very slow.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageDespeckleByFile 
+
+This filter performs a Gaussian blur on an image.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageDespeckleByFile 
+
+This filter performs a Gaussian blur on an image.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>int</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageGrayscaleByFile 
+
+This filter converts an image to a grayscale image. To do this it finds the brightness of each pixel and sets the red, green and blue of the output to the brightness value. But what is the brightness? The simplest answer might be that it is the average of the RGB components, but that neglects the way in which the human eye works. The eye is much more sensitive to green and red than it is to blue, and so we need to take less acount of the blue and more account of the green. The weighting used by GrayscaleFilter is: luma = 77R + 151G + 28B
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageGrayscaleByFile 
+
+This filter converts an image to a grayscale image. To do this it finds the brightness of each pixel and sets the red, green and blue of the output to the brightness value. But what is the brightness? The simplest answer might be that it is the average of the RGB components, but that neglects the way in which the human eye works. The eye is much more sensitive to green and red than it is to blue, and so we need to take less acount of the blue and more account of the green. The weighting used by GrayscaleFilter is: luma = 77R + 151G + 28B
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+### /api/image
+
+#### **** `/`
+##### imageMotionBlurByFile 
+
+This filter simulates motion blur on an image. You specify a combination of angle/distance for linear motion blur, a rotaiton angle for spin blur or a zoom factor for zoom blur. You can combine these in any proportions you want to get effects like spiral blurs.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>boolean</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>true</td>
+        <td></td>
+        <td>string</td>
+    </tr>
+</table>
+
+###### Response
+[](#)
+
+
+###### Errors
+| Status Code | Reason      | Response Model |
+|-------------|-------------|----------------|
+
+
+- - -
+#### **** `/`
+##### imageMotionBlurByFile 
+
+This filter simulates motion blur on an image. You specify a combination of angle/distance for linear motion blur, a rotaiton angle for spin blur or a zoom factor for zoom blur. You can combine these in any proportions you want to get effects like spiral blurs.
+
+
+###### URL
+http://localhost/
+###### Parameters
+- body
+
+<table border="1">
+    <tr>
+        <th>Parameter</th>
+        <th>Required</th>
+        <th>Description</th>
+        <th>Data Type</th>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td><a href="#MultipartFile">MultipartFile</a></td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>boolean</td>
+    </tr>
+    <tr>
+        <th>body</th>
+        <td>false</td>
+        <td></td>
+        <td>float</td>
     </tr>
     <tr>
         <th>body</th>
@@ -676,92 +1324,6 @@ http://localhost/
         <td>false</td>
         <td></td>
         <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[](#)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-### /api/image
-
-#### **** `/`
-##### imageInfoByImageAsync 
-
-Get the height and width for the image
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[Map](#Map)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-#### **** `/`
-##### imageInfoByImageAsync 
-
-Get the height and width for the image
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#MultipartFile">MultipartFile</a></td>
     </tr>
 </table>
 
@@ -876,116 +1438,6 @@ http://localhost/
 ### /api/image
 
 #### **** `/`
-##### imageDespeckleByFile 
-
-This filter performs a Gaussian blur on an image.
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>int</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[](#)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-#### **** `/`
-##### imageDespeckleByFile 
-
-This filter performs a Gaussian blur on an image.
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#MultipartFile">MultipartFile</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>int</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[](#)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-### /api/image
-
-#### **** `/`
 ##### resizeImageByImage 
 
 Resize an uploaded image
@@ -1132,104 +1584,6 @@ http://localhost/
 ### /api/image
 
 #### **** `/`
-##### imageMedianByFile 
-
-This filter replaces each pixel by the median of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[](#)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-#### **** `/`
-##### imageMedianByFile 
-
-This filter replaces each pixel by the median of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#MultipartFile">MultipartFile</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[](#)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-### /api/image
-
-#### **** `/`
 ##### imageOilBlurByFile 
 
 This filter produces an oil painting effect as described in the book &quot;Beyond Photography - The Digital Darkroom&quot;. You can specify the smearing radius. It&#39;s quite a slow filter especially with a large radius.
@@ -1352,9 +1706,9 @@ http://localhost/
 ### /api/image
 
 #### **** `/`
-##### imageGrayscaleByFile 
+##### imageMedianByFile 
 
-This filter converts an image to a grayscale image. To do this it finds the brightness of each pixel and sets the red, green and blue of the output to the brightness value. But what is the brightness? The simplest answer might be that it is the average of the RGB components, but that neglects the way in which the human eye works. The eye is much more sensitive to green and red than it is to blue, and so we need to take less acount of the blue and more account of the green. The weighting used by GrayscaleFilter is: luma = 77R + 151G + 28B
+This filter replaces each pixel by the median of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
 
 
 ###### URL
@@ -1394,9 +1748,9 @@ http://localhost/
 
 - - -
 #### **** `/`
-##### imageGrayscaleByFile 
+##### imageMedianByFile 
 
-This filter converts an image to a grayscale image. To do this it finds the brightness of each pixel and sets the red, green and blue of the output to the brightness value. But what is the brightness? The simplest answer might be that it is the average of the RGB components, but that neglects the way in which the human eye works. The eye is much more sensitive to green and red than it is to blue, and so we need to take less acount of the blue and more account of the green. The weighting used by GrayscaleFilter is: luma = 77R + 151G + 28B
+This filter replaces each pixel by the median of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
 
 
 ###### URL
@@ -1450,107 +1804,9 @@ http://localhost/
 ### /api/image
 
 #### **** `/`
-##### imageMaximumByFile 
+##### imageBumpByFile 
 
-This filter replaces each pixel by the maximum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[](#)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-#### **** `/`
-##### imageMaximumByFile 
-
-This filter replaces each pixel by the maximum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#MultipartFile">MultipartFile</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[](#)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-### /api/image
-
-#### **** `/`
-##### imageLensBlurByFile 
-
-This filter simulates the blurring caused by a camera lens. You can change the aperture size and shape and also specify blooming of the image. This filter is very slow.
+This filter does a simple convolution which emphasises edges in an image.
 
 
 ###### URL
@@ -1573,9 +1829,9 @@ http://localhost/
     </tr>
     <tr>
         <th>body</th>
-        <td>false</td>
+        <td>true</td>
         <td></td>
-        <td>float</td>
+        <td>string</td>
     </tr>
     <tr>
         <th>body</th>
@@ -1587,11 +1843,11 @@ http://localhost/
         <th>body</th>
         <td>false</td>
         <td></td>
-        <td>float</td>
+        <td>boolean</td>
     </tr>
     <tr>
         <th>body</th>
-        <td>true</td>
+        <td>false</td>
         <td></td>
         <td>string</td>
     </tr>
@@ -1608,9 +1864,9 @@ http://localhost/
 
 - - -
 #### **** `/`
-##### imageLensBlurByFile 
+##### imageBumpByFile 
 
-This filter simulates the blurring caused by a camera lens. You can change the aperture size and shape and also specify blooming of the image. This filter is very slow.
+This filter does a simple convolution which emphasises edges in an image.
 
 
 ###### URL
@@ -1647,7 +1903,7 @@ http://localhost/
         <th>body</th>
         <td>false</td>
         <td></td>
-        <td>float</td>
+        <td>string</td>
     </tr>
     <tr>
         <th>body</th>
@@ -1659,263 +1915,7 @@ http://localhost/
         <th>body</th>
         <td>false</td>
         <td></td>
-        <td>float</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[](#)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-### /api/image
-
-#### **** `/`
-##### imageMinimumByFile 
-
-This filter replaces each pixel by the minimum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[](#)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-#### **** `/`
-##### imageMinimumByFile 
-
-This filter replaces each pixel by the minimum of the input pixel and its eight neighbours. Each of the RGB channels is considered separately.
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#MultipartFile">MultipartFile</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[](#)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-### /api/image
-
-#### **** `/`
-##### imageMotionBlurByFile 
-
-This filter simulates motion blur on an image. You specify a combination of angle/distance for linear motion blur, a rotaiton angle for spin blur or a zoom factor for zoom blur. You can combine these in any proportions you want to get effects like spiral blurs.
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>float</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>float</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>float</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
         <td>boolean</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>float</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>true</td>
-        <td></td>
-        <td>string</td>
-    </tr>
-</table>
-
-###### Response
-[](#)
-
-
-###### Errors
-| Status Code | Reason      | Response Model |
-|-------------|-------------|----------------|
-
-
-- - -
-#### **** `/`
-##### imageMotionBlurByFile 
-
-This filter simulates motion blur on an image. You specify a combination of angle/distance for linear motion blur, a rotaiton angle for spin blur or a zoom factor for zoom blur. You can combine these in any proportions you want to get effects like spiral blurs.
-
-
-###### URL
-http://localhost/
-###### Parameters
-- body
-
-<table border="1">
-    <tr>
-        <th>Parameter</th>
-        <th>Required</th>
-        <th>Description</th>
-        <th>Data Type</th>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletRequest">HttpServletRequest</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#HttpServletResponse">HttpServletResponse</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td><a href="#MultipartFile">MultipartFile</a></td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>float</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>float</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>float</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>boolean</td>
-    </tr>
-    <tr>
-        <th>body</th>
-        <td>false</td>
-        <td></td>
-        <td>float</td>
     </tr>
     <tr>
         <th>body</th>
@@ -2041,14 +2041,14 @@ http://localhost/
         <td>-</td>
     </tr>
     <tr>
-        <td>string</td>
+        <td><a href="#HttpSession">HttpSession</a></td>
         <td>optional</td>
         <td>-</td>
         <td>-</td>
         <td>-</td>
     </tr>
     <tr>
-        <td><a href="#HttpSession">HttpSession</a></td>
+        <td>string</td>
         <td>optional</td>
         <td>-</td>
         <td>-</td>
@@ -2223,14 +2223,14 @@ http://localhost/
         <td>-</td>
     </tr>
     <tr>
-        <td>long</td>
+        <td><a href="#ServletContext">ServletContext</a></td>
         <td>optional</td>
         <td>-</td>
         <td>-</td>
         <td>-</td>
     </tr>
     <tr>
-        <td><a href="#ServletContext">ServletContext</a></td>
+        <td>long</td>
         <td>optional</td>
         <td>-</td>
         <td>-</td>

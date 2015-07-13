@@ -134,7 +134,7 @@ public class FileResizeJob extends ImageDocumentJob implements BinaryResult
         props.put(ApiServerConstants.CONTENT_TYPE, getDocument().getContentType() );
         props.put(ApiServerConstants.FILE_NAME, getDocument().getFileName() );
         props.put(ApiServerConstants.FORMAT, this.getFormat());
-        props.put( ApiServerConstants.SCALE_TO_FIT, getScaleToFit() );
+        props.put(ApiServerConstants.SCALE_TO_FIT, getScaleToFit() );
         props.put(ApiServerConstants.INTERPOLATION, getInterpolation());
         props.put(ApiServerConstants.HEIGHT, getHeight());
         props.put(ApiServerConstants.WIDTH, getWidth());
