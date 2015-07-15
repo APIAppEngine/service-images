@@ -21,7 +21,7 @@ package apiserver.services.images.controllers.filters;
 
 import apiserver.MimeType;
 import apiserver.core.FileUploadHelper;
-import apiserver.services.cache.model.Document;
+import apiserver.model.Document;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.images.gateways.filters.ApiImageFilterBlurGateway;
 import apiserver.services.images.gateways.jobs.ImageDocumentJob;

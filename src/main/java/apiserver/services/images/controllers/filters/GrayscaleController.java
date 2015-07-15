@@ -22,7 +22,7 @@ package apiserver.services.images.controllers.filters;
 import apiserver.MimeType;
 import apiserver.core.FileUploadHelper;
 import apiserver.core.common.ResponseEntityHelper;
-import apiserver.services.cache.model.Document;
+import apiserver.model.Document;
 import apiserver.services.images.gateways.filters.ApiImageFilterGrayScaleGateway;
 import apiserver.services.images.gateways.jobs.ImageDocumentJob;
 import com.wordnik.swagger.annotations.Api;

@@ -2,7 +2,6 @@ package apiserver;
 
 
 import apiserver.filters.MashapeAuthFilter;
-import apiserver.filters.MetricsFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -74,18 +73,21 @@ public class ImageMicroServiceApplication extends DelegatingWebMvcConfiguration
 
 
 
-/**
     @Value("${mashape.key}")
     private String mashapeKey = null;
 
     @Bean
     public FilterRegistrationBean filterRegistrationBean() {
+
+        MashapeAuthFilter mashapeAuthFilter = new MashapeAuthFilter();
+        mashapeAuthFilter.setMashapeKey(mashapeKey);
+
         FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(new MashapeAuthFilter(mashapeKey));
-        registration.setFilter(new MetricsFilter());
+        //registration.setFilter(new MetricsFilter());
+        registration.setFilter(mashapeAuthFilter);
 
         registration.setDispatcherTypes(EnumSet.allOf(DispatcherType.class));
         return registration;
     }
-    **/
+
 }

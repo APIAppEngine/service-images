@@ -1,11 +1,11 @@
 package apiserver.services.image.controllers;
 
 import apiserver.ImageMicroServiceApplication;
-import apiserver.services.cache.DocumentJob;
+import apiserver.jobs.DeleteDocumentJob;
+import apiserver.jobs.DocumentJob;
+import apiserver.jobs.UploadDocumentJob;
+import apiserver.model.Document;
 import apiserver.services.cache.gateway.CacheGateway;
-import apiserver.services.cache.gateway.jobs.DeleteDocumentJob;
-import apiserver.services.cache.gateway.jobs.UploadDocumentJob;
-import apiserver.services.cache.model.Document;
 import apiserver.services.images.gateways.filters.ApiImageFilterBlurGateway;
 import apiserver.services.images.gateways.filters.ApiImageFilterBoxBlurGateway;
 import org.apache.commons.io.FileUtils;
@@ -15,11 +15,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.File;

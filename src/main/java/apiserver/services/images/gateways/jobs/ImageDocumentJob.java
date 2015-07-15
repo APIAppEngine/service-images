@@ -19,8 +19,8 @@ package apiserver.services.images.gateways.jobs;
  along with the ApiServer Project.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-import apiserver.services.cache.gateway.jobs.GetDocumentJob;
-import apiserver.services.cache.model.Document;
+import apiserver.jobs.GetDocumentJob;
+import apiserver.model.Document;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -28,7 +28,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  *

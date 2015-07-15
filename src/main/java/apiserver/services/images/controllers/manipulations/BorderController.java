@@ -22,7 +22,7 @@ package apiserver.services.images.controllers.manipulations;
 import apiserver.MimeType;
 import apiserver.core.FileUploadHelper;
 import apiserver.core.common.ResponseEntityHelper;
-import apiserver.services.cache.model.Document;
+import apiserver.model.Document;
 import apiserver.services.images.gateways.images.ImageDrawBorderGateway;
 import apiserver.services.images.gateways.images.ImageDrawTextGateway;
 import apiserver.services.images.gateways.jobs.images.FileBorderJob;

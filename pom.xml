@@ -35,11 +35,6 @@
             <version>1.0.1-SNAPSHOT</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.mikenimer.apiappengine</groupId>
-            <artifactId>service-cache</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
-        </dependency>
 
 
         <!--
@@ -75,6 +70,15 @@
             <version>2.6.2</version>
         </dependency>
 
+
+
+        <dependency>
+            <groupId>com.mikenimer.apiappengine</groupId>
+            <artifactId>service-cache</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+
+
     </dependencies>
 
 
@@ -98,6 +102,14 @@
         -->
 
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <executable>true</executable>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>com.mikenimer.apiappengine.util</groupId>
                 <artifactId>swagger-plugin</artifactId>
@@ -140,7 +152,7 @@
                                 <description>Information about an image.</description>
                                 <basePath>/</basePath>
                                 <basePackage>
-                                    <basePackage>apiserver.services.images.controllers.ImageController</basePackage>
+                                    <basePackage>apiserver.services.images.controllers.info.SizeController</basePackage>
                                 </basePackage>
                             </service>
                             <service>
@@ -164,7 +176,7 @@
                                 <description>Various image filters.</description>
                                 <basePath>/</basePath>
                                 <basePackage>
-                                    <basePackage>apiserver.services.images.controllers.MetadataController</basePackage>
+                                    <basePackage>apiserver.services.images.controllers.info.MetadataController</basePackage>
                                 </basePackage>
                             </service>
                         </services>

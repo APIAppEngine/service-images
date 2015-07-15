@@ -2,10 +2,9 @@ package apiserver.services.images.controllers.manipulations;
 
 import apiserver.MimeType;
 import apiserver.core.FileUploadHelper;
-import apiserver.services.cache.model.Document;
+import apiserver.model.Document;
 import apiserver.core.common.ResponseEntityHelper;
 import apiserver.services.images.gateways.images.ImageResizeGateway;
-import apiserver.services.images.gateways.images.ImageRotateGateway;
 import apiserver.services.images.gateways.jobs.images.FileResizeJob;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;

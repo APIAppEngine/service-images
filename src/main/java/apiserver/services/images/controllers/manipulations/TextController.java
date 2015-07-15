@@ -22,7 +22,7 @@ package apiserver.services.images.controllers.manipulations;
 import apiserver.MimeType;
 import apiserver.core.FileUploadHelper;
 import apiserver.core.common.ResponseEntityHelper;
-import apiserver.services.cache.model.Document;
+import apiserver.model.Document;
 import apiserver.services.images.gateways.images.ImageDrawTextGateway;
 import apiserver.services.images.gateways.jobs.images.FileTextJob;
 import com.wordnik.swagger.annotations.Api;
@@ -154,7 +154,7 @@ public class TextController
     @RequestMapping(value = "/modify/text", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> drawTextByImage(
             HttpServletRequest request, HttpServletResponse response,
-            @ApiParam(name = "image", required = false) @RequestParam(value = "image", required = false) MultipartFile file
+            @ApiParam(name = "file", required = false) @RequestParam(value = "file", required = false) MultipartFile file
             , @ApiParam(name="text", required = true) @RequestParam(required = true) String text
             , @ApiParam(name="color", required = true) @RequestParam(required = true) String color
             , @ApiParam(name="fontSize", required = true) @RequestParam(required = true) String fontSize

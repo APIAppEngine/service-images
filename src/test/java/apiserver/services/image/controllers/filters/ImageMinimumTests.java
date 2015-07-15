@@ -20,11 +20,7 @@ package apiserver.services.image.controllers.filters;
  ******************************************************************************/
 
 import apiserver.core.common.ResponseEntityHelper;
-import apiserver.services.cache.DocumentJob;
-import apiserver.services.cache.gateway.CacheGateway;
-import apiserver.services.cache.gateway.jobs.DeleteDocumentJob;
-import apiserver.services.cache.gateway.jobs.UploadDocumentJob;
-import apiserver.services.cache.model.Document;
+import apiserver.model.Document;
 import apiserver.services.image.controllers.FilterTestBase;
 import apiserver.services.images.gateways.filters.ApiImageFilterMinimumGateway;
 import apiserver.services.images.gateways.jobs.ImageDocumentJob;
