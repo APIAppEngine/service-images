@@ -140,7 +140,7 @@
                                 <description>Information about an image.</description>
                                 <basePath>/</basePath>
                                 <basePackage>
-                                    <basePackage>apiserver.services.images.controllers.ImageController</basePackage>
+                                    <basePackage>apiserver.services.images.controllers.info.SizeController</basePackage>
                                 </basePackage>
                             </service>
                             <service>
@@ -164,7 +164,7 @@
                                 <description>Various image filters.</description>
                                 <basePath>/</basePath>
                                 <basePackage>
-                                    <basePackage>apiserver.services.images.controllers.MetadataController</basePackage>
+                                    <basePackage>apiserver.services.images.controllers.info.MetadataController</basePackage>
                                 </basePackage>
                             </service>
                         </services>

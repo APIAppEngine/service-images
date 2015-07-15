@@ -23,7 +23,6 @@ package apiserver.services.images.services.jhlabs;
 import apiserver.exceptions.MessageConfigException;
 import apiserver.services.images.gateways.jobs.ImageDocumentJob;
 import com.jhlabs.image.BlurFilter;
-import org.apache.log4j.Logger;
 import org.springframework.messaging.Message;
 
 import java.awt.image.BufferedImage;

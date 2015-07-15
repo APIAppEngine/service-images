@@ -154,7 +154,7 @@ public class TextController
     @RequestMapping(value = "/modify/text", method = {RequestMethod.POST})
     public ResponseEntity<byte[]> drawTextByImage(
             HttpServletRequest request, HttpServletResponse response,
-            @ApiParam(name = "image", required = false) @RequestParam(value = "image", required = false) MultipartFile file
+            @ApiParam(name = "file", required = false) @RequestParam(value = "file", required = false) MultipartFile file
             , @ApiParam(name="text", required = true) @RequestParam(required = true) String text
             , @ApiParam(name="color", required = true) @RequestParam(required = true) String color
             , @ApiParam(name="fontSize", required = true) @RequestParam(required = true) String fontSize
