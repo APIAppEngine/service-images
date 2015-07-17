@@ -21,14 +21,13 @@ package apiserver.services.images.controllers.manipulations;
 
 import apiserver.MimeType;
 import apiserver.core.FileUploadHelper;
-import apiserver.core.common.ResponseEntityHelper;
 import apiserver.model.Document;
 import apiserver.services.images.gateways.images.ImageDrawBorderGateway;
-import apiserver.services.images.gateways.images.ImageDrawTextGateway;
 import apiserver.services.images.gateways.jobs.images.FileBorderJob;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +41,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -60,11 +58,9 @@ import java.util.concurrent.TimeoutException;
 @RequestMapping("/api/image")
 public class BorderController
 {
+    @Qualifier("imageDrawBorderApiGateway")
     @Autowired
     private ImageDrawBorderGateway imageDrawBorderGateway;
-
-    @Autowired
-    private ImageDrawTextGateway imageDrawTextGateway;
 
     @Autowired
     private FileUploadHelper fileUploadHelper;
@@ -112,9 +108,8 @@ public class BorderController
         Future<Map> imageFuture = imageDrawBorderGateway.imageDrawBorderFilter(args);
         FileBorderJob payload = (FileBorderJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
-        return result;
+        //pass CF Response back to the client
+        return payload.getHttpResponse();
     }
 
 
@@ -168,7 +163,7 @@ public class BorderController
         FileBorderJob payload = (FileBorderJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
 
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processFile(payload.getResult(), _outputContentType, false);
-        return result;
+        //pass CF Response back to the client
+        return payload.getHttpResponse();
     }
 }

@@ -69,7 +69,7 @@
 
         <si:service-activator
                 method="execute">
-            <bean class="apiserver.core.connectors.coldfusion.services.BinaryCFCService">
+            <bean class="apiserver.core.connectors.coldfusion.ColdFusionHttpBridge">
                 <property name="cfcPath" value="/api-image.cfc?method=rotateImage"/>
                 <property name="cfcMethod" value="POST"/>
             </bean>

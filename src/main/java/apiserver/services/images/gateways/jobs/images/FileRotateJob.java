@@ -20,10 +20,10 @@ package apiserver.services.images.gateways.jobs.images;
  ******************************************************************************/
 
 import apiserver.ApiServerConstants;
-import apiserver.core.connectors.coldfusion.services.BinaryResult;
+import apiserver.jobs.IProxyJob;
 import apiserver.services.images.gateways.jobs.ImageDocumentJob;
+import org.springframework.http.ResponseEntity;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,12 +31,13 @@ import java.util.Map;
  * User: mikenimer
  * Date: 7/21/13
  */
-public class FileRotateJob extends ImageDocumentJob implements BinaryResult
+public class FileRotateJob extends ImageDocumentJob implements IProxyJob
 {
     private Integer angle = 0;
     private String format;
 
-    private byte[] imageBytes;
+    private ResponseEntity CFResponse;
+
 
     public Integer getAngle()
     {
@@ -59,29 +60,19 @@ public class FileRotateJob extends ImageDocumentJob implements BinaryResult
     }
 
 
-    public byte[] getImageBytes() {
-        return imageBytes;
-    }
-
-
-    public void setImageBytes(byte[] imageBytes) {
-        this.imageBytes = imageBytes;
-    }
-
-
-    @Override public byte[] getResult()
+    @Override public ResponseEntity getHttpResponse()
     {
-        return getImageBytes();
+        return CFResponse;
     }
 
 
-    @Override public void setResult(byte[] bytes)
+    @Override public void setHttpResponse(ResponseEntity CFResponse)
     {
-        setImageBytes(bytes);
+        this.CFResponse = CFResponse;
     }
 
 
-    public Map toMap()
+    public Map getArguments()
     {
         Map props = new HashMap();
 

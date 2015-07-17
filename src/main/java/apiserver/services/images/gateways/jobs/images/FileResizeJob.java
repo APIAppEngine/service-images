@@ -20,8 +20,9 @@ package apiserver.services.images.gateways.jobs.images;
  ******************************************************************************/
 
 import apiserver.ApiServerConstants;
-import apiserver.core.connectors.coldfusion.services.BinaryResult;
+import apiserver.jobs.IProxyJob;
 import apiserver.services.images.gateways.jobs.ImageDocumentJob;
+import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +31,7 @@ import java.util.Map;
  * User: mikenimer
  * Date: 7/21/13
  */
-public class FileResizeJob extends ImageDocumentJob implements BinaryResult
+public class FileResizeJob extends ImageDocumentJob implements IProxyJob
 {
     private Integer width;
     private Integer height;
@@ -39,7 +40,7 @@ public class FileResizeJob extends ImageDocumentJob implements BinaryResult
     private Boolean returnAsBase64 = false;
     private String format;
 
-    private byte[] imageBytes;
+    private ResponseEntity CFResponse;
 
 
     public Integer getWidth()
@@ -100,30 +101,19 @@ public class FileResizeJob extends ImageDocumentJob implements BinaryResult
     }
 
 
-    public byte[] getImageBytes() {
-        return imageBytes;
-    }
-
-
-    public void setImageBytes(byte[] imageBytes) {
-        this.imageBytes = imageBytes;
-    }
-
-
-    @Override public byte[] getResult()
+    @Override public ResponseEntity getHttpResponse()
     {
-        return getImageBytes();
+        return CFResponse;
     }
 
 
-    @Override public void setResult(byte[] bytes)
+    @Override public void setHttpResponse(ResponseEntity CFResponse)
     {
-        setImageBytes(bytes);
+        this.CFResponse = CFResponse;
     }
 
 
-
-    public Map toMap()
+    @Override public Map getArguments()
     {
         Map props = new HashMap();
 

@@ -21,7 +21,6 @@ package apiserver.services.images.controllers.manipulations;
 
 import apiserver.MimeType;
 import apiserver.core.FileUploadHelper;
-import apiserver.core.common.ResponseEntityHelper;
 import apiserver.model.Document;
 import apiserver.services.images.gateways.images.ImageDrawTextGateway;
 import apiserver.services.images.gateways.jobs.images.FileTextJob;
@@ -124,9 +123,8 @@ public class TextController
         Future<Map> imageFuture = imageDrawTextGateway.imageDrawTextFilter(args);
         FileTextJob payload = (FileTextJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processImage(payload.getBufferedImage(), _contentType, false);
-        return result;
+        //pass CF Response back to the client
+        return payload.getHttpResponse();
 
     }
 
@@ -197,9 +195,8 @@ public class TextController
         Future<Map> imageFuture = imageDrawTextGateway.imageDrawTextFilter(job);
         FileTextJob payload = (FileTextJob)imageFuture.get(defaultTimeout, TimeUnit.MILLISECONDS);
 
-
-        ResponseEntity<byte[]> result = ResponseEntityHelper.processFile(payload.getResult(), _outputContentType, false);
-        return result;
+        //pass CF Response back to the client
+        return payload.getHttpResponse();
 
     }
 }
