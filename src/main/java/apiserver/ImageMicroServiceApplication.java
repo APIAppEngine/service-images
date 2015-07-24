@@ -73,7 +73,8 @@ public class ImageMicroServiceApplication extends DelegatingWebMvcConfiguration
 
 
 
-    @Value("${mashape.key}")
+
+    @Value("${mashape.images.key}")
     private String mashapeKey = null;
 
     @Bean
