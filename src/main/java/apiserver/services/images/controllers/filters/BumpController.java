@@ -52,8 +52,8 @@ import java.util.concurrent.TimeoutException;
 
 @Controller
 @RestController
-@Api(value = "/api/image", description = "[IMAGE]")
-@RequestMapping("/api/image")
+@Api(value = "/api/v1/image", description = "[IMAGE]")
+@RequestMapping("/api/v1/image")
 public class BumpController
 {
     @Autowired
